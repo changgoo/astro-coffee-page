@@ -62,6 +62,38 @@ header h1 a {
   flex: 1;
 }
 
+.fetched-at { font-size: 12px; color: var(--text-muted); }
+
+.header-center-link {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.header-center-link:hover { background: var(--bg); }
+
+.header-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.header-links a {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.header-links a:hover { background: var(--bg); }
+
 /* ── Controls ── */
 select, button {
   padding: 5px 10px;
@@ -205,7 +237,7 @@ main {
 }
 
 .paper-title {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
   margin-bottom: 5px;
   line-height: 1.4;
@@ -215,7 +247,7 @@ main {
 .paper-title a:hover { color: var(--primary); text-decoration: underline; }
 
 .paper-authors {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-muted);
   margin-bottom: 6px;
   line-height: 1.4;
@@ -251,7 +283,7 @@ main {
 }
 
 .paper-abstract {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text);
   margin-top: 8px;
   line-height: 1.6;
