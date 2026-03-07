@@ -176,7 +176,12 @@ def update_index(data_dir, date_str, max_days=10):
 
 
 def main():
-    """Entry point: scrape papers for the target date and save to data/."""
+    """Entry point: scrape papers for the target date and save to data/.
+
+    Skips writing if the fetched paper count is no greater than what is
+    already stored, so repeated nightly runs only commit when arXiv has
+    added more papers since the last run.
+    """
     date_str = sys.argv[1] if len(sys.argv) > 1 else get_target_date()
     print(f"Fetching arXiv astro-ph papers for {date_str}")
 
@@ -184,18 +189,29 @@ def main():
     data_dir.mkdir(exist_ok=True)
 
     papers = fetch_all_papers(date_str)
+    new_count = len(papers)
+
+    # Check existing file to avoid redundant writes and commits
+    out_path = data_dir / f"{date_str}.json"
+    if out_path.exists():
+        with open(out_path) as f:
+            existing = json.load(f)
+        existing_count = existing.get("total", 0)
+        if new_count <= existing_count:
+            print(f"  No update: fetched {new_count} papers, existing {existing_count}. Skipping.")
+            return
+        print(f"  Update detected: {existing_count} -> {new_count} papers.")
 
     output = {
         "date": date_str,
         "fetched_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "total": len(papers),
+        "total": new_count,
         "papers": papers,
     }
 
-    out_path = data_dir / f"{date_str}.json"
     with open(out_path, "w") as f:
         json.dump(output, f, indent=2)
-    print(f"  Saved {len(papers)} papers to {out_path}")
+    print(f"  Saved {new_count} papers to {out_path}")
 
     update_index(data_dir, date_str)
     print("Done.")
