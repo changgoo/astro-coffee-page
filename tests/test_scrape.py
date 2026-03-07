@@ -105,6 +105,33 @@ def test_get_target_date_saturday_morning():
     assert scrape.get_target_date(_et_now=et(2026, 3, 7, 10)) == "2026-03-06"
 
 
+# ── get_query_date ────────────────────────────────────────────────────────────
+
+def test_get_query_date_friday_listing():
+    """Friday listing → Thursday (Wed 14:00–Thu 14:00 batch)."""
+    assert scrape.get_query_date("2026-03-06") == "2026-03-05"
+
+
+def test_get_query_date_monday_listing():
+    """Monday listing → Friday (Thu 14:00–Fri 14:00 batch)."""
+    assert scrape.get_query_date("2026-03-09") == "2026-03-06"
+
+
+def test_get_query_date_tuesday_listing():
+    """Tuesday listing → Monday (Fri 14:00–Mon 14:00 batch)."""
+    assert scrape.get_query_date("2026-03-10") == "2026-03-09"
+
+
+def test_get_query_date_wednesday_listing():
+    """Wednesday listing → Tuesday (Mon 14:00–Tue 14:00 batch)."""
+    assert scrape.get_query_date("2026-03-11") == "2026-03-10"
+
+
+def test_get_query_date_thursday_listing():
+    """Thursday listing → Wednesday (Tue 14:00–Wed 14:00 batch)."""
+    assert scrape.get_query_date("2026-03-12") == "2026-03-11"
+
+
 # ── parse_entry ───────────────────────────────────────────────────────────────
 
 def test_parse_entry_id(sample_entry):

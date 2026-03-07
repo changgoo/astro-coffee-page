@@ -70,6 +70,22 @@ def get_target_date(date_str=None, _et_now=None):
     return prev_business_day(target).strftime("%Y-%m-%d")
 
 
+def get_query_date(listing_date_str):
+    """Return the arXiv API submittedDate for a given listing date.
+
+    The query date is the cutoff day of the submission window:
+      prev_business_day(listing_date - 1 day)
+
+    Examples:
+      Friday listing   → Thursday  (Wed 14:00–Thu 14:00 batch)
+      Monday listing   → Friday    (Thu 14:00–Fri 14:00 batch)
+      Tuesday listing  → Monday    (Fri 14:00–Mon 14:00 batch)
+      Wednesday listing → Tuesday  (Mon 14:00–Tue 14:00 batch)
+    """
+    listing = datetime.strptime(listing_date_str, "%Y-%m-%d").date()
+    return prev_business_day(listing - timedelta(days=1)).strftime("%Y-%m-%d")
+
+
 def build_query_url(date_str, start=0, max_results=MAX_PER_REQUEST):
     """Build the arXiv API query URL for a given date and pagination offset."""
     date_compact = date_str.replace("-", "")
@@ -302,17 +318,22 @@ def main():
     already stored, so repeated nightly runs only commit when arXiv has
     added more papers since the last run.
     """
-    date_str = sys.argv[1] if len(sys.argv) > 1 else get_target_date()
-    print(f"Fetching arXiv astro-ph papers for {date_str}")
+    listing_date = sys.argv[1] if len(sys.argv) > 1 else get_target_date()
+    query_date = get_query_date(listing_date)
+    print(f"Fetching arXiv astro-ph papers for listing {listing_date} (submitted {query_date})")
 
     data_dir = Path(__file__).parent.parent / "data"
     data_dir.mkdir(exist_ok=True)
 
-    papers = fetch_all_papers(date_str)
+    papers = fetch_all_papers(query_date)
     new_count = len(papers)
 
+    if new_count == 0:
+        print(f"  No papers found for {listing_date} — arXiv may not have announced this batch yet. Skipping.")
+        return
+
     # Check existing file to avoid redundant writes and commits
-    out_path = data_dir / f"{date_str}.json"
+    out_path = data_dir / f"{listing_date}.json"
     if out_path.exists():
         with open(out_path) as f:
             existing = json.load(f)
@@ -323,7 +344,7 @@ def main():
         print(f"  Update detected: {existing_count} -> {new_count} papers.")
 
     output = {
-        "date": date_str,
+        "date": listing_date,
         "fetched_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "total": new_count,
         "papers": papers,
@@ -335,7 +356,7 @@ def main():
 
     repo_root = Path(__file__).parent.parent
     fav_authors = load_favorite_authors(repo_root)
-    update_index(data_dir, date_str, fav_authors=fav_authors)
+    update_index(data_dir, listing_date, fav_authors=fav_authors)
     print("Done.")
 
 
