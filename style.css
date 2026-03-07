@@ -76,23 +76,25 @@ header h1 a {
 }
 .header-center-link:hover { background: var(--bg); }
 
+.header-shield { display: flex; align-items: center; }
+.header-shield img { display: block; }
+
 .header-links {
   display: flex;
   align-items: center;
-  gap: 10px;
-  white-space: nowrap;
+  gap: 6px;
 }
 
 .header-links a {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--primary);
+  display: flex;
+  align-items: center;
+  color: var(--text-muted);
   text-decoration: none;
-  padding: 4px 10px;
-  border: 1px solid var(--border);
+  padding: 4px;
   border-radius: 4px;
+  transition: color 0.15s;
 }
-.header-links a:hover { background: var(--bg); }
+.header-links a:hover { color: var(--text); }
 
 /* ── Controls ── */
 select, button {
