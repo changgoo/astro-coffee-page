@@ -72,7 +72,7 @@ async function loadDay(dateStr) {
   document.getElementById("loading").style.display = "block";
   document.getElementById("paper-list").innerHTML = "";
   document.getElementById("stats").textContent = "";
-  updateArxivLink(dateStr);
+
 
   try {
     const res = await fetch(`data/${dateStr}.json`);
@@ -106,11 +106,6 @@ function populateDateSelector() {
 
   // Prev/Next buttons
   updateNavButtons();
-}
-
-function updateArxivLink(dateStr) {
-  const el = document.getElementById("arxiv-day-link");
-  if (el) el.href = `https://arxiv.org/list/astro-ph/${dateStr}`;
 }
 
 function updateNavButtons() {
