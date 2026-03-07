@@ -16,6 +16,7 @@ let activeCats = new Set(ASTRO_CATS);
 let currentSort = "local";
 let availableDates = [];
 let currentDate = null;
+let localTenDayMode = false;
 
 // ── Initialise ────────────────────────────────────────────────────────────────
 
@@ -66,6 +67,66 @@ async function loadAuthors() {
     seen.add(name);
     return true;
   });
+}
+
+async function loadAllDays() {
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("paper-list").innerHTML = "";
+  document.getElementById("stats").textContent = "";
+  document.getElementById("fetched-at").textContent = "";
+
+  try {
+    const results = await Promise.all(
+      availableDates.map(async (d) => {
+        const res = await fetch(`data/${d}.json`);
+        if (!res.ok) return { date: d, papers: [] };
+        const data = await res.json();
+        return { date: d, papers: data.papers || [] };
+      })
+    );
+    // Attach date to each paper, keep only strong matches
+    allPapers = results.flatMap(({ date, papers }) =>
+      papers
+        .filter((p) => bestMatchStrength(p) === "strong")
+        .map((p) => ({ ...p, _date: date }))
+    );
+  } catch (e) {
+    allPapers = [];
+    showEmptyState("Could not load data.");
+  } finally {
+    document.getElementById("loading").style.display = "none";
+  }
+
+  renderAllDays();
+}
+
+function renderAllDays() {
+  const list = document.getElementById("paper-list");
+  list.innerHTML = "";
+
+  // Group by date (already sorted newest-first via availableDates order)
+  const byDate = {};
+  for (const paper of allPapers) {
+    (byDate[paper._date] = byDate[paper._date] || []).push(paper);
+  }
+
+  let total = 0;
+  for (const date of availableDates) {
+    const papers = byDate[date];
+    if (!papers || papers.length === 0) continue;
+    total += papers.length;
+
+    const header = document.createElement("div");
+    header.className = "date-section-header";
+    header.textContent = formatDate(date);
+    list.appendChild(header);
+
+    papers.forEach((paper) => list.appendChild(buildCard(paper)));
+  }
+
+  document.getElementById("stats").textContent =
+    total === 0 ? "No strong local author matches found."
+                : `${total} papers with strong local author matches across ${availableDates.length} days`;
 }
 
 async function loadDay(dateStr) {
@@ -409,6 +470,27 @@ document.addEventListener("DOMContentLoaded", () => {
     updateNavButtons();
     history.pushState({}, "", `?date=${currentDate}`);
     await loadDay(currentDate);
+  });
+
+  document.getElementById("btn-local-10").addEventListener("click", async () => {
+    localTenDayMode = !localTenDayMode;
+    const btn = document.getElementById("btn-local-10");
+    const navEls = [
+      document.getElementById("btn-prev"),
+      document.getElementById("date-select"),
+      document.getElementById("btn-next"),
+    ];
+    if (localTenDayMode) {
+      btn.classList.add("active");
+      navEls.forEach((el) => { el.disabled = true; el.style.opacity = "0.4"; });
+      await loadAllDays();
+    } else {
+      btn.classList.remove("active");
+      navEls.forEach((el) => { el.disabled = false; el.style.opacity = ""; });
+      // Restore nav button disabled state based on position
+      updateNavButtons();
+      await loadDay(currentDate);
+    }
   });
 
   document.getElementById("btn-prev").addEventListener("click", async () => {
