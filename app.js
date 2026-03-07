@@ -76,7 +76,8 @@ async function loadAllDays() {
   document.getElementById("fetched-at").textContent = "";
 
   try {
-    const results = await Promise.all(
+    // Load live days (filter to strong matches)
+    const liveResults = await Promise.all(
       availableDates.map(async (d) => {
         const res = await fetch(`data/${d}.json`);
         if (!res.ok) return { date: d, papers: [] };
@@ -84,12 +85,32 @@ async function loadAllDays() {
         return { date: d, papers: data.papers || [] };
       })
     );
-    // Attach date to each paper, keep only strong matches
-    allPapers = results.flatMap(({ date, papers }) =>
+    const livePapers = liveResults.flatMap(({ date, papers }) =>
       papers
         .filter((p) => bestMatchStrength(p) === "strong")
         .map((p) => ({ ...p, _date: date }))
     );
+
+    // Load archived strong-match papers
+    let archivedPapers = [];
+    try {
+      const archRes = await fetch("data/local-archive.json");
+      if (archRes.ok) {
+        const archData = await archRes.json();
+        // archData is { "YYYY-MM-DD": [...papers], ... }
+        for (const [date, papers] of Object.entries(archData)) {
+          for (const p of papers) {
+            archivedPapers.push({ ...p, _date: date });
+          }
+        }
+      }
+    } catch { /* archive not yet created — ignore */ }
+
+    // Merge: live dates take precedence; skip archived dates already in live index
+    const liveDates = new Set(availableDates);
+    archivedPapers = archivedPapers.filter((p) => !liveDates.has(p._date));
+
+    allPapers = [...livePapers, ...archivedPapers];
   } catch (e) {
     allPapers = [];
     showEmptyState("Could not load data.");
@@ -104,14 +125,17 @@ function renderAllDays() {
   const list = document.getElementById("paper-list");
   list.innerHTML = "";
 
-  // Group by date (already sorted newest-first via availableDates order)
+  // Group by date
   const byDate = {};
   for (const paper of allPapers) {
     (byDate[paper._date] = byDate[paper._date] || []).push(paper);
   }
 
+  // All dates across live + archive, sorted descending
+  const allDates = Object.keys(byDate).sort((a, b) => b.localeCompare(a));
+
   let total = 0;
-  for (const date of availableDates) {
+  for (const date of allDates) {
     const papers = byDate[date];
     if (!papers || papers.length === 0) continue;
     total += papers.length;
@@ -126,7 +150,7 @@ function renderAllDays() {
 
   document.getElementById("stats").textContent =
     total === 0 ? "No strong local author matches found."
-                : `${total} papers with strong local author matches across ${availableDates.length} days`;
+                : `${total} papers with strong local author matches across ${allDates.length} days`;
 }
 
 async function loadDay(dateStr) {

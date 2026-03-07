@@ -147,8 +147,102 @@ def fetch_all_papers(date_str):
     return papers
 
 
-def update_index(data_dir, date_str, max_days=10):
-    """Add date_str to data/index.json and prune entries beyond max_days."""
+def load_favorite_authors(repo_root):
+    """Load and merge favorite authors from both config files.
+
+    Returns a list of name strings (manual entries first, deduped).
+    """
+    names = []
+    seen = set()
+    for filename in ("authors_manual.json", "authors.json"):
+        path = repo_root / "config" / filename
+        if not path.exists():
+            continue
+        with open(path) as f:
+            data = json.load(f)
+        for name in data.get("authors", []):
+            if name not in seen:
+                seen.add(name)
+                names.append(name)
+    return names
+
+
+def parse_name_parts(name):
+    """Parse a name into (first, last, middle_initial) components.
+
+    Handles arXiv format "Last, First [Middle]" and Princeton format
+    "[Title] First [Middle] Last [Suffix]". Returns lowercase strings.
+    """
+    suffixes = {"iii", "ii", "iv", "jr.", "jr", "sr.", "sr"}
+    titles = {"sir", "dr.", "dr", "prof.", "prof"}
+
+    if "," in name:
+        comma = name.index(",")
+        last = name[:comma].strip().lower()
+        rest = name[comma + 1:].strip().split()
+        first = rest[0].replace(".", "").lower() if rest else ""
+        middle_initial = rest[1].replace(".", "").lower()[0] if len(rest) > 1 else None
+        return first, last, middle_initial
+
+    tokens = name.strip().split()
+    while len(tokens) > 1 and tokens[0].lower() in titles:
+        tokens = tokens[1:]
+    while len(tokens) > 1 and tokens[-1].lower() in suffixes:
+        tokens = tokens[:-1]
+    last = tokens[-1].lower() if tokens else ""
+    first = tokens[0].replace(".", "").lower() if tokens else ""
+    middle_initial = tokens[1].replace(".", "").lower()[0] if len(tokens) > 2 else None
+    return first, last, middle_initial
+
+
+def has_strong_local_author(paper, fav_authors):
+    """Return True if any paper author is a strong match against fav_authors.
+
+    Strong match: last name exact AND (first name exact, or both sides have
+    a matching middle initial when only first initials agree).
+    """
+    for arxiv_name in paper.get("authors", []):
+        arx_first, arx_last, arx_mid = parse_name_parts(arxiv_name)
+        for fav_name in fav_authors:
+            fav_first, fav_last, fav_mid = parse_name_parts(fav_name)
+            if fav_last != arx_last:
+                continue
+            if fav_first == arx_first:
+                return True
+            if fav_first and arx_first and fav_first[0] == arx_first[0]:
+                if fav_mid and arx_mid and fav_mid == arx_mid:
+                    return True
+    return False
+
+
+def archive_strong_papers(data_dir, date_str, papers, fav_authors):
+    """Append strong local author matches from papers to data/local-archive.json.
+
+    The archive is a JSON object mapping date strings to lists of paper dicts,
+    keeping only strong-match papers. Existing entries for date_str are replaced.
+    """
+    archive_path = data_dir / "local-archive.json"
+    archive = {}
+    if archive_path.exists():
+        with open(archive_path) as f:
+            archive = json.load(f)
+
+    strong = [p for p in papers if has_strong_local_author(p, fav_authors)]
+    if strong:
+        archive[date_str] = strong
+        with open(archive_path, "w") as f:
+            json.dump(archive, f, indent=2)
+        print(f"  Archived {len(strong)} strong-match papers from {date_str} to local-archive.json")
+    else:
+        print(f"  No strong matches in {date_str}; nothing archived.")
+
+
+def update_index(data_dir, date_str, fav_authors=None, max_days=10):
+    """Add date_str to data/index.json and prune entries beyond max_days.
+
+    When pruning an old date, extracts strong local author matches into
+    data/local-archive.json before deleting the full day file.
+    """
     index_path = data_dir / "index.json"
     if index_path.exists():
         with open(index_path) as f:
@@ -163,11 +257,17 @@ def update_index(data_dir, date_str, max_days=10):
     # Sort descending and keep only max_days
     dates = sorted(set(dates), reverse=True)[:max_days]
 
-    # Remove JSON files for dates no longer in the index
+    # Prune files for dates no longer in the index
     for json_file in data_dir.glob("????-??-??.json"):
-        if json_file.stem not in dates:
-            print(f"  Removing old data file: {json_file.name}")
-            json_file.unlink()
+        stem = json_file.stem
+        if stem in dates:
+            continue
+        if fav_authors:
+            with open(json_file) as f:
+                day_data = json.load(f)
+            archive_strong_papers(data_dir, stem, day_data.get("papers", []), fav_authors)
+        print(f"  Removing old data file: {json_file.name}")
+        json_file.unlink()
 
     index["dates"] = dates
     with open(index_path, "w") as f:
@@ -176,7 +276,12 @@ def update_index(data_dir, date_str, max_days=10):
 
 
 def main():
-    """Entry point: scrape papers for the target date and save to data/."""
+    """Entry point: scrape papers for the target date and save to data/.
+
+    Skips writing if the fetched paper count is no greater than what is
+    already stored, so repeated nightly runs only commit when arXiv has
+    added more papers since the last run.
+    """
     date_str = sys.argv[1] if len(sys.argv) > 1 else get_target_date()
     print(f"Fetching arXiv astro-ph papers for {date_str}")
 
@@ -184,20 +289,33 @@ def main():
     data_dir.mkdir(exist_ok=True)
 
     papers = fetch_all_papers(date_str)
+    new_count = len(papers)
+
+    # Check existing file to avoid redundant writes and commits
+    out_path = data_dir / f"{date_str}.json"
+    if out_path.exists():
+        with open(out_path) as f:
+            existing = json.load(f)
+        existing_count = existing.get("total", 0)
+        if new_count <= existing_count:
+            print(f"  No update: fetched {new_count} papers, existing {existing_count}. Skipping.")
+            return
+        print(f"  Update detected: {existing_count} -> {new_count} papers.")
 
     output = {
         "date": date_str,
         "fetched_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "total": len(papers),
+        "total": new_count,
         "papers": papers,
     }
 
-    out_path = data_dir / f"{date_str}.json"
     with open(out_path, "w") as f:
         json.dump(output, f, indent=2)
-    print(f"  Saved {len(papers)} papers to {out_path}")
+    print(f"  Saved {new_count} papers to {out_path}")
 
-    update_index(data_dir, date_str)
+    repo_root = Path(__file__).parent.parent
+    fav_authors = load_favorite_authors(repo_root)
+    update_index(data_dir, date_str, fav_authors=fav_authors)
     print("Done.")
 
 
