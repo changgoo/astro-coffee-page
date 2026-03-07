@@ -30,7 +30,16 @@ In your repository → **Settings → Pages**:
 
 ### 3. Enable the GitHub Action
 
-The workflow in `.github/workflows/daily-scrape.yml` runs automatically Mon–Fri at 15:30 UTC.
+The workflow in `.github/workflows/daily-scrape.yml` runs on the following schedule,
+timed around arXiv's ~8 PM ET daily announcement:
+
+| Runs | ET time | Days |
+|------|---------|------|
+| Hourly ×4 | 9 PM, 10 PM, 11 PM, midnight | Sun–Thu nights |
+| Once | 6 AM | Friday morning |
+
+> **Note:** Times above assume EST (UTC−5). During EDT (UTC−4, mid-March to early
+> November) all night runs fire 1 hour earlier ET (8 PM–11 PM).
 
 To run it manually: **Actions → Daily arXiv scrape → Run workflow**.
 
@@ -56,8 +65,10 @@ python scripts/scrape_authors.py --dry-run
 To adapt for a different institution, edit the `PAGES` list and CSS selectors in
 `scripts/scrape_authors.py`.
 
-You can also edit `config/authors.json` directly. Names are matched case-insensitively
-as substrings of the full author name as it appears on arXiv.
+You can also edit `config/authors.json` directly. Names are matched by last name
+(exact) then first name: an exact first-name match is a **strong** match (bold amber
+highlight); a matching first initial only is a **weak** match (italic grey highlight).
+Titles (Dr., Sir) and suffixes (Jr., III) are ignored during comparison.
 
 ## Local development
 
