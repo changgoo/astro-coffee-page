@@ -25,35 +25,84 @@ MAX_PER_REQUEST = 500
 RATE_LIMIT_SECONDS = 3
 
 
-def get_target_date(date_str=None):
-    """Return the target submission date as YYYY-MM-DD string.
+def prev_business_day(d):
+    """Return the most recent weekday on or before date d."""
+    while d.weekday() >= 5:  # 5=Saturday, 6=Sunday
+        d -= timedelta(days=1)
+    return d
 
-    arXiv cutoff is 14:00 US Eastern Time. Papers submitted before that
-    appear in the *next* day's mailing. We query for papers submitted on
-    the calendar date that would have appeared in today's new listing.
 
-    If a date string is provided, use that directly.
+def get_target_date(date_str=None, _et_now=None):
+    """Return the arXiv listing date to scrape as YYYY-MM-DD.
+
+    arXiv's submission windows and announcement schedule:
+      Mon 14:00 – Tue 14:00  →  announced Tue 20:00  →  listing date: Tuesday
+      Tue 14:00 – Wed 14:00  →  announced Wed 20:00  →  listing date: Wednesday
+      Wed 14:00 – Thu 14:00  →  announced Thu 20:00  →  listing date: Thursday
+      Thu 14:00 – Fri 14:00  →  announced Sun 20:00  →  listing date: Friday
+      Fri 14:00 – Mon 14:00  →  announced Mon 20:00  →  listing date: Monday
+
+    The listing date is the last business day of the submission window.
+    This equals prev_business_day(today ET) after 14:00, or
+    prev_business_day(yesterday ET) before 14:00.
+
+    Examples:
+      Tue 21:00 ET  →  Tuesday   (Tue nightly run, catches Tue announcement)
+      Sun 21:00 ET  →  Friday    (Sun nightly run, catches Thu–Fri batch)
+      Mon 21:00 ET  →  Monday    (Mon nightly run, catches Fri–Mon batch)
+      Mon 06:00 ET  →  Friday    (Mon morning catch-up for Fri–Mon batch)
+      Sat 10:00 ET  →  Friday    (matches arXiv showing Fri papers on Saturday)
+
+    If date_str is provided, use that directly.
+    _et_now may be injected for testing.
     """
     if date_str:
         return date_str
 
-    # Current time in US Eastern (UTC-5 standard / UTC-4 daylight)
-    # Use a fixed offset of UTC-5 (EST) as a conservative estimate.
-    et_now = datetime.now(timezone(timedelta(hours=-5)))
-    # arXiv announces papers submitted the *previous* business day
-    # For simplicity: use yesterday's date when it's before 15:00 ET,
-    # otherwise use today's date (the current day's submissions won't be
-    # announced until tomorrow, but we fetch what's available).
-    # The GitHub Action runs after 15:30 UTC (10:30 ET) which is well before
-    # the 14:00 ET cutoff — so we query the previous calendar day.
-    target = et_now - timedelta(days=1)
-    return target.strftime("%Y-%m-%d")
+    if _et_now is None:
+        _et_now = datetime.now(timezone(timedelta(hours=-5)))
+
+    if _et_now.hour >= 14:
+        target = _et_now.date()
+    else:
+        target = _et_now.date() - timedelta(days=1)
+
+    return prev_business_day(target).strftime("%Y-%m-%d")
 
 
-def build_query_url(date_str, start=0, max_results=MAX_PER_REQUEST):
-    """Build the arXiv API query URL for a given date and pagination offset."""
-    date_compact = date_str.replace("-", "")
-    search_query = f"cat:astro-ph.*+AND+submittedDate:[{date_compact}0000+TO+{date_compact}2359]"
+# arXiv's 14:00 ET cutoff in UTC (arXiv uses EST = UTC-5 year-round, no DST adjustment)
+CUTOFF_HOUR_UTC = 19  # 14:00 EST + 5 = 19:00 UTC
+
+
+def get_submission_window(listing_date_str):
+    """Return (start_dt, end_dt) arXiv submittedDate strings for a listing date.
+
+    The arXiv API's submittedDate field is in UTC. arXiv's submission cutoff
+    is 14:00 EST (UTC-5, no DST) = 19:00 UTC year-round.
+
+    The window spans:
+      prev_biz_day(cutoff_day - 1) 19:00 UTC  →  cutoff_day 18:59:59 UTC
+    where cutoff_day = prev_business_day(listing - 1 day).
+
+    Strings are formatted as YYYYMMDDHHMMSS for the arXiv API.
+
+    Examples (ET times shown for clarity):
+      Friday   (2026-03-06) → cutoff=Thu 03-05; window: Wed 19:00–Thu 18:59:59 UTC
+                                                        (Wed 14:00–Thu 13:59:59 ET)
+      Monday   (2026-03-09) → cutoff=Fri 03-06; window: Thu 19:00–Fri 18:59:59 UTC
+      Tuesday  (2026-03-10) → cutoff=Mon 03-09; window: Fri 19:00–Mon 18:59:59 UTC
+    """
+    listing = datetime.strptime(listing_date_str, "%Y-%m-%d").date()
+    cutoff_day = prev_business_day(listing - timedelta(days=1))
+    window_start_day = prev_business_day(cutoff_day - timedelta(days=1))
+    start = f"{window_start_day.strftime('%Y%m%d')}{CUTOFF_HOUR_UTC:02d}0000"
+    end = f"{cutoff_day.strftime('%Y%m%d')}{CUTOFF_HOUR_UTC - 1:02d}5959"
+    return start, end
+
+
+def build_query_url(start_dt, end_dt, start=0, max_results=MAX_PER_REQUEST):
+    """Build the arXiv API query URL for a submittedDate range and pagination offset."""
+    search_query = f"cat:astro-ph.*+AND+submittedDate:[{start_dt}+TO+{end_dt}]"
     params = (
         f"search_query={search_query}"
         f"&sortBy=submittedDate&sortOrder=descending"
@@ -114,14 +163,21 @@ def parse_entry(entry):
     }
 
 
-def fetch_all_papers(date_str):
-    """Fetch all papers for the given date, paginating as needed."""
+def fetch_all_papers(listing_date_str):
+    """Fetch all papers for the given listing date, paginating as needed."""
+    start_dt, end_dt = get_submission_window(listing_date_str)
+    # Convert UTC cutoff hours back to ET for the display (UTC-5)
+    start_et = int(start_dt[8:10]) - 5
+    end_et = int(end_dt[8:10]) - 5
+    print(f"  Submission window: {start_dt[:8]} {start_et:02d}:00 ET → "
+          f"{end_dt[:8]} {end_et:02d}:59 ET  "
+          f"({start_dt[8:10]}:00–{end_dt[8:10]}:59 UTC)")
     papers = []
     start = 0
     total = None
 
     while True:
-        url = build_query_url(date_str, start=start)
+        url = build_query_url(start_dt, end_dt, start=start)
         print(f"  Fetching start={start} ...", flush=True)
         raw = fetch_xml(url)
         root = ET.fromstring(raw)
@@ -282,17 +338,21 @@ def main():
     already stored, so repeated nightly runs only commit when arXiv has
     added more papers since the last run.
     """
-    date_str = sys.argv[1] if len(sys.argv) > 1 else get_target_date()
-    print(f"Fetching arXiv astro-ph papers for {date_str}")
+    listing_date = sys.argv[1] if len(sys.argv) > 1 else get_target_date()
+    print(f"Fetching arXiv astro-ph papers for listing {listing_date}")
 
     data_dir = Path(__file__).parent.parent / "data"
     data_dir.mkdir(exist_ok=True)
 
-    papers = fetch_all_papers(date_str)
+    papers = fetch_all_papers(listing_date)
     new_count = len(papers)
 
+    if new_count == 0:
+        print(f"  No papers found for {listing_date} — arXiv may not have announced this batch yet. Skipping.")
+        return
+
     # Check existing file to avoid redundant writes and commits
-    out_path = data_dir / f"{date_str}.json"
+    out_path = data_dir / f"{listing_date}.json"
     if out_path.exists():
         with open(out_path) as f:
             existing = json.load(f)
@@ -303,7 +363,7 @@ def main():
         print(f"  Update detected: {existing_count} -> {new_count} papers.")
 
     output = {
-        "date": date_str,
+        "date": listing_date,
         "fetched_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "total": new_count,
         "papers": papers,
@@ -315,7 +375,7 @@ def main():
 
     repo_root = Path(__file__).parent.parent
     fav_authors = load_favorite_authors(repo_root)
-    update_index(data_dir, date_str, fav_authors=fav_authors)
+    update_index(data_dir, listing_date, fav_authors=fav_authors)
     print("Done.")
 
 

@@ -40,23 +40,28 @@ def sample_entry():
 
 # ── build_query_url ───────────────────────────────────────────────────────────
 
-def test_build_query_url_contains_date():
-    url = scrape.build_query_url("2025-03-05")
-    assert "20250305" in url
+def test_build_query_url_contains_start_date():
+    url = scrape.build_query_url("20260304190000", "20260305185959")
+    assert "20260304190000" in url
+
+
+def test_build_query_url_contains_end_date():
+    url = scrape.build_query_url("20260304190000", "20260305185959")
+    assert "20260305185959" in url
 
 
 def test_build_query_url_contains_category():
-    url = scrape.build_query_url("2025-03-05")
+    url = scrape.build_query_url("20260304190000", "20260305185959")
     assert "cat:astro-ph.*" in url
 
 
 def test_build_query_url_pagination():
-    url = scrape.build_query_url("2025-03-05", start=500)
+    url = scrape.build_query_url("20260304190000", "20260305185959", start=500)
     assert "start=500" in url
 
 
 def test_build_query_url_max_results():
-    url = scrape.build_query_url("2025-03-05", max_results=100)
+    url = scrape.build_query_url("20260304190000", "20260305185959", max_results=100)
     assert "max_results=100" in url
 
 
@@ -68,15 +73,78 @@ def test_get_target_date_passthrough():
 
 def test_get_target_date_format():
     date = scrape.get_target_date()
-    # Should be YYYY-MM-DD
     datetime.strptime(date, "%Y-%m-%d")
 
 
-def test_get_target_date_is_yesterday():
-    """Default date should be yesterday relative to ET."""
-    et_now = datetime.now(timezone(timedelta(hours=-5)))
-    yesterday = (et_now - timedelta(days=1)).strftime("%Y-%m-%d")
-    assert scrape.get_target_date() == yesterday
+def et(y, m, d, hour):
+    return datetime(y, m, d, hour, 0, tzinfo=timezone(timedelta(hours=-5)))
+
+
+def test_get_target_date_weekday_evening():
+    """Tue 21:00 ET → Tuesday (Tue announcement batch)."""
+    assert scrape.get_target_date(_et_now=et(2026, 3, 3, 21)) == "2026-03-03"
+
+
+def test_get_target_date_sunday_evening():
+    """Sun 21:00 ET → Friday (Thu–Fri batch announced Sunday)."""
+    assert scrape.get_target_date(_et_now=et(2026, 3, 8, 21)) == "2026-03-06"
+
+
+def test_get_target_date_monday_evening():
+    """Mon 21:00 ET → Monday (Fri–Mon batch announced Monday)."""
+    assert scrape.get_target_date(_et_now=et(2026, 3, 9, 21)) == "2026-03-09"
+
+
+def test_get_target_date_monday_morning():
+    """Mon 06:00 ET → Friday (catch-up for Fri–Mon batch)."""
+    assert scrape.get_target_date(_et_now=et(2026, 3, 9, 6)) == "2026-03-06"
+
+
+def test_get_target_date_tuesday_morning():
+    """Tue 06:00 ET → Monday (catch-up for Tue announcement)."""
+    assert scrape.get_target_date(_et_now=et(2026, 3, 10, 6)) == "2026-03-09"
+
+
+def test_get_target_date_saturday_morning():
+    """Sat 10:00 ET → Friday (matches arXiv showing Fri papers on Saturday)."""
+    assert scrape.get_target_date(_et_now=et(2026, 3, 7, 10)) == "2026-03-06"
+
+
+# ── get_submission_window ─────────────────────────────────────────────────────
+
+def test_get_submission_window_friday():
+    """Friday listing → Wed 19:00 UTC – Thu 18:59:59 UTC (= Wed 14:00–Thu 13:59:59 ET)."""
+    start, end = scrape.get_submission_window("2026-03-06")
+    assert start == "20260304190000"  # Wed Mar 4 19:00 UTC = 14:00 ET
+    assert end   == "20260305185959"  # Thu Mar 5 18:59:59 UTC = 13:59:59 ET
+
+
+def test_get_submission_window_monday():
+    """Monday listing → Thu 19:00 UTC – Fri 18:59:59 UTC (= Thu 14:00–Fri 13:59:59 ET)."""
+    start, end = scrape.get_submission_window("2026-03-09")
+    assert start == "20260305190000"  # Thu Mar 5 19:00 UTC = 14:00 ET
+    assert end   == "20260306185959"  # Fri Mar 6 18:59:59 UTC = 13:59:59 ET
+
+
+def test_get_submission_window_tuesday():
+    """Tuesday listing → Fri 19:00 UTC – Mon 18:59:59 UTC (spans weekend)."""
+    start, end = scrape.get_submission_window("2026-03-10")
+    assert start == "20260306190000"  # Fri Mar 6 19:00 UTC = 14:00 ET
+    assert end   == "20260309185959"  # Mon Mar 9 18:59:59 UTC = 13:59:59 ET
+
+
+def test_get_submission_window_wednesday():
+    """Wednesday listing → Mon 19:00 UTC – Tue 18:59:59 UTC."""
+    start, end = scrape.get_submission_window("2026-03-11")
+    assert start == "20260309190000"  # Mon Mar 9 19:00 UTC = 14:00 ET
+    assert end   == "20260310185959"  # Tue Mar 10 18:59:59 UTC = 13:59:59 ET
+
+
+def test_get_submission_window_thursday():
+    """Thursday listing → Tue 19:00 UTC – Wed 18:59:59 UTC."""
+    start, end = scrape.get_submission_window("2026-03-12")
+    assert start == "20260310190000"  # Tue Mar 10 19:00 UTC = 14:00 ET
+    assert end   == "20260311185959"  # Wed Mar 11 18:59:59 UTC = 13:59:59 ET
 
 
 # ── parse_entry ───────────────────────────────────────────────────────────────

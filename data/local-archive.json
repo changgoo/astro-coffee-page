@@ -1,0 +1,79 @@
+{
+  "2026-02-20": [
+    {
+      "id": "2602.18558",
+      "title": "The ionised interstellar medium of DSFGs revealed by JWST/NIRSpec and ALMA: Super-solar metallicity, low ionisation parameters and, typical electron densities",
+      "authors": [
+        "Steven Gillman",
+        "Kei Ito",
+        "Francesco Valentino",
+        "Gabe Brammer",
+        "Pablo Araya Araya",
+        "Georgios Magdis",
+        "Ugn\u0117 Dudzevi\u010di\u016bt\u0117",
+        "Aswin P. Vijayan",
+        "Minju Lee",
+        "Bitten Gullberg",
+        "Daniel Ceverino",
+        "Andreas L. Faisst",
+        "Seiji Fujimoto",
+        "Thomas R. Greve",
+        "Rashmi Gottumukkala",
+        "Chandana Hegde",
+        "Michaela Hirschmann",
+        "Shuowen Jin",
+        "Christian Kragh Jespersen",
+        "Takumi Kakimoto",
+        "Mariko Kubo",
+        "Peter Laursen",
+        "Masato Onodera",
+        "Antonio Pensabene",
+        "Francesca Rizzo",
+        "John R. Weaver",
+        "Po-Feng Wu"
+      ],
+      "abstract": "We present a detailed study of near-infrared (2-4$\\rm \u03bc$m) JWST/NIRSpec spectra of 48 high-redshift ($z=2.53^{+1.32}_{-0.70}$) galaxies detected with ALMA at $>3\u03c3$. From a multi-wavelength SED analysis we establish the sample has a a median stellar mass of $\\rm\\log_{10}(M_\\ast/M_\\odot)=10.8\\pm0.1$ and dust mass of $\\rm\\log_{10}(M_{\\rm d}/M_\\odot)=8.7\\pm0.1$, covering a broad range of far-infrared luminosity $\\rm (\\log_{10}(L_{FIR}/L_\\odot)=10.9-12.7)$. The majority of sources show no signs of AGN activity, with 40% having either X-ray counterparts $(\\rm L_{Xc}>10^{42}erg/s)$, elevated optical line ratios, or broad (FWHM>800 km/s) H$\u03b1$ profiles, although we note this is a lower limit due to the stochastic placement of NIRSpec slits. We establish the sample has a median gas-phase metallicity of $12+\\log({\\rm O/H})=8.71\\pm0.02$, as derived from the [NII]/H$\u03b1$ ratio, with the most FIR-luminous galaxies ($\\rm\\log_{10}(L_{\\rm FIR}/L_\\odot)>12$) falling $0.15\\pm0.03$dex above the fundamental metallicity relation. From the [SII] emission-line doublet ratio, we measure a median electron density of $\\log_{10}(n_{\\rm e}/{\\rm cm}^{-3})=2.53\\pm0.07$ consistent with less-massive, star-forming, galaxies at the same epoch. For nine galaxies with [OII] and H$\u03b2$ detections (median $\\rm\\log_{10}(L_{\\rm FIR}/L_\\odot)=11.81\\pm0.15$), we derive a median observed (dust-uncorrected) ionisation parameter of $\\rm\\log_{10}(U)=-2.84\\pm0.06$. Our results indicate that luminous far-infrared galaxies are massive, chemically evolved systems that appear to deviate from the standard dust and metal production equilibrium observed in less obscured galaxies. This study demonstrates the synergy of JWST and ALMA in unveiling the nature of DSFGs, and highlights the need for a NIRSpec survey of uniformly selected, massive, dust-obscured, galaxies to fully characterise their interstellar medium.",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-02-20",
+      "arxiv_url": "https://arxiv.org/abs/2602.18558",
+      "pdf_url": "https://arxiv.org/pdf/2602.18558"
+    },
+    {
+      "id": "2602.18553",
+      "title": "POSEIDON I: The Dynamical Origins of Transiting Neptunes",
+      "authors": [
+        "Juan I. Espinoza-Retamal",
+        "Joshua N. Winn",
+        "Rafael Brahm",
+        "Cristobal Petrovich",
+        "Gu\u00f0mundur Stef\u00e1nsson",
+        "Hareesh Bhaskar",
+        "Elise Koo",
+        "Andr\u00e9s Jord\u00e1n",
+        "Marcelo Tala Pinto",
+        "Melissa J. Hobson",
+        "Hugo Veldhuis",
+        "Felipe I. Rojas",
+        "Johanna K. Teske",
+        "R. Paul Butler",
+        "Jeffrey D. Crane",
+        "Stephen Shectman",
+        "Shreyas Vissapragada",
+        "Gavin Boyle",
+        "Rodrigo Leiva",
+        "Vincent Suc"
+      ],
+      "abstract": "We present the first results from the POSEIDON survey, aimed at constraining the dynamical origins of transiting Neptunes through stellar obliquity measurements. We report Rossiter-McLaughlin observations of two Neptunes, TOI-181 b and TOI-883 b, obtained with high-resolution spectroscopy from Magellan/PFS and WIYN/NEID. TOI-181 b is on a 4.5-day orbit with a sky-projected spin-orbit misalignment $\u03bb= 32.0_{-6.5}^{+6.3}\\,^{\\circ}$ and a low eccentricity ($e<0.12$ with $2\u03c3$ confidence). TOI-883 b has a longer orbital period of 10 days with $\u03bb= 22_{-14}^{+15}\\,^{\\circ}$ and eccentricity $e = 0.16 \\pm 0.03$. The significant misalignment of TOI-181 b and the significant eccentricity of TOI-883 b are suggestive of high-eccentricity migration for both systems. After adding these and other new measurements to the sample, we analyze the obliquity distribution of the host stars of transiting Neptunes. Earlier studies had suggested that the obliquity distribution is bimodal, with peaks corresponding to aligned orbits and polar orbits; the addition of more measurements has weakened the evidence for bimodality. The current sample appears to be consistent with a population of well-aligned systems and a smaller population with nearly random obliquities. This distribution resembles that observed for more massive planets, suggesting that transiting Jupiters and Neptunes originate from similar dynamical processes.",
+      "primary_category": "astro-ph.EP",
+      "categories": [
+        "astro-ph.EP"
+      ],
+      "submitted": "2026-02-20",
+      "arxiv_url": "https://arxiv.org/abs/2602.18553",
+      "pdf_url": "https://arxiv.org/pdf/2602.18553"
+    }
+  ]
+}
