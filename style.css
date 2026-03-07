@@ -294,6 +294,30 @@ main {
 
 .paper-abstract.open { display: block; }
 
+/* ── 10-day local view ── */
+.btn-local-10 {
+  font-size: 13px;
+  margin-left: 4px;
+}
+
+.btn-local-10.active {
+  background: var(--highlight-strong-bg);
+  border-color: var(--highlight-strong-border);
+  font-weight: 600;
+}
+
+.date-section-header {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 0 4px;
+  margin-top: 16px;
+  margin-bottom: 4px;
+}
+
+.date-section-header:first-child { margin-top: 0; }
+
 /* ── Empty state ── */
 #empty-state {
   text-align: center;
