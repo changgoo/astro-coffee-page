@@ -70,30 +70,33 @@ def get_target_date(date_str=None, _et_now=None):
     return prev_business_day(target).strftime("%Y-%m-%d")
 
 
-ET_CUTOFF_HOUR = 14  # arXiv submission cutoff: 14:00 Eastern (EST, UTC-5)
+# arXiv's 14:00 ET cutoff in UTC (arXiv uses EST = UTC-5 year-round, no DST adjustment)
+CUTOFF_HOUR_UTC = 19  # 14:00 EST + 5 = 19:00 UTC
 
 
 def get_submission_window(listing_date_str):
     """Return (start_dt, end_dt) arXiv submittedDate strings for a listing date.
 
-    arXiv uses Eastern Time (EST, UTC-5) for its 14:00 submission cutoff.
-    The window spans from the previous business day's cutoff to the cutoff
-    day's cutoff (exclusive), i.e.:
-      prev_biz_day(cutoff_day - 1) 14:00 ET  →  cutoff_day 13:59:59 ET
+    The arXiv API's submittedDate field is in UTC. arXiv's submission cutoff
+    is 14:00 EST (UTC-5, no DST) = 19:00 UTC year-round.
+
+    The window spans:
+      prev_biz_day(cutoff_day - 1) 19:00 UTC  →  cutoff_day 18:59:59 UTC
     where cutoff_day = prev_business_day(listing - 1 day).
 
     Strings are formatted as YYYYMMDDHHMMSS for the arXiv API.
 
-    Examples:
-      Friday   (2026-03-06) → cutoff=Thu 03-05; window: Wed 14:00–Thu 13:59:59 ET
-      Monday   (2026-03-09) → cutoff=Fri 03-06; window: Thu 14:00–Fri 13:59:59 ET
-      Tuesday  (2026-03-10) → cutoff=Mon 03-09; window: Fri 14:00–Mon 13:59:59 ET
+    Examples (ET times shown for clarity):
+      Friday   (2026-03-06) → cutoff=Thu 03-05; window: Wed 19:00–Thu 18:59:59 UTC
+                                                        (Wed 14:00–Thu 13:59:59 ET)
+      Monday   (2026-03-09) → cutoff=Fri 03-06; window: Thu 19:00–Fri 18:59:59 UTC
+      Tuesday  (2026-03-10) → cutoff=Mon 03-09; window: Fri 19:00–Mon 18:59:59 UTC
     """
     listing = datetime.strptime(listing_date_str, "%Y-%m-%d").date()
     cutoff_day = prev_business_day(listing - timedelta(days=1))
     window_start_day = prev_business_day(cutoff_day - timedelta(days=1))
-    start = f"{window_start_day.strftime('%Y%m%d')}{ET_CUTOFF_HOUR:02d}0000"
-    end = f"{cutoff_day.strftime('%Y%m%d')}{ET_CUTOFF_HOUR - 1:02d}5959"
+    start = f"{window_start_day.strftime('%Y%m%d')}{CUTOFF_HOUR_UTC:02d}0000"
+    end = f"{cutoff_day.strftime('%Y%m%d')}{CUTOFF_HOUR_UTC - 1:02d}5959"
     return start, end
 
 
@@ -163,8 +166,12 @@ def parse_entry(entry):
 def fetch_all_papers(listing_date_str):
     """Fetch all papers for the given listing date, paginating as needed."""
     start_dt, end_dt = get_submission_window(listing_date_str)
-    print(f"  Submission window: {start_dt[:8]} {start_dt[8:10]}:00 ET → "
-          f"{end_dt[:8]} {end_dt[8:10]}:59 ET")
+    # Convert UTC cutoff hours back to ET for the display (UTC-5)
+    start_et = int(start_dt[8:10]) - 5
+    end_et = int(end_dt[8:10]) - 5
+    print(f"  Submission window: {start_dt[:8]} {start_et:02d}:00 ET → "
+          f"{end_dt[:8]} {end_et:02d}:59 ET  "
+          f"({start_dt[8:10]}:00–{end_dt[8:10]}:59 UTC)")
     papers = []
     start = 0
     total = None

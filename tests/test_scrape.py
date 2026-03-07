@@ -41,27 +41,27 @@ def sample_entry():
 # ── build_query_url ───────────────────────────────────────────────────────────
 
 def test_build_query_url_contains_start_date():
-    url = scrape.build_query_url("20260304140000", "20260305135959")
-    assert "20260304140000" in url
+    url = scrape.build_query_url("20260304190000", "20260305185959")
+    assert "20260304190000" in url
 
 
 def test_build_query_url_contains_end_date():
-    url = scrape.build_query_url("20260304140000", "20260305135959")
-    assert "20260305135959" in url
+    url = scrape.build_query_url("20260304190000", "20260305185959")
+    assert "20260305185959" in url
 
 
 def test_build_query_url_contains_category():
-    url = scrape.build_query_url("20260304140000", "20260305135959")
+    url = scrape.build_query_url("20260304190000", "20260305185959")
     assert "cat:astro-ph.*" in url
 
 
 def test_build_query_url_pagination():
-    url = scrape.build_query_url("20260304140000", "20260305135959", start=500)
+    url = scrape.build_query_url("20260304190000", "20260305185959", start=500)
     assert "start=500" in url
 
 
 def test_build_query_url_max_results():
-    url = scrape.build_query_url("20260304140000", "20260305135959", max_results=100)
+    url = scrape.build_query_url("20260304190000", "20260305185959", max_results=100)
     assert "max_results=100" in url
 
 
@@ -113,38 +113,38 @@ def test_get_target_date_saturday_morning():
 # ── get_submission_window ─────────────────────────────────────────────────────
 
 def test_get_submission_window_friday():
-    """Friday listing → Wed 14:00 ET – Thu 13:59:59 ET."""
+    """Friday listing → Wed 19:00 UTC – Thu 18:59:59 UTC (= Wed 14:00–Thu 13:59:59 ET)."""
     start, end = scrape.get_submission_window("2026-03-06")
-    assert start == "20260304140000"  # Wed Mar 4 14:00 ET
-    assert end   == "20260305135959"  # Thu Mar 5 13:59:59 ET
+    assert start == "20260304190000"  # Wed Mar 4 19:00 UTC = 14:00 ET
+    assert end   == "20260305185959"  # Thu Mar 5 18:59:59 UTC = 13:59:59 ET
 
 
 def test_get_submission_window_monday():
-    """Monday listing → Thu 14:00 ET – Fri 13:59:59 ET."""
+    """Monday listing → Thu 19:00 UTC – Fri 18:59:59 UTC (= Thu 14:00–Fri 13:59:59 ET)."""
     start, end = scrape.get_submission_window("2026-03-09")
-    assert start == "20260305140000"  # Thu Mar 5 14:00 ET
-    assert end   == "20260306135959"  # Fri Mar 6 13:59:59 ET
+    assert start == "20260305190000"  # Thu Mar 5 19:00 UTC = 14:00 ET
+    assert end   == "20260306185959"  # Fri Mar 6 18:59:59 UTC = 13:59:59 ET
 
 
 def test_get_submission_window_tuesday():
-    """Tuesday listing → Fri 14:00 ET – Mon 13:59:59 ET (spans weekend)."""
+    """Tuesday listing → Fri 19:00 UTC – Mon 18:59:59 UTC (spans weekend)."""
     start, end = scrape.get_submission_window("2026-03-10")
-    assert start == "20260306140000"  # Fri Mar 6 14:00 ET
-    assert end   == "20260309135959"  # Mon Mar 9 13:59:59 ET
+    assert start == "20260306190000"  # Fri Mar 6 19:00 UTC = 14:00 ET
+    assert end   == "20260309185959"  # Mon Mar 9 18:59:59 UTC = 13:59:59 ET
 
 
 def test_get_submission_window_wednesday():
-    """Wednesday listing → Mon 14:00 ET – Tue 13:59:59 ET."""
+    """Wednesday listing → Mon 19:00 UTC – Tue 18:59:59 UTC."""
     start, end = scrape.get_submission_window("2026-03-11")
-    assert start == "20260309140000"  # Mon Mar 9 14:00 ET
-    assert end   == "20260310135959"  # Tue Mar 10 13:59:59 ET
+    assert start == "20260309190000"  # Mon Mar 9 19:00 UTC = 14:00 ET
+    assert end   == "20260310185959"  # Tue Mar 10 18:59:59 UTC = 13:59:59 ET
 
 
 def test_get_submission_window_thursday():
-    """Thursday listing → Tue 14:00 ET – Wed 13:59:59 ET."""
+    """Thursday listing → Tue 19:00 UTC – Wed 18:59:59 UTC."""
     start, end = scrape.get_submission_window("2026-03-12")
-    assert start == "20260310140000"  # Tue Mar 10 14:00 ET
-    assert end   == "20260311135959"  # Wed Mar 11 13:59:59 ET
+    assert start == "20260310190000"  # Tue Mar 10 19:00 UTC = 14:00 ET
+    assert end   == "20260311185959"  # Wed Mar 11 18:59:59 UTC = 13:59:59 ET
 
 
 # ── parse_entry ───────────────────────────────────────────────────────────────
