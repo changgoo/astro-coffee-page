@@ -36,7 +36,7 @@ timed around arXiv's ~8 PM ET daily announcement:
 | Runs | ET time | Days |
 |------|---------|------|
 | Hourly ×4 | 9 PM, 10 PM, 11 PM, midnight | Sun–Thu nights |
-| Once | 6 AM | Friday morning |
+| Once | 6 AM | Mon–Fri mornings |
 
 > **Note:** Times above assume EST (UTC−5). During EDT (UTC−4, mid-March to early
 > November) all night runs fire 1 hour earlier ET (8 PM–11 PM).

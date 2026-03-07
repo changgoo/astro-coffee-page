@@ -11,8 +11,8 @@ on:
     #   11 PM ET = 04:00 UTC next day
     #   midnight = 05:00 UTC next day
     - cron: "0 2,3,4,5 * * 1-5"
-    # 6 AM ET Friday = 11:00 UTC Friday
-    - cron: "0 11 * * 5"
+    # 6 AM ET Mon–Fri = 11:00 UTC Mon–Fri
+    - cron: "0 11 * * 1-5"
   workflow_dispatch:
     inputs:
       date:
