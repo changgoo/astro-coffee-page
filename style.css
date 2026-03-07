@@ -114,6 +114,69 @@ button:hover { background: var(--bg); }
   font-size: 13px;
 }
 
+/* ── Announcement card ── */
+#announcement {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: 6px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+#announcement-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 14px;
+  background: none;
+  border: none;
+  border-radius: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  cursor: pointer;
+  text-align: left;
+}
+
+#announcement-toggle:hover { background: var(--bg); }
+
+.announcement-chevron {
+  transition: transform 0.2s;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+#announcement-toggle[aria-expanded="true"] .announcement-chevron {
+  transform: rotate(90deg);
+}
+
+#announcement-body {
+  padding: 0 14px 14px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+  border-top: 1px solid var(--border);
+}
+
+#announcement-body p { margin: 10px 0 0; }
+#announcement-body ul { margin: 10px 0 0 18px; }
+#announcement-body li { margin-bottom: 3px; }
+#announcement-body a { color: var(--primary); }
+
+.announcement-footer {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
 /* ── Main layout ── */
 main {
   max-width: 900px;

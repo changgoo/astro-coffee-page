@@ -45,6 +45,47 @@
 </header>
 
 <main>
+  <div id="announcement">
+    <button id="announcement-toggle" aria-expanded="false" aria-controls="announcement-body">
+      <svg class="announcement-chevron" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
+        <path d="M1.5 5.5l6 6 6-6"/>
+      </svg>
+      <span>Welcome to Astro-Coffee@Princeton!</span>
+    </button>
+    <div id="announcement-body" hidden>
+      <p>Every weekday, the Department of Astrophysical Sciences at Princeton University
+        gathers in <strong>Peyton Hall's Grand Central</strong> to discuss the latest
+        <a href="https://arxiv.org/list/astro-ph/new" target="_blank" rel="noopener">arXiv astro-ph</a>
+        posting at <strong>10:30 AM</strong> over coffee. Visitors to the department are always
+        welcome to join these discussions.</p>
+
+      <ul>
+        <li>We gather every day at 10:30 AM for 30 minutes in Grand Central and on Zoom.</li>
+        <li>It is an opportunity to share news, introduce new members/visitors, and discuss new papers on arXiv over coffee/tea.</li>
+        <li>We expect the coffee interaction to be informal and friendly.</li>
+        <li>We generally expect to discuss ~3 papers, but there is no hard limit and the volunteer host has the privilege to arrange the schedule.</li>
+        <li>All department members, from undergraduates to faculty, should feel free to join with diverse backgrounds and expertise. Especially during the summer, the coffee presentations should aim to be more pedagogical.</li>
+        <li>We prioritize papers with local authors, especially students and postdocs.</li>
+        <li>Visitors with a recent paper can also present at coffee — the host should inform them this is not a mini-talk and to keep their words to ~10 minutes.</li>
+      </ul>
+
+      <p><strong>The coffee interactions should be respectful and professional, conforming to the
+        <a href="https://web.astro.princeton.edu/astrophysical-sciences-community-expectations-respectful-and-professional-conduct"
+           target="_blank" rel="noopener">department community expectations</a>.</strong></p>
+
+      <p>We hope coffee time is enjoyable and a good start to the day for everyone!</p>
+
+      <div class="announcement-footer">
+        <span>Questions or feedback?
+          <a href="mailto:changgoo@princeton.edu">changgoo@princeton.edu</a>
+          &nbsp;&middot;&nbsp;
+          <a href="https://github.com/changgoo/astro-coffee-page/issues/new"
+             target="_blank" rel="noopener">Open a GitHub issue</a>
+        </span>
+      </div>
+    </div>
+  </div>
+
   <div id="toolbar">
     <label for="sort-select">Sort:</label>
     <select id="sort-select">
