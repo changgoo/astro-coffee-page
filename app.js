@@ -479,6 +479,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("btn-prev"),
       document.getElementById("date-select"),
       document.getElementById("btn-next"),
+      document.getElementById("btn-today"),
     ];
     if (localTenDayMode) {
       btn.classList.add("active");
@@ -491,6 +492,15 @@ document.addEventListener("DOMContentLoaded", () => {
       updateNavButtons();
       await loadDay(currentDate);
     }
+  });
+
+  document.getElementById("btn-today").addEventListener("click", async () => {
+    if (availableDates.length === 0) return;
+    currentDate = availableDates[0];
+    document.getElementById("date-select").value = currentDate;
+    updateNavButtons();
+    history.pushState({}, "", `?date=${currentDate}`);
+    await loadDay(currentDate);
   });
 
   document.getElementById("btn-prev").addEventListener("click", async () => {
