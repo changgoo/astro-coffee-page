@@ -169,6 +169,14 @@ button:hover { background: var(--bg); }
 #announcement-body li { margin-bottom: 3px; }
 #announcement-body a { color: var(--primary); }
 
+.announcement-footer {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
 /* ── Main layout ── */
 main {
   max-width: 900px;
