@@ -37,26 +37,39 @@ To run it manually: **Actions → Daily arXiv scrape → Run workflow**.
 The Action needs write permission to commit data files. Go to:
 **Settings → Actions → General → Workflow permissions** → select **Read and write permissions**.
 
-### 4. Add favorite authors
+### 4. Populate the author list
 
-Edit `config/authors.json`:
+Run the Princeton Astronomy people scraper to populate `config/authors.json` automatically:
 
-```json
-{
-  "authors": [
-    "Chang-Goo Kim",
-    "Eve Ostriker"
-  ]
-}
+```bash
+pip install -r requirements.txt
+python scripts/scrape_authors.py
 ```
 
-Names are matched case-insensitively as substrings of the full author name.
+This scrapes Faculty & Research Scholars, Postdoctoral Researchers, and Graduate Students
+from `web.astro.princeton.edu/people`. To preview without writing, use `--dry-run`:
+
+```bash
+python scripts/scrape_authors.py --dry-run
+```
+
+To adapt for a different institution, edit the `PAGES` list and CSS selectors in
+`scripts/scrape_authors.py`.
+
+You can also edit `config/authors.json` directly. Names are matched case-insensitively
+as substrings of the full author name as it appears on arXiv.
 
 ## Local development
 
 ```bash
-# Scrape a specific date
+# Install dependencies for the author scraper
+pip install -r requirements.txt
+
+# Scrape a specific date (scrape.py has no pip dependencies)
 python scripts/scrape.py 2025-03-05
+
+# Update the author list from the Princeton Astro people page
+python scripts/scrape_authors.py
 
 # Serve locally
 python -m http.server 8000
