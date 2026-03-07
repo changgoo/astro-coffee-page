@@ -115,11 +115,38 @@ The frontend's local author view loads from both `data/index.json` and `data/loc
 
 ---
 
+## 12. Correct arXiv listing date and submission window (PR #9)
+
+Three interrelated fixes to `scripts/scrape.py`:
+
+**Correct listing date** — `get_target_date()` now returns the arXiv announcement date (e.g. Friday for papers announced Thursday night). Rule: `prev_business_day(today ET)` after 14:00 ET, else `prev_business_day(yesterday ET)`.
+
+**Separate listing date from query date** — the filename/index use the listing date (what users see on arXiv), while the API query uses the submission window.
+
+**Exact UTC submission window** — replaces the single-day date query with `get_submission_window()`, which returns the precise window in UTC:
+
+| Listing date | Submission window (ET) | Submission window (UTC) |
+|---|---|---|
+| Tuesday | Fri 14:00 – Mon 14:00 | Fri 19:00 – Mon 18:59:59 |
+| Wednesday | Mon 14:00 – Tue 14:00 | Mon 19:00 – Tue 18:59:59 |
+| Thursday | Tue 14:00 – Wed 14:00 | Tue 19:00 – Wed 18:59:59 |
+| Friday | Wed 14:00 – Thu 14:00 | Wed 19:00 – Thu 18:59:59 |
+| Monday | Thu 14:00 – Fri 14:00 | Thu 19:00 – Fri 18:59:59 |
+
+The arXiv API's `submittedDate` field is in UTC; arXiv uses EST (UTC−5) year-round with no DST adjustment for its 14:00 ET cutoff.
+
+Two new sort options replace the old ambiguous "Default (arXiv order)":
+- **arXiv order (earliest first)** — earliest submissions at top
+- **Reverse arXiv order (latest first)** — newest submissions at top
+
+---
+
 ## Planned / open issues
 
 | # | Title |
 |---|-------|
 | [#7](https://github.com/changgoo/astro-coffee-page/issues/7) | Globally persistent discussed papers list |
+| [#10](https://github.com/changgoo/astro-coffee-page/issues/10) | Listing order doesn't match arXiv: new submissions vs cross-listings |
 
 Ideas under consideration:
 - **Search bar** — real-time filter across title, authors, and abstract
