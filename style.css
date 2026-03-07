@@ -6,8 +6,10 @@
   --text-muted: #6c757d;
   --primary: #0066cc;
   --primary-hover: #004fa3;
-  --highlight-bg: #fff3cd;
-  --highlight-border: #ffc107;
+  --highlight-strong-bg: #fff3cd;
+  --highlight-strong-border: #ffc107;
+  --highlight-weak-bg: #f8f9fa;
+  --highlight-weak-border: #ced4da;
   --cat-ga: #6610f2;
   --cat-co: #0dcaf0;
   --cat-ep: #198754;
@@ -148,9 +150,14 @@ main {
   padding: 14px 16px;
 }
 
-.paper-card.highlighted {
-  border-left: 3px solid var(--highlight-border);
-  background: var(--highlight-bg);
+.paper-card.highlighted-strong {
+  border-left: 3px solid var(--highlight-strong-border);
+  background: var(--highlight-strong-bg);
+}
+
+.paper-card.highlighted-weak {
+  border-left: 3px solid var(--highlight-weak-border);
+  background: var(--highlight-weak-bg);
 }
 
 .paper-meta {
@@ -214,13 +221,22 @@ main {
   line-height: 1.4;
 }
 
-.author-highlight {
+.author-highlight-strong {
   color: #7b2d00;
   font-weight: 700;
   background: #ffe066;
   border-radius: 3px;
   padding: 0 4px;
   border: 1px solid #f0a500;
+}
+
+.author-highlight-weak {
+  color: #495057;
+  font-style: italic;
+  background: #e9ecef;
+  border-radius: 3px;
+  padding: 0 4px;
+  border: 1px solid #ced4da;
 }
 
 /* ── Abstract toggle ── */

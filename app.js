@@ -13,7 +13,7 @@ const CAT_LABELS = {
 let allPapers = [];
 let favoriteAuthors = [];
 let activeCats = new Set(ASTRO_CATS);
-let currentSort = "default";
+let currentSort = "local";
 let availableDates = [];
 let currentDate = null;
 
@@ -49,7 +49,7 @@ async function loadAuthors() {
   try {
     const res = await fetch("config/authors.json");
     const data = await res.json();
-    favoriteAuthors = (data.authors || []).map((a) => a.toLowerCase());
+    favoriteAuthors = data.authors || [];
   } catch {
     favoriteAuthors = [];
   }
@@ -179,9 +179,67 @@ function render() {
   });
 }
 
+// ── Name matching ─────────────────────────────────────────────────────────────
+
+const NAME_SUFFIXES = new Set(["iii", "ii", "iv", "jr.", "jr", "sr.", "sr"]);
+const NAME_TITLES   = new Set(["sir", "dr.", "dr", "prof.", "prof"]);
+
+/**
+ * Parse a name into {first, last} components, handling two formats:
+ *   "Last, First [Middle]"  (arXiv)
+ *   "[Title] First [Middle] Last [Suffix]"  (Princeton people page)
+ * Returns lowercase, dot-stripped first name and lowercase last name.
+ */
+function parseNameParts(name) {
+  if (name.includes(",")) {
+    // arXiv format: "Last, First [Middle...]"
+    const comma = name.indexOf(",");
+    const last  = name.slice(0, comma).trim().toLowerCase();
+    const first = name.slice(comma + 1).trim().split(/\s+/)[0]
+                      .replace(/\./g, "").toLowerCase();
+    return { first, last };
+  }
+  // Princeton format: strip leading titles and trailing suffixes, then
+  // first token = first name, last token = last name.
+  let tokens = name.trim().split(/\s+/);
+  while (tokens.length > 1 && NAME_TITLES.has(tokens[0].toLowerCase()))
+    tokens = tokens.slice(1);
+  while (tokens.length > 1 && NAME_SUFFIXES.has(tokens[tokens.length - 1].toLowerCase()))
+    tokens = tokens.slice(0, -1);
+  const last  = tokens[tokens.length - 1].toLowerCase();
+  const first = tokens[0].replace(/\./g, "").toLowerCase();
+  return { first, last };
+}
+
+/**
+ * Compare a favorite name (Princeton format) against an arXiv author name.
+ * Returns "strong" (last + first match), "weak" (last + first initial match),
+ * or null (last name mismatch).
+ */
+function matchAuthor(favName, arxivName) {
+  const fav = parseNameParts(favName);
+  const arx = parseNameParts(arxivName);
+  if (fav.last !== arx.last) return null;
+  if (fav.first === arx.first) return "strong";
+  if (fav.first[0] === arx.first[0]) return "weak";
+  return null;
+}
+
+/** Return the best match strength ("strong" | "weak" | null) across all authors. */
+function bestMatchStrength(paper) {
+  let best = null;
+  for (const author of paper.authors) {
+    for (const fav of favoriteAuthors) {
+      const s = matchAuthor(fav, author);
+      if (s === "strong") return "strong";
+      if (s === "weak") best = "weak";
+    }
+  }
+  return best;
+}
+
 function hasLocalAuthor(paper) {
-  return favoriteAuthors.length > 0 &&
-    paper.authors.some((a) => favoriteAuthors.some((fav) => a.toLowerCase().includes(fav)));
+  return bestMatchStrength(paper) !== null;
 }
 
 function sortPapers(papers, mode) {
@@ -212,7 +270,9 @@ function buildCard(paper, idx) {
   const card = document.createElement("div");
   card.className = "paper-card";
 
-  if (hasLocalAuthor(paper)) card.classList.add("highlighted");
+  const strength = bestMatchStrength(paper);
+  if (strength === "strong") card.classList.add("highlighted-strong");
+  else if (strength === "weak") card.classList.add("highlighted-weak");
 
   // Meta row: ID, PDF link, categories
   const meta = document.createElement("div");
@@ -289,10 +349,14 @@ function buildCatBadge(cat) {
 }
 
 function highlightAuthor(name) {
-  const lower = name.toLowerCase();
-  if (favoriteAuthors.some((fav) => lower.includes(fav))) {
-    return `<span class="author-highlight">${escHtml(name)}</span>`;
+  let best = null;
+  for (const fav of favoriteAuthors) {
+    const s = matchAuthor(fav, name);
+    if (s === "strong") { best = "strong"; break; }
+    if (s === "weak") best = "weak";
   }
+  if (best === "strong") return `<span class="author-highlight-strong">${escHtml(name)}</span>`;
+  if (best === "weak")   return `<span class="author-highlight-weak">${escHtml(name)}</span>`;
   return escHtml(name);
 }
 
