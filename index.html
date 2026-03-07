@@ -44,15 +44,15 @@
   </nav>
 </header>
 
-<div id="announcement">
-  <button id="announcement-toggle" aria-expanded="false" aria-controls="announcement-body">
-    <span>About astro coffee</span>
-    <svg class="announcement-chevron" viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true">
-      <path d="M1.5 5.5l6 6 6-6"/>
-    </svg>
-  </button>
-  <div id="announcement-body" hidden>
-    <div class="announcement-content">
+<main>
+  <div id="announcement">
+    <button id="announcement-toggle" aria-expanded="false" aria-controls="announcement-body">
+      <svg class="announcement-chevron" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
+        <path d="M1.5 5.5l6 6 6-6"/>
+      </svg>
+      <span>About astro coffee</span>
+    </button>
+    <div id="announcement-body" hidden>
       <p>Every weekday, the Department of Astrophysical Sciences at Princeton University
         gathers in <strong>Peyton Hall's Grand Central</strong> to discuss the latest
         <a href="https://arxiv.org/list/astro-ph/new" target="_blank" rel="noopener">arXiv astro-ph</a>
@@ -76,9 +76,7 @@
       <p>We hope coffee time is enjoyable and a good start to the day for everyone!</p>
     </div>
   </div>
-</div>
 
-<main>
   <div id="toolbar">
     <label for="sort-select">Sort:</label>
     <select id="sort-select">
