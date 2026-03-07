@@ -51,6 +51,7 @@ def get_target_date(date_str=None):
 
 
 def build_query_url(date_str, start=0, max_results=MAX_PER_REQUEST):
+    """Build the arXiv API query URL for a given date and pagination offset."""
     date_compact = date_str.replace("-", "")
     search_query = f"cat:astro-ph.*+AND+submittedDate:[{date_compact}0000+TO+{date_compact}2359]"
     params = (
@@ -62,12 +63,14 @@ def build_query_url(date_str, start=0, max_results=MAX_PER_REQUEST):
 
 
 def fetch_xml(url):
+    """Fetch a URL and return raw bytes, sending a descriptive User-Agent."""
     req = urllib.request.Request(url, headers={"User-Agent": "coffee-page/1.0 (arxiv paper browser)"})
     with urllib.request.urlopen(req, timeout=30) as resp:
         return resp.read()
 
 
 def parse_entry(entry):
+    """Parse a single Atom <entry> element into a paper dict."""
     def find_text(tag, ns_key="atom"):
         el = entry.find(f"{ns_key}:{tag}", NS)
         return el.text.strip() if el is not None and el.text else ""
@@ -112,6 +115,7 @@ def parse_entry(entry):
 
 
 def fetch_all_papers(date_str):
+    """Fetch all papers for the given date, paginating as needed."""
     papers = []
     start = 0
     total = None
@@ -144,6 +148,7 @@ def fetch_all_papers(date_str):
 
 
 def update_index(data_dir, date_str, max_days=10):
+    """Add date_str to data/index.json and prune entries beyond max_days."""
     index_path = data_dir / "index.json"
     if index_path.exists():
         with open(index_path) as f:
@@ -171,6 +176,7 @@ def update_index(data_dir, date_str, max_days=10):
 
 
 def main():
+    """Entry point: scrape papers for the target date and save to data/."""
     date_str = sys.argv[1] if len(sys.argv) > 1 else get_target_date()
     print(f"Fetching arXiv astro-ph papers for {date_str}")
 
