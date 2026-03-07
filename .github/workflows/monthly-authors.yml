@@ -1,0 +1,40 @@
+name: Monthly author list update
+
+on:
+  schedule:
+    # 1st of every month at 12:00 UTC
+    - cron: "0 12 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-authors:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Scrape author list
+        run: python scripts/scrape_authors.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add config/authors.json
+          if git diff --cached --quiet; then
+            echo "No changes to author list."
+          else
+            git commit -m "chore: update local author list $(date -u +%Y-%m-%d)"
+            git push
+          fi
