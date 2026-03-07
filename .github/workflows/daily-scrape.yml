@@ -2,9 +2,17 @@ name: Daily arXiv scrape
 
 on:
   schedule:
-    # 15:30 UTC = ~10:30 AM ET, well after arXiv's 14:00 ET submission cutoff
-    # Runs Mon–Fri only (arXiv doesn't post on weekends)
-    - cron: "30 15 * * 1-5"
+    # arXiv announces new papers at ~8 PM ET on weekdays.
+    # All times below are UTC; ET = UTC-5 (EST) / UTC-4 (EDT).
+    #
+    # Hourly 9 PM–midnight ET, Sun–Thu nights:
+    #   9 PM ET  = 02:00 UTC next day  (Sun night → Mon UTC, …, Thu night → Fri UTC)
+    #   10 PM ET = 03:00 UTC next day
+    #   11 PM ET = 04:00 UTC next day
+    #   midnight = 05:00 UTC next day
+    - cron: "0 2,3,4,5 * * 1-5"
+    # 6 AM ET Friday = 11:00 UTC Friday
+    - cron: "0 11 * * 5"
   workflow_dispatch:
     inputs:
       date:
