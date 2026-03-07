@@ -215,11 +215,12 @@ main {
 }
 
 .author-highlight {
-  color: var(--text);
-  font-weight: 600;
-  background: rgba(255, 193, 7, 0.3);
+  color: #7b2d00;
+  font-weight: 700;
+  background: #ffe066;
   border-radius: 3px;
-  padding: 0 2px;
+  padding: 0 4px;
+  border: 1px solid #f0a500;
 }
 
 /* ── Abstract toggle ── */

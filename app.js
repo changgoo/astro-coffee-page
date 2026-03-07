@@ -179,6 +179,11 @@ function render() {
   });
 }
 
+function hasLocalAuthor(paper) {
+  return favoriteAuthors.length > 0 &&
+    paper.authors.some((a) => favoriteAuthors.some((fav) => a.toLowerCase().includes(fav)));
+}
+
 function sortPapers(papers, mode) {
   const copy = [...papers];
   if (mode === "title") {
@@ -191,6 +196,13 @@ function sortPapers(papers, mode) {
     });
   } else if (mode === "category") {
     copy.sort((a, b) => (a.primary_category || "").localeCompare(b.primary_category || ""));
+  } else if (mode === "local") {
+    // Stable: papers with a local author first (preserving arXiv order within each group)
+    copy.sort((a, b) => {
+      const aLocal = hasLocalAuthor(a) ? 0 : 1;
+      const bLocal = hasLocalAuthor(b) ? 0 : 1;
+      return aLocal - bLocal;
+    });
   }
   // "default" keeps arXiv order
   return copy;
@@ -200,10 +212,7 @@ function buildCard(paper, idx) {
   const card = document.createElement("div");
   card.className = "paper-card";
 
-  // Check if any favorite author matches
-  const hasHighlight = favoriteAuthors.length > 0 &&
-    paper.authors.some((a) => favoriteAuthors.some((fav) => a.toLowerCase().includes(fav)));
-  if (hasHighlight) card.classList.add("highlighted");
+  if (hasLocalAuthor(paper)) card.classList.add("highlighted");
 
   // Meta row: ID, PDF link, categories
   const meta = document.createElement("div");
