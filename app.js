@@ -46,13 +46,26 @@ async function loadIndex() {
 }
 
 async function loadAuthors() {
-  try {
-    const res = await fetch("config/authors.json");
-    const data = await res.json();
-    favoriteAuthors = data.authors || [];
-  } catch {
-    favoriteAuthors = [];
-  }
+  const load = async (path) => {
+    try {
+      const res = await fetch(path);
+      const data = await res.json();
+      return data.authors || [];
+    } catch {
+      return [];
+    }
+  };
+  const [auto, manual] = await Promise.all([
+    load("config/authors.json"),
+    load("config/authors_manual.json"),
+  ]);
+  // Merge, deduplicating by name (manual entries take precedence / come first)
+  const seen = new Set();
+  favoriteAuthors = [...manual, ...auto].filter((name) => {
+    if (seen.has(name)) return false;
+    seen.add(name);
+    return true;
+  });
 }
 
 async function loadDay(dateStr) {
