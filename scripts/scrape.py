@@ -25,29 +25,49 @@ MAX_PER_REQUEST = 500
 RATE_LIMIT_SECONDS = 3
 
 
-def get_target_date(date_str=None):
-    """Return the target submission date as YYYY-MM-DD string.
+def prev_business_day(d):
+    """Return the most recent weekday on or before date d."""
+    while d.weekday() >= 5:  # 5=Saturday, 6=Sunday
+        d -= timedelta(days=1)
+    return d
 
-    arXiv cutoff is 14:00 US Eastern Time. Papers submitted before that
-    appear in the *next* day's mailing. We query for papers submitted on
-    the calendar date that would have appeared in today's new listing.
 
-    If a date string is provided, use that directly.
+def get_target_date(date_str=None, _et_now=None):
+    """Return the arXiv listing date to scrape as YYYY-MM-DD.
+
+    arXiv's submission windows and announcement schedule:
+      Mon 14:00 – Tue 14:00  →  announced Tue 20:00  →  listing date: Tuesday
+      Tue 14:00 – Wed 14:00  →  announced Wed 20:00  →  listing date: Wednesday
+      Wed 14:00 – Thu 14:00  →  announced Thu 20:00  →  listing date: Thursday
+      Thu 14:00 – Fri 14:00  →  announced Sun 20:00  →  listing date: Friday
+      Fri 14:00 – Mon 14:00  →  announced Mon 20:00  →  listing date: Monday
+
+    The listing date is the last business day of the submission window.
+    This equals prev_business_day(today ET) after 14:00, or
+    prev_business_day(yesterday ET) before 14:00.
+
+    Examples:
+      Tue 21:00 ET  →  Tuesday   (Tue nightly run, catches Tue announcement)
+      Sun 21:00 ET  →  Friday    (Sun nightly run, catches Thu–Fri batch)
+      Mon 21:00 ET  →  Monday    (Mon nightly run, catches Fri–Mon batch)
+      Mon 06:00 ET  →  Friday    (Mon morning catch-up for Fri–Mon batch)
+      Sat 10:00 ET  →  Friday    (matches arXiv showing Fri papers on Saturday)
+
+    If date_str is provided, use that directly.
+    _et_now may be injected for testing.
     """
     if date_str:
         return date_str
 
-    # Current time in US Eastern (UTC-5 standard / UTC-4 daylight)
-    # Use a fixed offset of UTC-5 (EST) as a conservative estimate.
-    et_now = datetime.now(timezone(timedelta(hours=-5)))
-    # arXiv announces papers submitted the *previous* business day
-    # For simplicity: use yesterday's date when it's before 15:00 ET,
-    # otherwise use today's date (the current day's submissions won't be
-    # announced until tomorrow, but we fetch what's available).
-    # The GitHub Action runs after 15:30 UTC (10:30 ET) which is well before
-    # the 14:00 ET cutoff — so we query the previous calendar day.
-    target = et_now - timedelta(days=1)
-    return target.strftime("%Y-%m-%d")
+    if _et_now is None:
+        _et_now = datetime.now(timezone(timedelta(hours=-5)))
+
+    if _et_now.hour >= 14:
+        target = _et_now.date()
+    else:
+        target = _et_now.date() - timedelta(days=1)
+
+    return prev_business_day(target).strftime("%Y-%m-%d")
 
 
 def build_query_url(date_str, start=0, max_results=MAX_PER_REQUEST):

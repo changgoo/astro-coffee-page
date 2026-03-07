@@ -68,15 +68,41 @@ def test_get_target_date_passthrough():
 
 def test_get_target_date_format():
     date = scrape.get_target_date()
-    # Should be YYYY-MM-DD
     datetime.strptime(date, "%Y-%m-%d")
 
 
-def test_get_target_date_is_yesterday():
-    """Default date should be yesterday relative to ET."""
-    et_now = datetime.now(timezone(timedelta(hours=-5)))
-    yesterday = (et_now - timedelta(days=1)).strftime("%Y-%m-%d")
-    assert scrape.get_target_date() == yesterday
+def et(y, m, d, hour):
+    return datetime(y, m, d, hour, 0, tzinfo=timezone(timedelta(hours=-5)))
+
+
+def test_get_target_date_weekday_evening():
+    """Tue 21:00 ET → Tuesday (Tue announcement batch)."""
+    assert scrape.get_target_date(_et_now=et(2026, 3, 3, 21)) == "2026-03-03"
+
+
+def test_get_target_date_sunday_evening():
+    """Sun 21:00 ET → Friday (Thu–Fri batch announced Sunday)."""
+    assert scrape.get_target_date(_et_now=et(2026, 3, 8, 21)) == "2026-03-06"
+
+
+def test_get_target_date_monday_evening():
+    """Mon 21:00 ET → Monday (Fri–Mon batch announced Monday)."""
+    assert scrape.get_target_date(_et_now=et(2026, 3, 9, 21)) == "2026-03-09"
+
+
+def test_get_target_date_monday_morning():
+    """Mon 06:00 ET → Friday (catch-up for Fri–Mon batch)."""
+    assert scrape.get_target_date(_et_now=et(2026, 3, 9, 6)) == "2026-03-06"
+
+
+def test_get_target_date_tuesday_morning():
+    """Tue 06:00 ET → Monday (catch-up for Tue announcement)."""
+    assert scrape.get_target_date(_et_now=et(2026, 3, 10, 6)) == "2026-03-09"
+
+
+def test_get_target_date_saturday_morning():
+    """Sat 10:00 ET → Friday (matches arXiv showing Fri papers on Saturday)."""
+    assert scrape.get_target_date(_et_now=et(2026, 3, 7, 10)) == "2026-03-06"
 
 
 # ── parse_entry ───────────────────────────────────────────────────────────────
