@@ -484,6 +484,24 @@ function showEmptyState(msg) {
 // ── Event listeners ───────────────────────────────────────────────────────────
 
 document.addEventListener("DOMContentLoaded", () => {
+  // ── Announcement banner ──
+  const annToggle = document.getElementById("announcement-toggle");
+  const annBody   = document.getElementById("announcement-body");
+  const ANN_KEY   = "announcement-open";
+
+  function setAnnouncement(open) {
+    annBody.hidden = !open;
+    annToggle.setAttribute("aria-expanded", String(open));
+    localStorage.setItem(ANN_KEY, open ? "1" : "0");
+  }
+
+  // Restore saved state (default: collapsed)
+  setAnnouncement(localStorage.getItem(ANN_KEY) === "1");
+
+  annToggle.addEventListener("click", () => {
+    setAnnouncement(annBody.hidden);
+  });
+
   document.getElementById("sort-select").addEventListener("change", (e) => {
     currentSort = e.target.value;
     render();

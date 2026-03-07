@@ -114,6 +114,61 @@ button:hover { background: var(--bg); }
   font-size: 13px;
 }
 
+/* ── Announcement banner ── */
+#announcement {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+#announcement-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  background: none;
+  border: none;
+  border-radius: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+  text-align: left;
+}
+
+#announcement-toggle:hover {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.announcement-chevron {
+  margin-left: auto;
+  transition: transform 0.2s;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+#announcement-toggle[aria-expanded="true"] .announcement-chevron {
+  transform: rotate(180deg);
+}
+
+.announcement-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 12px 20px 16px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.announcement-content p { margin-bottom: 10px; }
+.announcement-content p:last-child { margin-bottom: 0; }
+.announcement-content ul { margin: 0 0 10px 20px; }
+.announcement-content li { margin-bottom: 4px; }
+.announcement-content a { color: var(--primary); }
+
 /* ── Main layout ── */
 main {
   max-width: 900px;
