@@ -82,7 +82,8 @@ async function loadAllDays() {
         const res = await fetch(`data/${d}.json`);
         if (!res.ok) return { date: d, papers: [] };
         const data = await res.json();
-        return { date: d, papers: data.papers || [] };
+        const raw = data.papers || [];
+        return { date: d, papers: raw.map((p, i) => ({ ...p, _arxivIndex: raw.length - i })) };
       })
     );
     const livePapers = liveResults.flatMap(({ date, papers }) =>
@@ -99,9 +100,9 @@ async function loadAllDays() {
         const archData = await archRes.json();
         // archData is { "YYYY-MM-DD": [...papers], ... }
         for (const [date, papers] of Object.entries(archData)) {
-          for (const p of papers) {
-            archivedPapers.push({ ...p, _date: date });
-          }
+          papers.forEach((p, i) => {
+            archivedPapers.push({ ...p, _date: date, _arxivIndex: papers.length - i });
+          });
         }
       }
     } catch { /* archive not yet created — ignore */ }
@@ -163,7 +164,9 @@ async function loadDay(dateStr) {
     const res = await fetch(`data/${dateStr}.json`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    allPapers = data.papers || [];
+    // Papers are stored newest-first; arXiv listing number 1 = earliest submission.
+    const raw = data.papers || [];
+    allPapers = raw.map((p, i) => ({ ...p, _arxivIndex: raw.length - i }));
     document.getElementById("fetched-at").textContent =
       data.fetched_at ? `fetched ${data.fetched_at.slice(0, 16).replace("T", " ")} UTC` : "";
   } catch (e) {
@@ -351,7 +354,11 @@ function hasLocalAuthor(paper) {
 
 function sortPapers(papers, mode) {
   const copy = [...papers];
-  if (mode === "title") {
+  if (mode === "arxiv") {
+    copy.sort((a, b) => (a._arxivIndex || 0) - (b._arxivIndex || 0));
+  } else if (mode === "arxiv-rev") {
+    copy.sort((a, b) => (b._arxivIndex || 0) - (a._arxivIndex || 0));
+  } else if (mode === "title") {
     copy.sort((a, b) => a.title.localeCompare(b.title));
   } else if (mode === "author") {
     copy.sort((a, b) => {
@@ -362,11 +369,13 @@ function sortPapers(papers, mode) {
   } else if (mode === "category") {
     copy.sort((a, b) => (a.primary_category || "").localeCompare(b.primary_category || ""));
   } else if (mode === "local") {
-    // strong matches first, then weak, then the rest (arXiv order preserved within each group)
+    // strong matches first, then weak, then the rest; arXiv order as tiebreaker
     const rank = { "strong": 0, "weak": 1, null: 2 };
-    copy.sort((a, b) => rank[bestMatchStrength(a)] - rank[bestMatchStrength(b)]);
+    copy.sort((a, b) =>
+      rank[bestMatchStrength(a)] - rank[bestMatchStrength(b)] ||
+      (a._arxivIndex || 0) - (b._arxivIndex || 0)
+    );
   }
-  // "default" keeps arXiv order
   return copy;
 }
 
@@ -381,6 +390,10 @@ function buildCard(paper, idx) {
   // Meta row: ID, PDF link, categories
   const meta = document.createElement("div");
   meta.className = "paper-meta";
+
+  const numSpan = document.createElement("span");
+  numSpan.className = "paper-num";
+  numSpan.textContent = `#${paper._arxivIndex}`;
 
   const idSpan = document.createElement("span");
   idSpan.className = "paper-id";
@@ -402,7 +415,7 @@ function buildCard(paper, idx) {
   secSpan.className = "secondary-cats";
   if (secondaryCats.length) secSpan.textContent = "+ " + secondaryCats.join(", ");
 
-  meta.append(idSpan, pdfLink, primaryBadge, secSpan);
+  meta.append(numSpan, idSpan, pdfLink, primaryBadge, secSpan);
 
   // Title
   const titleDiv = document.createElement("div");

@@ -265,6 +265,13 @@ main {
   margin-bottom: 6px;
 }
 
+.paper-num {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: monospace;
+  min-width: 3ch;
+}
+
 .paper-id {
   font-size: 12px;
   color: var(--text-muted);
