@@ -198,22 +198,24 @@ const NAME_SUFFIXES = new Set(["iii", "ii", "iv", "jr.", "jr", "sr.", "sr"]);
 const NAME_TITLES   = new Set(["sir", "dr.", "dr", "prof.", "prof"]);
 
 /**
- * Parse a name into {first, last} components, handling two formats:
+ * Parse a name into {first, last, middleInitial} components, handling two formats:
  *   "Last, First [Middle]"  (arXiv)
  *   "[Title] First [Middle] Last [Suffix]"  (Princeton people page)
- * Returns lowercase, dot-stripped first name and lowercase last name.
+ * Returns lowercase, dot-stripped first name, lowercase last name, and the
+ * first character of the middle token (or null if absent).
  */
 function parseNameParts(name) {
   if (name.includes(",")) {
     // arXiv format: "Last, First [Middle...]"
     const comma = name.indexOf(",");
-    const last  = name.slice(0, comma).trim().toLowerCase();
-    const first = name.slice(comma + 1).trim().split(/\s+/)[0]
-                      .replace(/\./g, "").toLowerCase();
-    return { first, last };
+    const last   = name.slice(0, comma).trim().toLowerCase();
+    const rest   = name.slice(comma + 1).trim().split(/\s+/);
+    const first  = rest[0].replace(/\./g, "").toLowerCase();
+    const middleInitial = rest.length > 1 ? rest[1].replace(/\./g, "").toLowerCase()[0] : null;
+    return { first, last, middleInitial };
   }
   // Princeton format: strip leading titles and trailing suffixes, then
-  // first token = first name, last token = last name.
+  // first token = first name, middle token (if any) = middle, last token = last name.
   let tokens = name.trim().split(/\s+/);
   while (tokens.length > 1 && NAME_TITLES.has(tokens[0].toLowerCase()))
     tokens = tokens.slice(1);
@@ -221,20 +223,26 @@ function parseNameParts(name) {
     tokens = tokens.slice(0, -1);
   const last  = tokens[tokens.length - 1].toLowerCase();
   const first = tokens[0].replace(/\./g, "").toLowerCase();
-  return { first, last };
+  const middleInitial = tokens.length > 2 ? tokens[1].replace(/\./g, "").toLowerCase()[0] : null;
+  return { first, last, middleInitial };
 }
 
 /**
  * Compare a favorite name (Princeton format) against an arXiv author name.
- * Returns "strong" (last + first match), "weak" (last + first initial match),
- * or null (last name mismatch).
+ * Returns "strong" (last + first match, or last + first & middle initial match),
+ * "weak" (last + first initial match), or null (last name mismatch).
  */
 function matchAuthor(favName, arxivName) {
   const fav = parseNameParts(favName);
   const arx = parseNameParts(arxivName);
   if (fav.last !== arx.last) return null;
   if (fav.first === arx.first) return "strong";
-  if (fav.first[0] === arx.first[0]) return "weak";
+  if (fav.first[0] === arx.first[0]) {
+    // Upgrade to strong when both names carry a middle initial and they agree
+    if (fav.middleInitial && arx.middleInitial && fav.middleInitial === arx.middleInitial)
+      return "strong";
+    return "weak";
+  }
   return null;
 }
 

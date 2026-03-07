@@ -231,12 +231,12 @@ main {
 }
 
 .author-highlight-weak {
-  color: #495057;
+  color: #5a4000;
   font-style: italic;
-  background: #e9ecef;
+  background: #fff8d6;
   border-radius: 3px;
   padding: 0 4px;
-  border: 1px solid #ced4da;
+  border: 1px solid #e0c060;
 }
 
 /* ── Abstract toggle ── */
