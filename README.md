@@ -48,27 +48,45 @@ The Action needs write permission to commit data files. Go to:
 
 ### 4. Populate the author list
 
-Run the Princeton Astronomy people scraper to populate `config/authors.json` automatically:
+There are two author list files:
+
+| File | Purpose |
+|------|---------|
+| `config/authors.json` | Auto-populated by scraping the department people page. **Do not edit by hand** — it is overwritten monthly by the GitHub Action. |
+| `config/authors_manual.json` | Hand-curated additions (collaborators, alumni, etc.). Never overwritten automatically. |
+
+Both files are loaded at page load and merged (manual entries take precedence).
+
+**Automatic updates** — the workflow in `.github/workflows/monthly-authors.yml` re-scrapes
+the Princeton Astronomy people page on the 1st of every month and commits the result to
+`config/authors.json`. It can also be triggered manually via **Actions → Monthly author
+list update → Run workflow**.
+
+**Manual additions** — edit `config/authors_manual.json` directly:
+
+```json
+{
+  "authors": [
+    "Vera Rubin",
+    "Jan Oort"
+  ]
+}
+```
+
+**Initial setup** — run the scraper locally to seed `config/authors.json` before the
+first monthly Action fires:
 
 ```bash
 pip install -r requirements.txt
 python scripts/scrape_authors.py
 ```
 
-This scrapes Faculty & Research Scholars, Postdoctoral Researchers, and Graduate Students
-from `web.astro.princeton.edu/people`. To preview without writing, use `--dry-run`:
-
-```bash
-python scripts/scrape_authors.py --dry-run
-```
-
 To adapt for a different institution, edit the `PAGES` list and CSS selectors in
-`scripts/scrape_authors.py`.
+`scripts/scrape_authors.py`. Use `--dry-run` to preview without writing.
 
-You can also edit `config/authors.json` directly. Names are matched by last name
-(exact) then first name: an exact first-name match is a **strong** match (bold amber
-highlight); a matching first initial only is a **weak** match (italic grey highlight).
-Titles (Dr., Sir) and suffixes (Jr., III) are ignored during comparison.
+Names are matched by last name (exact) then first name: an exact first-name match is a
+**strong** match (bold amber highlight); a matching first initial only is a **weak**
+match (italic grey highlight). Titles (Dr., Sir) and suffixes (Jr., III) are ignored.
 
 ## Local development
 
