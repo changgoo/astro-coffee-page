@@ -1,0 +1,4 @@
+# Required for scripts/scrape_authors.py only.
+# scripts/scrape.py uses Python stdlib exclusively.
+cloudscraper
+beautifulsoup4
