@@ -391,10 +391,6 @@ function buildCard(paper, idx) {
   const meta = document.createElement("div");
   meta.className = "paper-meta";
 
-  const numSpan = document.createElement("span");
-  numSpan.className = "paper-num";
-  numSpan.textContent = `#${paper._arxivIndex}`;
-
   const idSpan = document.createElement("span");
   idSpan.className = "paper-id";
   idSpan.innerHTML = `[<a href="${paper.arxiv_url}" target="_blank" rel="noopener">${paper.id}</a>]`;
@@ -415,7 +411,7 @@ function buildCard(paper, idx) {
   secSpan.className = "secondary-cats";
   if (secondaryCats.length) secSpan.textContent = "+ " + secondaryCats.join(", ");
 
-  meta.append(numSpan, idSpan, pdfLink, primaryBadge, secSpan);
+  meta.append(idSpan, pdfLink, primaryBadge, secSpan);
 
   // Title
   const titleDiv = document.createElement("div");
