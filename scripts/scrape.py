@@ -70,26 +70,36 @@ def get_target_date(date_str=None, _et_now=None):
     return prev_business_day(target).strftime("%Y-%m-%d")
 
 
-def get_query_date(listing_date_str):
-    """Return the arXiv API submittedDate for a given listing date.
+ET_CUTOFF_HOUR = 14  # arXiv submission cutoff: 14:00 Eastern (EST, UTC-5)
 
-    The query date is the cutoff day of the submission window:
-      prev_business_day(listing_date - 1 day)
+
+def get_submission_window(listing_date_str):
+    """Return (start_dt, end_dt) arXiv submittedDate strings for a listing date.
+
+    arXiv uses Eastern Time (EST, UTC-5) for its 14:00 submission cutoff.
+    The window spans from the previous business day's cutoff to the cutoff
+    day's cutoff (exclusive), i.e.:
+      prev_biz_day(cutoff_day - 1) 14:00 ET  →  cutoff_day 13:59:59 ET
+    where cutoff_day = prev_business_day(listing - 1 day).
+
+    Strings are formatted as YYYYMMDDHHMMSS for the arXiv API.
 
     Examples:
-      Friday listing   → Thursday  (Wed 14:00–Thu 14:00 batch)
-      Monday listing   → Friday    (Thu 14:00–Fri 14:00 batch)
-      Tuesday listing  → Monday    (Fri 14:00–Mon 14:00 batch)
-      Wednesday listing → Tuesday  (Mon 14:00–Tue 14:00 batch)
+      Friday   (2026-03-06) → cutoff=Thu 03-05; window: Wed 14:00–Thu 13:59:59 ET
+      Monday   (2026-03-09) → cutoff=Fri 03-06; window: Thu 14:00–Fri 13:59:59 ET
+      Tuesday  (2026-03-10) → cutoff=Mon 03-09; window: Fri 14:00–Mon 13:59:59 ET
     """
     listing = datetime.strptime(listing_date_str, "%Y-%m-%d").date()
-    return prev_business_day(listing - timedelta(days=1)).strftime("%Y-%m-%d")
+    cutoff_day = prev_business_day(listing - timedelta(days=1))
+    window_start_day = prev_business_day(cutoff_day - timedelta(days=1))
+    start = f"{window_start_day.strftime('%Y%m%d')}{ET_CUTOFF_HOUR:02d}0000"
+    end = f"{cutoff_day.strftime('%Y%m%d')}{ET_CUTOFF_HOUR - 1:02d}5959"
+    return start, end
 
 
-def build_query_url(date_str, start=0, max_results=MAX_PER_REQUEST):
-    """Build the arXiv API query URL for a given date and pagination offset."""
-    date_compact = date_str.replace("-", "")
-    search_query = f"cat:astro-ph.*+AND+submittedDate:[{date_compact}0000+TO+{date_compact}2359]"
+def build_query_url(start_dt, end_dt, start=0, max_results=MAX_PER_REQUEST):
+    """Build the arXiv API query URL for a submittedDate range and pagination offset."""
+    search_query = f"cat:astro-ph.*+AND+submittedDate:[{start_dt}+TO+{end_dt}]"
     params = (
         f"search_query={search_query}"
         f"&sortBy=submittedDate&sortOrder=descending"
@@ -150,14 +160,17 @@ def parse_entry(entry):
     }
 
 
-def fetch_all_papers(date_str):
-    """Fetch all papers for the given date, paginating as needed."""
+def fetch_all_papers(listing_date_str):
+    """Fetch all papers for the given listing date, paginating as needed."""
+    start_dt, end_dt = get_submission_window(listing_date_str)
+    print(f"  Submission window: {start_dt[:8]} {start_dt[8:10]}:00 ET → "
+          f"{end_dt[:8]} {end_dt[8:10]}:59 ET")
     papers = []
     start = 0
     total = None
 
     while True:
-        url = build_query_url(date_str, start=start)
+        url = build_query_url(start_dt, end_dt, start=start)
         print(f"  Fetching start={start} ...", flush=True)
         raw = fetch_xml(url)
         root = ET.fromstring(raw)
@@ -319,13 +332,12 @@ def main():
     added more papers since the last run.
     """
     listing_date = sys.argv[1] if len(sys.argv) > 1 else get_target_date()
-    query_date = get_query_date(listing_date)
-    print(f"Fetching arXiv astro-ph papers for listing {listing_date} (submitted {query_date})")
+    print(f"Fetching arXiv astro-ph papers for listing {listing_date}")
 
     data_dir = Path(__file__).parent.parent / "data"
     data_dir.mkdir(exist_ok=True)
 
-    papers = fetch_all_papers(query_date)
+    papers = fetch_all_papers(listing_date)
     new_count = len(papers)
 
     if new_count == 0:
