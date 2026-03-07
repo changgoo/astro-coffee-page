@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astro-ph Coffee Page</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header>
+  <h1><a href="index.html">astro-ph ☕</a></h1>
+  <div class="header-controls">
+    <button id="btn-prev" class="btn-nav" title="Older">&#8592; Older</button>
+    <select id="date-select" aria-label="Select date"></select>
+    <button id="btn-next" class="btn-nav" title="Newer">Newer &#8594;</button>
+    <span id="fetched-at" style="font-size:12px;color:#6c757d;"></span>
+  </div>
+</header>
+
+<main>
+  <div id="toolbar">
+    <label for="sort-select">Sort:</label>
+    <select id="sort-select">
+      <option value="default">Default (arXiv order)</option>
+      <option value="author">First author A–Z</option>
+      <option value="title">Title A–Z</option>
+      <option value="category">Category</option>
+    </select>
+  </div>
+
+  <div id="cat-filter">
+    <span>Filter:</span>
+    <!-- category toggle buttons injected by app.js -->
+  </div>
+
+  <div id="stats"></div>
+  <div id="loading">Loading…</div>
+  <div id="paper-list"></div>
+</main>
+
+<footer>
+  <p>
+    Daily arXiv astro-ph listings &mdash;
+    <a href="https://arxiv.org/list/astro-ph/new" target="_blank" rel="noopener">arxiv.org</a>.
+    Thank you to arXiv for use of its open access interoperability.
+  </p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
