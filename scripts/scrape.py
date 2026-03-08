@@ -222,9 +222,13 @@ def match_author(arxiv_name, fav_authors):
             return "strong"
         if not fav_first or not arx_first:
             continue
-        # Single initial in paper → strong
+        # Single initial in paper → strong only if fav has no middle initial;
+        # if fav has a middle initial, a bare first initial is ambiguous → weak
         if len(arx_first) == 1 and fav_first[0] == arx_first:
-            return "strong"
+            if not fav_mid:
+                return "strong"
+            best = "weak"
+            continue
         # Hyphenated favorite first name vs. abbreviated arXiv form
         if "-" in fav_first:
             fav_parts = fav_first.split("-")

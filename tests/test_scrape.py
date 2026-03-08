@@ -217,13 +217,18 @@ def test_match_author_strong_middle_initial():
     assert scrape.match_author("Ostriker, Eve C.", FAV_AUTHORS) == "strong"
 
 
-def test_match_author_single_initial_strong():
-    """Single first initial in paper → strong (not weak)."""
-    assert scrape.match_author("Ostriker, E.", FAV_AUTHORS) == "strong"
+def test_match_author_single_initial_no_fav_middle_strong():
+    """Single initial, favorite has no middle initial → strong."""
+    assert scrape.match_author("Kim, C.", FAV_AUTHORS) == "strong"
+
+
+def test_match_author_single_initial_fav_has_middle_weak():
+    """Single initial, favorite has a middle initial → weak (ambiguous)."""
+    assert scrape.match_author("Ostriker, E.", FAV_AUTHORS) == "weak"
 
 
 def test_match_author_single_initial_hyphenated_fav_strong():
-    """Single initial matching hyphenated favorite first name → strong."""
+    """Single initial matching hyphenated favorite first name (no middle) → strong."""
     assert scrape.match_author("Kim, C.", FAV_AUTHORS) == "strong"
 
 
@@ -288,12 +293,20 @@ def test_annotate_papers_weak_match():
     assert papers[0]["local_authors"] == {"Ostriker, Elaine": "weak"}
 
 
-def test_annotate_papers_single_initial_strong():
-    """Single initial in paper → strong (upgraded from previous weak)."""
+def test_annotate_papers_single_initial_no_middle_strong():
+    """Single initial, fav has no middle initial → strong."""
+    papers = [{"authors": ["Kim, C."], "title": "Test"}]
+    scrape.annotate_papers(papers, ["Chang-Goo Kim"])
+    assert papers[0]["local_match"] == "strong"
+    assert papers[0]["local_authors"] == {"Kim, C.": "strong"}
+
+
+def test_annotate_papers_single_initial_fav_has_middle_weak():
+    """Single initial, fav has middle initial → weak."""
     papers = [{"authors": ["Ostriker, E."], "title": "Test"}]
     scrape.annotate_papers(papers, ["Eve C. Ostriker"])
-    assert papers[0]["local_match"] == "strong"
-    assert papers[0]["local_authors"] == {"Ostriker, E.": "strong"}
+    assert papers[0]["local_match"] == "weak"
+    assert papers[0]["local_authors"] == {"Ostriker, E.": "weak"}
 
 
 def test_annotate_papers_multiple_papers():
