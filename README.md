@@ -11,6 +11,9 @@ A daily arXiv astro-ph paper browser hosted on GitHub Pages.
 - Highlight Princeton authors (strong: bold amber; weak: italic pale yellow)
 - **Archive view** — browse the 1000 most recent astro-ph papers with full-text search (title + author) and 100-paper paginated loading
 - Author match strength (`local_match`, `local_authors`) precomputed during scraping — no client-side name matching
+- **Font size control** — S / M / L buttons scale all paper content; persisted across sessions
+- **Abstract expand mode** — collapsed (default), local strong authors open, or all open; persisted across sessions
+- **Author truncation** — long author lists collapsed to 5 with expand toggle; strong-match papers always show full list
 
 ## Setup
 
