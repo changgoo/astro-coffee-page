@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 """
-Scrape arXiv astro-ph new papers via the arXiv API and save as JSON.
-Usage: python scripts/scrape.py [YYYY-MM-DD]
-Default date: today in ET (adjusted for arXiv's 14:00 ET submission cutoff)
+Scrape the latest arXiv astro-ph papers via the arXiv API using a diff approach.
+
+Each run fetches the most recent 1000 papers. Papers not present in the previous
+archive snapshot are treated as new for today's listing. The archive is then updated.
+
+Usage:
+  python scripts/scrape.py [YYYY-MM-DD]
+  python scripts/scrape.py --bootstrap N [YYYY-MM-DD]   # first-run seed
 """
 
 import json
@@ -13,7 +18,6 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-# arXiv API namespace
 NS = {
     "atom": "http://www.w3.org/2005/Atom",
     "arxiv": "http://arxiv.org/schemas/atom",
@@ -23,11 +27,12 @@ NS = {
 BASE_URL = "http://export.arxiv.org/api/query"
 MAX_PER_REQUEST = 500
 RATE_LIMIT_SECONDS = 3
+ARCHIVE_SIZE = 1000
 
 
 def prev_business_day(d):
     """Return the most recent weekday on or before date d."""
-    while d.weekday() >= 5:  # 5=Saturday, 6=Sunday
+    while d.weekday() >= 5:
         d -= timedelta(days=1)
     return d
 
@@ -45,16 +50,6 @@ def get_target_date(date_str=None, _et_now=None):
     The listing date is the last business day of the submission window.
     This equals prev_business_day(today ET) after 14:00, or
     prev_business_day(yesterday ET) before 14:00.
-
-    Examples:
-      Tue 21:00 ET  →  Tuesday   (Tue nightly run, catches Tue announcement)
-      Sun 21:00 ET  →  Friday    (Sun nightly run, catches Thu–Fri batch)
-      Mon 21:00 ET  →  Monday    (Mon nightly run, catches Fri–Mon batch)
-      Mon 06:00 ET  →  Friday    (Mon morning catch-up for Fri–Mon batch)
-      Sat 10:00 ET  →  Friday    (matches arXiv showing Fri papers on Saturday)
-
-    If date_str is provided, use that directly.
-    _et_now may be injected for testing.
     """
     if date_str:
         return date_str
@@ -70,41 +65,10 @@ def get_target_date(date_str=None, _et_now=None):
     return prev_business_day(target).strftime("%Y-%m-%d")
 
 
-# arXiv's 14:00 ET cutoff in UTC (arXiv uses EST = UTC-5 year-round, no DST adjustment)
-CUTOFF_HOUR_UTC = 19  # 14:00 EST + 5 = 19:00 UTC
-
-
-def get_submission_window(listing_date_str):
-    """Return (start_dt, end_dt) arXiv submittedDate strings for a listing date.
-
-    The arXiv API's submittedDate field is in UTC. arXiv's submission cutoff
-    is 14:00 EST (UTC-5, no DST) = 19:00 UTC year-round.
-
-    The window spans:
-      prev_biz_day(cutoff_day - 1) 19:00 UTC  →  cutoff_day 18:59:59 UTC
-    where cutoff_day = prev_business_day(listing - 1 day).
-
-    Strings are formatted as YYYYMMDDHHMMSS for the arXiv API.
-
-    Examples (ET times shown for clarity):
-      Friday   (2026-03-06) → cutoff=Thu 03-05; window: Wed 19:00–Thu 18:59:59 UTC
-                                                        (Wed 14:00–Thu 13:59:59 ET)
-      Monday   (2026-03-09) → cutoff=Fri 03-06; window: Thu 19:00–Fri 18:59:59 UTC
-      Tuesday  (2026-03-10) → cutoff=Mon 03-09; window: Fri 19:00–Mon 18:59:59 UTC
-    """
-    listing = datetime.strptime(listing_date_str, "%Y-%m-%d").date()
-    cutoff_day = prev_business_day(listing - timedelta(days=1))
-    window_start_day = prev_business_day(cutoff_day - timedelta(days=1))
-    start = f"{window_start_day.strftime('%Y%m%d')}{CUTOFF_HOUR_UTC:02d}0000"
-    end = f"{cutoff_day.strftime('%Y%m%d')}{CUTOFF_HOUR_UTC - 1:02d}5959"
-    return start, end
-
-
-def build_query_url(start_dt, end_dt, start=0, max_results=MAX_PER_REQUEST):
-    """Build the arXiv API query URL for a submittedDate range and pagination offset."""
-    search_query = f"cat:astro-ph.*+AND+submittedDate:[{start_dt}+TO+{end_dt}]"
+def build_query_url(start=0, max_results=MAX_PER_REQUEST):
+    """Build the arXiv API query URL for the most recent astro-ph papers."""
     params = (
-        f"search_query={search_query}"
+        f"search_query=cat:astro-ph.*"
         f"&sortBy=submittedDate&sortOrder=descending"
         f"&start={start}&max_results={max_results}"
     )
@@ -124,13 +88,11 @@ def parse_entry(entry):
         el = entry.find(f"{ns_key}:{tag}", NS)
         return el.text.strip() if el is not None and el.text else ""
 
-    # arXiv ID from <id> URL like https://arxiv.org/abs/2603.12345v1
     id_url = find_text("id")
     arxiv_id = id_url.rstrip("/").split("/abs/")[-1].split("v")[0]
-
-    title = " ".join(find_text("title").split())  # normalize whitespace
+    title = " ".join(find_text("title").split())
     abstract = " ".join(find_text("summary").split())
-    submitted = find_text("published")[:10]  # YYYY-MM-DD
+    submitted = find_text("published")[:10]
 
     authors = [
         author.find("atom:name", NS).text.strip()
@@ -146,8 +108,6 @@ def parse_entry(entry):
         for cat in entry.findall("atom:category", NS)
         if cat.get("term", "")
     })
-
-    # Keep only astro-ph and known physics categories; sort with primary first
     categories = sorted(categories, key=lambda c: (c != primary_category, c))
 
     return {
@@ -163,21 +123,15 @@ def parse_entry(entry):
     }
 
 
-def fetch_all_papers(listing_date_str):
-    """Fetch all papers for the given listing date, paginating as needed."""
-    start_dt, end_dt = get_submission_window(listing_date_str)
-    # Convert UTC cutoff hours back to ET for the display (UTC-5)
-    start_et = int(start_dt[8:10]) - 5
-    end_et = int(end_dt[8:10]) - 5
-    print(f"  Submission window: {start_dt[:8]} {start_et:02d}:00 ET → "
-          f"{end_dt[:8]} {end_et:02d}:59 ET  "
-          f"({start_dt[8:10]}:00–{end_dt[8:10]}:59 UTC)")
+def fetch_latest_papers(n=ARCHIVE_SIZE):
+    """Fetch the n most recently submitted astro-ph papers from the arXiv API."""
     papers = []
     start = 0
     total = None
 
-    while True:
-        url = build_query_url(start_dt, end_dt, start=start)
+    while start < n:
+        max_results = min(MAX_PER_REQUEST, n - start)
+        url = build_query_url(start=start, max_results=max_results)
         print(f"  Fetching start={start} ...", flush=True)
         raw = fetch_xml(url)
         root = ET.fromstring(raw)
@@ -185,7 +139,7 @@ def fetch_all_papers(listing_date_str):
         if total is None:
             total_el = root.find("opensearch:totalResults", NS)
             total = int(total_el.text) if total_el is not None else 0
-            print(f"  Total results: {total}")
+            print(f"  Total available: {total}")
 
         entries = root.findall("atom:entry", NS)
         if not entries:
@@ -195,7 +149,7 @@ def fetch_all_papers(listing_date_str):
             papers.append(parse_entry(entry))
 
         start += len(entries)
-        if start >= total:
+        if start >= min(total, n):
             break
 
         time.sleep(RATE_LIMIT_SECONDS)
@@ -204,10 +158,7 @@ def fetch_all_papers(listing_date_str):
 
 
 def load_favorite_authors(repo_root):
-    """Load and merge favorite authors from both config files.
-
-    Returns a list of name strings (manual entries first, deduped).
-    """
+    """Load and merge favorite authors from both config files (manual first, deduped)."""
     names = []
     seen = set()
     for filename in ("authors_manual.json", "authors.json"):
@@ -251,114 +202,135 @@ def parse_name_parts(name):
     return first, last, middle_initial
 
 
-def has_strong_local_author(paper, fav_authors):
-    """Return True if any paper author is a strong match against fav_authors.
-
-    Strong match: last name exact AND (first name exact, or both sides have
-    a matching middle initial when only first initials agree).
-    """
-    for arxiv_name in paper.get("authors", []):
-        arx_first, arx_last, arx_mid = parse_name_parts(arxiv_name)
-        for fav_name in fav_authors:
-            fav_first, fav_last, fav_mid = parse_name_parts(fav_name)
-            if fav_last != arx_last:
-                continue
-            if fav_first == arx_first:
-                return True
-            if fav_first and arx_first and fav_first[0] == arx_first[0]:
-                if fav_mid and arx_mid and fav_mid == arx_mid:
-                    return True
-    return False
-
-
-def archive_strong_papers(data_dir, date_str, papers, fav_authors):
-    """Append strong local author matches from papers to data/local-archive.json.
-
-    The archive is a JSON object mapping date strings to lists of paper dicts,
-    keeping only strong-match papers. Existing entries for date_str are replaced.
-    """
-    archive_path = data_dir / "local-archive.json"
-    archive = {}
-    if archive_path.exists():
-        with open(archive_path) as f:
-            archive = json.load(f)
-
-    strong = [p for p in papers if has_strong_local_author(p, fav_authors)]
-    if strong:
-        archive[date_str] = strong
-        with open(archive_path, "w") as f:
-            json.dump(archive, f, indent=2)
-        print(f"  Archived {len(strong)} strong-match papers from {date_str} to local-archive.json")
-    else:
-        print(f"  No strong matches in {date_str}; nothing archived.")
-
-
-def update_index(data_dir, date_str, fav_authors=None, max_days=10):
-    """Add date_str to data/index.json and prune entries beyond max_days.
-
-    When pruning an old date, extracts strong local author matches into
-    data/local-archive.json before deleting the full day file.
-    """
-    index_path = data_dir / "index.json"
-    if index_path.exists():
-        with open(index_path) as f:
-            index = json.load(f)
-    else:
-        index = {"dates": []}
-
-    dates = index["dates"]
-    if date_str not in dates:
-        dates.insert(0, date_str)
-
-    # Sort descending and keep only max_days
-    dates = sorted(set(dates), reverse=True)[:max_days]
-
-    # Prune files for dates no longer in the index
-    for json_file in data_dir.glob("????-??-??.json"):
-        stem = json_file.stem
-        if stem in dates:
+def match_author(arxiv_name, fav_authors):
+    """Return "strong", "weak", or None for one arXiv author against fav_authors."""
+    arx_first, arx_last, arx_mid = parse_name_parts(arxiv_name)
+    best = None
+    for fav_name in fav_authors:
+        fav_first, fav_last, fav_mid = parse_name_parts(fav_name)
+        if fav_last != arx_last:
             continue
-        if fav_authors:
-            with open(json_file) as f:
-                day_data = json.load(f)
-            archive_strong_papers(data_dir, stem, day_data.get("papers", []), fav_authors)
-        print(f"  Removing old data file: {json_file.name}")
-        json_file.unlink()
+        if fav_first == arx_first:
+            return "strong"
+        if fav_first and arx_first and fav_first[0] == arx_first[0]:
+            if fav_mid and arx_mid and fav_mid == arx_mid:
+                return "strong"
+            best = "weak"
+    return best
 
-    index["dates"] = dates
+
+def annotate_papers(papers, fav_authors):
+    """Add local_match and local_authors fields to each paper dict in-place.
+
+    local_match:   "strong" | "weak" | None  (best match across all authors)
+    local_authors: {arxiv_name: "strong"|"weak"}  (matched authors only)
+    """
+    for paper in papers:
+        local_authors = {}
+        best = None
+        for arxiv_name in paper.get("authors", []):
+            strength = match_author(arxiv_name, fav_authors)
+            if strength:
+                local_authors[arxiv_name] = strength
+                if strength == "strong":
+                    best = "strong"
+                elif best != "strong":
+                    best = "weak"
+        paper["local_match"] = best
+        paper["local_authors"] = local_authors
+
+
+def load_archive(data_dir):
+    """Load data/archive.json; return (papers_list, ids_set) or ([], set())."""
+    archive_path = data_dir / "archive.json"
+    if not archive_path.exists():
+        return [], set()
+    with open(archive_path) as f:
+        data = json.load(f)
+    papers = data.get("papers", [])
+    ids = {p["id"] for p in papers}
+    return papers, ids
+
+
+def save_archive(data_dir, papers):
+    """Overwrite data/archive.json with the given papers list."""
+    archive_path = data_dir / "archive.json"
+    output = {
+        "fetched_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "total": len(papers),
+        "papers": papers,
+    }
+    with open(archive_path, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"  Saved archive.json with {len(papers)} papers.")
+
+
+def update_index(data_dir, date_str):
+    """Write data/index.json with the current listing date."""
+    index_path = data_dir / "index.json"
     with open(index_path, "w") as f:
-        json.dump(index, f, indent=2)
-    print(f"  Updated index.json: {dates}")
+        json.dump({"current": date_str}, f, indent=2)
+    print(f"  Updated index.json: current={date_str}")
 
 
 def main():
-    """Entry point: scrape papers for the target date and save to data/.
+    """Scrape latest papers, compute diff vs archive, save today's listing and update archive.
 
-    Skips writing if the fetched paper count is no greater than what is
-    already stored, so repeated nightly runs only commit when arXiv has
-    added more papers since the last run.
+    --bootstrap N  First-run mode: use the top N fetched papers as today's listing
+                   without requiring an existing archive.
     """
-    listing_date = sys.argv[1] if len(sys.argv) > 1 else get_target_date()
-    print(f"Fetching arXiv astro-ph papers for listing {listing_date}")
+    bootstrap_n = None
+    args = sys.argv[1:]
+    if "--bootstrap" in args:
+        idx = args.index("--bootstrap")
+        bootstrap_n = int(args[idx + 1])
+        args = args[:idx] + args[idx + 2:]
+
+    listing_date = args[0] if args else get_target_date()
+    print(f"Listing date: {listing_date}")
 
     data_dir = Path(__file__).parent.parent / "data"
     data_dir.mkdir(exist_ok=True)
 
-    papers = fetch_all_papers(listing_date)
-    new_count = len(papers)
-
-    if new_count == 0:
-        print(f"  No papers found for {listing_date} — arXiv may not have announced this batch yet. Skipping.")
+    print(f"Fetching latest {ARCHIVE_SIZE} arXiv astro-ph papers ...")
+    fetched = fetch_latest_papers(n=ARCHIVE_SIZE)
+    if not fetched:
+        print("  No papers fetched. Skipping.")
         return
 
-    # Check existing file to avoid redundant writes and commits
+    print(f"  Fetched {len(fetched)} papers.")
+
+    repo_root = Path(__file__).parent.parent
+    fav_authors = load_favorite_authors(repo_root)
+    print(f"  Annotating local author matches ({len(fav_authors)} favorites) ...")
+    annotate_papers(fetched, fav_authors)
+
+    _, archive_ids = load_archive(data_dir)
+
+    if bootstrap_n is not None:
+        sorted_by_id = sorted(fetched, key=lambda p: p["id"], reverse=True)
+        new_papers = sorted_by_id[:bootstrap_n]
+        print(f"  Bootstrap mode: using top {bootstrap_n} papers by arXiv ID desc as today's listing.")
+    elif not archive_ids:
+        print("  No archive found. Run with --bootstrap N to initialize.")
+        return
+    else:
+        new_papers = [p for p in fetched if p["id"] not in archive_ids]
+        print(f"  Diff: {len(new_papers)} new papers since last archive.")
+
+    new_count = len(new_papers)
+    if new_count == 0:
+        print(f"  No new papers for {listing_date}. Skipping.")
+        return
+
+    # Skip redundant writes for non-bootstrap runs
     out_path = data_dir / f"{listing_date}.json"
-    if out_path.exists():
+    if bootstrap_n is None and out_path.exists():
         with open(out_path) as f:
             existing = json.load(f)
         existing_count = existing.get("total", 0)
         if new_count <= existing_count:
-            print(f"  No update: fetched {new_count} papers, existing {existing_count}. Skipping.")
+            print(f"  No update: {new_count} new papers, existing {existing_count}. Skipping.")
             return
         print(f"  Update detected: {existing_count} -> {new_count} papers.")
 
@@ -366,17 +338,16 @@ def main():
         "date": listing_date,
         "fetched_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "total": new_count,
-        "papers": papers,
+        "papers": new_papers,
     }
-
     with open(out_path, "w") as f:
         json.dump(output, f, indent=2)
     print(f"  Saved {new_count} papers to {out_path}")
 
-    repo_root = Path(__file__).parent.parent
-    fav_authors = load_favorite_authors(repo_root)
-    update_index(data_dir, listing_date, fav_authors=fav_authors)
+    save_archive(data_dir, fetched)
+    update_index(data_dir, listing_date)
     print("Done.")
+
 
 
 if __name__ == "__main__":

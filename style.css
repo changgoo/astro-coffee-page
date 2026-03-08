@@ -109,9 +109,10 @@ select, button {
 
 button:hover { background: var(--bg); }
 
-.btn-nav {
-  padding: 5px 8px;
-  font-size: 13px;
+.current-date-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
 }
 
 /* ── Announcement card ── */
@@ -265,6 +266,18 @@ main {
   margin-bottom: 6px;
 }
 
+.arxiv-num {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary);
+  font-family: monospace;
+  min-width: 2.5em;
+}
+
+.arxiv-num-cross {
+  color: var(--text-muted);
+}
+
 .paper-id {
   font-size: 12px;
   color: var(--text-muted);
@@ -288,13 +301,7 @@ main {
   white-space: nowrap;
 }
 
-.cat-badge.astro-ph\\.GA { background: var(--cat-ga); }
-.cat-badge.astro-ph\\.CO { background: var(--cat-co); color: #000; }
-.cat-badge.astro-ph\\.EP { background: var(--cat-ep); }
-.cat-badge.astro-ph\\.HE { background: var(--cat-he); }
-.cat-badge.astro-ph\\.IM { background: var(--cat-im); }
-.cat-badge.astro-ph\\.SR { background: var(--cat-sr); }
-.cat-badge.other { background: var(--cat-other); }
+.cat-badge.other { background: var(--cat-other); color: #fff; }
 
 .secondary-cats {
   font-size: 11px;
@@ -357,29 +364,66 @@ main {
 
 .paper-abstract.open { display: block; }
 
-/* ── 10-day local view ── */
-.btn-local-10 {
+/* ── Archive view ── */
+.btn-archive {
   font-size: 13px;
   margin-left: 4px;
 }
 
-.btn-local-10.active {
+.btn-archive.active {
   background: var(--highlight-strong-bg);
   border-color: var(--highlight-strong-border);
   font-weight: 600;
 }
 
-.date-section-header {
+#search-container {
+  margin-bottom: 12px;
+}
+
+#search-input {
+  width: 100%;
+  max-width: 420px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
   font-size: 14px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+#search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.load-more-btn {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  font-size: 14px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--primary);
+}
+
+.load-more-btn:hover { background: var(--bg); }
+
+/* ── Section header (cross-listings divider) ── */
+.section-header {
+  font-size: 13px;
   font-weight: 700;
   color: var(--text-muted);
   border-bottom: 1px solid var(--border);
-  padding: 8px 0 4px;
+  padding: 10px 0 4px;
   margin-top: 16px;
   margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
-
-.date-section-header:first-child { margin-top: 0; }
 
 /* ── Empty state ── */
 #empty-state {

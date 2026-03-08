@@ -40,29 +40,35 @@ def sample_entry():
 
 # ── build_query_url ───────────────────────────────────────────────────────────
 
-def test_build_query_url_contains_start_date():
-    url = scrape.build_query_url("20260304190000", "20260305185959")
-    assert "20260304190000" in url
-
-
-def test_build_query_url_contains_end_date():
-    url = scrape.build_query_url("20260304190000", "20260305185959")
-    assert "20260305185959" in url
-
-
 def test_build_query_url_contains_category():
-    url = scrape.build_query_url("20260304190000", "20260305185959")
+    url = scrape.build_query_url()
     assert "cat:astro-ph.*" in url
 
 
+def test_build_query_url_sort_by_submitted_date():
+    url = scrape.build_query_url()
+    assert "sortBy=submittedDate" in url
+
+
+def test_build_query_url_descending():
+    url = scrape.build_query_url()
+    assert "sortOrder=descending" in url
+
+
 def test_build_query_url_pagination():
-    url = scrape.build_query_url("20260304190000", "20260305185959", start=500)
+    url = scrape.build_query_url(start=500)
     assert "start=500" in url
 
 
 def test_build_query_url_max_results():
-    url = scrape.build_query_url("20260304190000", "20260305185959", max_results=100)
+    url = scrape.build_query_url(max_results=100)
     assert "max_results=100" in url
+
+
+def test_build_query_url_no_date_window():
+    """New approach sorts by submittedDate but has no date range filter."""
+    url = scrape.build_query_url()
+    assert "submittedDate:[" not in url
 
 
 # ── get_target_date ───────────────────────────────────────────────────────────
@@ -108,43 +114,6 @@ def test_get_target_date_tuesday_morning():
 def test_get_target_date_saturday_morning():
     """Sat 10:00 ET → Friday (matches arXiv showing Fri papers on Saturday)."""
     assert scrape.get_target_date(_et_now=et(2026, 3, 7, 10)) == "2026-03-06"
-
-
-# ── get_submission_window ─────────────────────────────────────────────────────
-
-def test_get_submission_window_friday():
-    """Friday listing → Wed 19:00 UTC – Thu 18:59:59 UTC (= Wed 14:00–Thu 13:59:59 ET)."""
-    start, end = scrape.get_submission_window("2026-03-06")
-    assert start == "20260304190000"  # Wed Mar 4 19:00 UTC = 14:00 ET
-    assert end   == "20260305185959"  # Thu Mar 5 18:59:59 UTC = 13:59:59 ET
-
-
-def test_get_submission_window_monday():
-    """Monday listing → Thu 19:00 UTC – Fri 18:59:59 UTC (= Thu 14:00–Fri 13:59:59 ET)."""
-    start, end = scrape.get_submission_window("2026-03-09")
-    assert start == "20260305190000"  # Thu Mar 5 19:00 UTC = 14:00 ET
-    assert end   == "20260306185959"  # Fri Mar 6 18:59:59 UTC = 13:59:59 ET
-
-
-def test_get_submission_window_tuesday():
-    """Tuesday listing → Fri 19:00 UTC – Mon 18:59:59 UTC (spans weekend)."""
-    start, end = scrape.get_submission_window("2026-03-10")
-    assert start == "20260306190000"  # Fri Mar 6 19:00 UTC = 14:00 ET
-    assert end   == "20260309185959"  # Mon Mar 9 18:59:59 UTC = 13:59:59 ET
-
-
-def test_get_submission_window_wednesday():
-    """Wednesday listing → Mon 19:00 UTC – Tue 18:59:59 UTC."""
-    start, end = scrape.get_submission_window("2026-03-11")
-    assert start == "20260309190000"  # Mon Mar 9 19:00 UTC = 14:00 ET
-    assert end   == "20260310185959"  # Tue Mar 10 18:59:59 UTC = 13:59:59 ET
-
-
-def test_get_submission_window_thursday():
-    """Thursday listing → Tue 19:00 UTC – Wed 18:59:59 UTC."""
-    start, end = scrape.get_submission_window("2026-03-12")
-    assert start == "20260310190000"  # Tue Mar 10 19:00 UTC = 14:00 ET
-    assert end   == "20260311185959"  # Wed Mar 11 18:59:59 UTC = 13:59:59 ET
 
 
 # ── parse_entry ───────────────────────────────────────────────────────────────
@@ -234,33 +203,70 @@ def test_parse_name_parts_strips_suffix():
     assert first == "john"
 
 
-# ── has_strong_local_author ───────────────────────────────────────────────────
+# ── match_author ──────────────────────────────────────────────────────────────
 
-PAPER_KIM = {
-    "authors": ["Kim, Chang-Goo", "Ostriker, Eve C."],
-    "title": "Test",
-}
-
-def test_has_strong_local_author_exact_first_name():
-    assert scrape.has_strong_local_author(PAPER_KIM, ["Chang-Goo Kim"])
+FAV_AUTHORS = ["Chang-Goo Kim", "Eve C. Ostriker"]
 
 
-def test_has_strong_local_author_matching_middle_initial():
-    """First initial + matching middle initial should be strong."""
-    assert scrape.has_strong_local_author(PAPER_KIM, ["E. C. Ostriker"])
+def test_match_author_strong_exact_first_name():
+    assert scrape.match_author("Kim, Chang-Goo", FAV_AUTHORS) == "strong"
 
 
-def test_has_strong_local_author_first_initial_only_is_not_strong():
-    """First initial match without middle initial is weak — not strong."""
-    assert not scrape.has_strong_local_author(PAPER_KIM, ["E. Ostriker"])
+def test_match_author_strong_middle_initial():
+    """First initial + matching middle initial → strong."""
+    assert scrape.match_author("Ostriker, Eve C.", FAV_AUTHORS) == "strong"
 
 
-def test_has_strong_local_author_last_name_mismatch():
-    assert not scrape.has_strong_local_author(PAPER_KIM, ["Chang-Goo Lee"])
+def test_match_author_weak_first_initial_only():
+    """First initial match without middle initial → weak."""
+    assert scrape.match_author("Ostriker, E.", FAV_AUTHORS) == "weak"
 
 
-def test_has_strong_local_author_no_authors():
-    assert not scrape.has_strong_local_author({"authors": []}, ["Chang-Goo Kim"])
+def test_match_author_last_name_mismatch():
+    assert scrape.match_author("Lee, Chang-Goo", FAV_AUTHORS) is None
+
+
+def test_match_author_no_match():
+    assert scrape.match_author("Nobody, Jane", FAV_AUTHORS) is None
+
+
+# ── annotate_papers ───────────────────────────────────────────────────────────
+
+PAPER_KIM = {"authors": ["Kim, Chang-Goo", "Nobody, Jane"], "title": "Test"}
+PAPER_NONE = {"authors": ["Nobody, Jane"], "title": "Remote"}
+
+
+def test_annotate_papers_strong_match():
+    papers = [dict(PAPER_KIM)]
+    scrape.annotate_papers(papers, ["Chang-Goo Kim"])
+    assert papers[0]["local_match"] == "strong"
+
+
+def test_annotate_papers_local_authors_dict():
+    papers = [dict(PAPER_KIM)]
+    scrape.annotate_papers(papers, ["Chang-Goo Kim"])
+    assert papers[0]["local_authors"] == {"Kim, Chang-Goo": "strong"}
+
+
+def test_annotate_papers_no_match():
+    papers = [dict(PAPER_NONE)]
+    scrape.annotate_papers(papers, ["Chang-Goo Kim"])
+    assert papers[0]["local_match"] is None
+    assert papers[0]["local_authors"] == {}
+
+
+def test_annotate_papers_weak_match():
+    papers = [{"authors": ["Ostriker, E."], "title": "Test"}]
+    scrape.annotate_papers(papers, ["Eve C. Ostriker"])
+    assert papers[0]["local_match"] == "weak"
+    assert papers[0]["local_authors"] == {"Ostriker, E.": "weak"}
+
+
+def test_annotate_papers_multiple_papers():
+    papers = [dict(PAPER_KIM), dict(PAPER_NONE)]
+    scrape.annotate_papers(papers, ["Chang-Goo Kim"])
+    assert papers[0]["local_match"] == "strong"
+    assert papers[1]["local_match"] is None
 
 
 # ── load_favorite_authors ─────────────────────────────────────────────────────
@@ -300,163 +306,69 @@ def test_load_favorite_authors_missing_files(tmp_path):
     assert authors == []
 
 
-# ── archive_strong_papers ─────────────────────────────────────────────────────
+# ── load_archive / save_archive ───────────────────────────────────────────────
 
-def test_archive_strong_papers_creates_file(tmp_path):
-    papers = [{"authors": ["Kim, Chang-Goo"], "title": "A"}]
-    scrape.archive_strong_papers(tmp_path, "2025-01-01", papers, ["Chang-Goo Kim"])
-    archive = json.loads((tmp_path / "local-archive.json").read_text())
-    assert "2025-01-01" in archive
-    assert len(archive["2025-01-01"]) == 1
+def test_load_archive_missing(tmp_path):
+    papers, ids = scrape.load_archive(tmp_path)
+    assert papers == []
+    assert ids == set()
 
 
-def test_archive_strong_papers_only_strong_matches(tmp_path):
-    papers = [
-        {"authors": ["Kim, Chang-Goo"], "title": "Local"},
-        {"authors": ["Nobody, Jane"], "title": "Remote"},
-    ]
-    scrape.archive_strong_papers(tmp_path, "2025-01-01", papers, ["Chang-Goo Kim"])
-    archive = json.loads((tmp_path / "local-archive.json").read_text())
-    assert len(archive["2025-01-01"]) == 1
-    assert archive["2025-01-01"][0]["title"] == "Local"
+def test_load_archive_returns_ids(tmp_path):
+    data = {"papers": [{"id": "2503.00001"}, {"id": "2503.00002"}]}
+    (tmp_path / "archive.json").write_text(json.dumps(data))
+    papers, ids = scrape.load_archive(tmp_path)
+    assert ids == {"2503.00001", "2503.00002"}
+    assert len(papers) == 2
 
 
-def test_archive_strong_papers_no_matches_skips(tmp_path):
-    papers = [{"authors": ["Nobody, Jane"], "title": "Remote"}]
-    scrape.archive_strong_papers(tmp_path, "2025-01-01", papers, ["Chang-Goo Kim"])
-    assert not (tmp_path / "local-archive.json").exists()
-
-
-def test_archive_strong_papers_appends_existing(tmp_path):
-    papers_a = [{"authors": ["Kim, Chang-Goo"], "title": "A"}]
-    papers_b = [{"authors": ["Kim, Chang-Goo"], "title": "B"}]
-    scrape.archive_strong_papers(tmp_path, "2025-01-01", papers_a, ["Chang-Goo Kim"])
-    scrape.archive_strong_papers(tmp_path, "2025-01-02", papers_b, ["Chang-Goo Kim"])
-    archive = json.loads((tmp_path / "local-archive.json").read_text())
-    assert "2025-01-01" in archive
-    assert "2025-01-02" in archive
+def test_save_archive_writes_file(tmp_path):
+    papers = [{"id": "2503.00001", "title": "Test"}]
+    scrape.save_archive(tmp_path, papers)
+    data = json.loads((tmp_path / "archive.json").read_text())
+    assert data["total"] == 1
+    assert data["papers"][0]["id"] == "2503.00001"
+    assert "fetched_at" in data
 
 
 # ── update_index ──────────────────────────────────────────────────────────────
 
-def test_update_index_creates_index(tmp_path):
-    scrape.update_index(tmp_path, "2025-03-05")
+def test_update_index_writes_current(tmp_path):
+    scrape.update_index(tmp_path, "2026-03-06")
     index = json.loads((tmp_path / "index.json").read_text())
-    assert "2025-03-05" in index["dates"]
+    assert index["current"] == "2026-03-06"
 
 
-def test_update_index_no_duplicates(tmp_path):
-    scrape.update_index(tmp_path, "2025-03-05")
-    scrape.update_index(tmp_path, "2025-03-05")
+def test_update_index_overwrites(tmp_path):
+    scrape.update_index(tmp_path, "2026-03-06")
+    scrape.update_index(tmp_path, "2026-03-09")
     index = json.loads((tmp_path / "index.json").read_text())
-    assert index["dates"].count("2025-03-05") == 1
+    assert index["current"] == "2026-03-09"
 
 
-def test_update_index_sorted_descending(tmp_path):
-    for d in ["2025-03-03", "2025-03-05", "2025-03-04"]:
-        scrape.update_index(tmp_path, d)
-    index = json.loads((tmp_path / "index.json").read_text())
-    assert index["dates"] == sorted(index["dates"], reverse=True)
+# ── skip-unchanged logic ──────────────────────────────────────────────────────
 
-
-def test_update_index_max_days(tmp_path):
-    for i in range(15):
-        scrape.update_index(tmp_path, f"2025-01-{i + 1:02d}", max_days=10)
-    index = json.loads((tmp_path / "index.json").read_text())
-    assert len(index["dates"]) == 10
-
-
-def test_update_index_removes_old_files(tmp_path):
-    """Data files for pruned dates should be deleted."""
-    old_file = tmp_path / "2025-01-01.json"
-    old_file.write_text("{}")
-    for i in range(2, 13):
-        scrape.update_index(tmp_path, f"2025-01-{i:02d}", max_days=10)
-    assert not old_file.exists()
-
-
-def test_update_index_archives_strong_match_before_delete(tmp_path):
-    """Pruned file with strong local author match should appear in local-archive.json."""
-    old_file = tmp_path / "2025-01-01.json"
-    old_file.write_text(json.dumps({
-        "papers": [{"authors": ["Kim, Chang-Goo"], "title": "Old paper"}]
-    }))
-    for i in range(2, 13):
-        scrape.update_index(tmp_path, f"2025-01-{i:02d}", max_days=10,
-                            fav_authors=["Chang-Goo Kim"])
-    assert not old_file.exists()
-    archive = json.loads((tmp_path / "local-archive.json").read_text())
-    assert "2025-01-01" in archive
-
-
-def test_update_index_no_archive_when_no_strong_match(tmp_path):
-    """Pruned file with no local author match should not appear in archive."""
-    old_file = tmp_path / "2025-01-01.json"
-    old_file.write_text(json.dumps({
-        "papers": [{"authors": ["Nobody, Jane"], "title": "Old paper"}]
-    }))
-    for i in range(2, 13):
-        scrape.update_index(tmp_path, f"2025-01-{i:02d}", max_days=10,
-                            fav_authors=["Chang-Goo Kim"])
-    assert not old_file.exists()
-    assert not (tmp_path / "local-archive.json").exists()
-
-
-# ── skip-unchanged (main logic) ───────────────────────────────────────────────
-
-def test_main_skips_when_count_unchanged(tmp_path, monkeypatch):
-    """main() should not overwrite the file when paper count has not increased."""
-    existing = {
-        "date": "2025-03-05",
-        "fetched_at": "2025-03-05T10:00:00Z",
-        "total": 2,
-        "papers": [
-            {"authors": ["Kim, Chang-Goo"], "title": "A"},
-            {"authors": ["Ostriker, Eve C."], "title": "B"},
-        ],
-    }
+def test_skips_when_count_unchanged(tmp_path):
+    """Should not overwrite when new count <= existing count."""
+    existing = {"total": 2, "papers": [{"id": "A"}, {"id": "B"}]}
     out_path = tmp_path / "2025-03-05.json"
     out_path.write_text(json.dumps(existing))
 
-    monkeypatch.setattr(scrape, "fetch_all_papers", lambda d: existing["papers"])
-    monkeypatch.setattr(scrape, "load_favorite_authors", lambda r: [])
-    monkeypatch.setattr(scrape, "update_index", lambda *a, **kw: None)
-    monkeypatch.setattr(sys, "argv", ["scrape.py", "2025-03-05"])
-    # Redirect data dir to tmp_path
-    monkeypatch.setattr(scrape, "Path", lambda *a: tmp_path if "data" in str(a) else Path(*a))
-
-    def patched_main():
-        date_str = "2025-03-05"
-        papers = scrape.fetch_all_papers(date_str)
-        new_count = len(papers)
-        if out_path.exists():
-            with open(out_path) as f:
-                existing_data = json.load(f)
-            if new_count <= existing_data.get("total", 0):
-                return "skipped"
-        return "wrote"
-
-    assert patched_main() == "skipped"
+    new_papers = [{"id": "A"}, {"id": "B"}]
+    new_count = len(new_papers)
+    with open(out_path) as f:
+        existing_count = json.load(f).get("total", 0)
+    assert new_count <= existing_count  # would skip
 
 
-def test_main_writes_when_count_increases(tmp_path):
-    """main() should write when new count exceeds existing count."""
-    existing = {"total": 1, "papers": [{"authors": ["Kim, Chang-Goo"], "title": "A"}]}
+def test_writes_when_count_increases(tmp_path):
+    """Should write when new count exceeds existing count."""
+    existing = {"total": 1, "papers": [{"id": "A"}]}
     out_path = tmp_path / "2025-03-05.json"
     out_path.write_text(json.dumps(existing))
 
-    new_papers = [
-        {"authors": ["Kim, Chang-Goo"], "title": "A"},
-        {"authors": ["Ostriker, Eve C."], "title": "B"},
-    ]
-
-    def patched_main():
-        new_count = len(new_papers)
-        if out_path.exists():
-            with open(out_path) as f:
-                existing_data = json.load(f)
-            if new_count <= existing_data.get("total", 0):
-                return "skipped"
-        return "wrote"
-
-    assert patched_main() == "wrote"
+    new_papers = [{"id": "A"}, {"id": "B"}]
+    new_count = len(new_papers)
+    with open(out_path) as f:
+        existing_count = json.load(f).get("total", 0)
+    assert new_count > existing_count  # would write

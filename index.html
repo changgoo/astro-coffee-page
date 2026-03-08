@@ -18,10 +18,7 @@
   <h1><a href="index.html">astro coffee ☕</a></h1>
 
   <div class="header-controls">
-    <button id="btn-prev" class="btn-nav" title="Older">&#8592; Older</button>
-    <select id="date-select" aria-label="Select date"></select>
-    <button id="btn-today" class="btn-nav" title="Go to most recent date">Today</button>
-    <button id="btn-next" class="btn-nav" title="Newer">Newer &#8594;</button>
+    <span id="current-date-label" class="current-date-label"></span>
     <span id="fetched-at" class="fetched-at"></span>
   </div>
 
@@ -96,9 +93,13 @@
       <option value="title">Title A–Z</option>
       <option value="category">Category</option>
     </select>
-    <button id="btn-local-10" class="btn-local-10" title="Show strong local author papers from all available days">
-      Local authors (10 days)
+    <button id="btn-archive" class="btn-archive" title="Browse the 1000 most recent astro-ph papers">
+      Archive (1000 papers)
     </button>
+  </div>
+
+  <div id="search-container" style="display:none;">
+    <input id="search-input" type="text" placeholder="Search title or author…" autocomplete="off" />
   </div>
 
   <div id="cat-filter">

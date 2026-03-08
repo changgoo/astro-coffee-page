@@ -141,13 +141,49 @@ Two new sort options replace the old ambiguous "Default (arXiv order)":
 
 ---
 
+## 13. Diff-based listing, archive view, and arXiv numbering (PR #12, closes #10)
+
+**Motivation:** The date-window API query from PR #9 still caused mismatches with arXiv's published listing — wrong paper set and no separation of new submissions vs. cross-listings.
+
+### Scraping — diff-based approach
+
+`scripts/scrape.py` now uses a snapshot-diff strategy instead of a date-window query:
+
+1. **Fetch** the 1000 most recently submitted `astro-ph.*` papers from the arXiv API (no date filter, sorted by `submittedDate` descending).
+2. **Diff** against `data/archive.json` (the previous 1000-paper snapshot). Papers in the new fetch but not in the archive are the day's new listings.
+3. **Save** new papers to `data/YYYY-MM-DD.json` and update `data/archive.json`.
+4. **`data/index.json`** simplified to `{"current": "YYYY-MM-DD"}` — no more 10-date array.
+
+**Bootstrap mode** (`--bootstrap N`): for the first run, seeds today's listing with the top N papers sorted by arXiv ID descending (more stable than `submittedDate` for window alignment). Used when `archive.json` does not yet exist.
+
+### Author matching precomputed in scraper
+
+Name matching against the favorites list is now done entirely in Python at scrape time. Each paper in the JSON carries:
+
+- `local_match`: `"strong"` | `"weak"` | `null` — best match strength across all authors
+- `local_authors`: `{arxiv_name: "strong"|"weak"}` — per-author match results
+
+The frontend reads these fields directly, eliminating all client-side string comparison against 179 favorites. Sorting, highlighting, and archive search are now O(1) lookups.
+
+### Frontend changes
+
+- **Removed:** date dropdown, Older/Newer/Today navigation, "Local authors (10 days)" button, all JS name-matching code (`parseNameParts`, `matchAuthor`, `bestMatchStrength`, `loadAuthors`).
+- **Added:** Archive button — loads `data/archive.json` (1000 papers) with a text search bar (searches title + author across all 1000), 100-paper paginated "Load more", and sort/filter controls.
+- **arXiv numbering:** today's listing shows `[1]…[N]` matching `arxiv.org/list/astro-ph/new`. New submissions are numbered sequentially by arXiv ID ascending; cross-listings continue the count.
+- **Cross-listings:** in arXiv order sort, a "Cross-listings (N)" section divider separates papers whose primary category is not `astro-ph.*`.
+- **Category badge colors** applied via a JS `CAT_COLORS` map (inline style) — avoids unreliable CSS class-name-with-dots escaping.
+
+### Author scraper
+
+Added `Associated Faculty & Department Affiliates` page to `scripts/scrape_authors.py`. Author list grew from 146 to 168 names.
+
+---
+
 ## Planned / open issues
 
 | # | Title |
 |---|-------|
 | [#7](https://github.com/changgoo/astro-coffee-page/issues/7) | Globally persistent discussed papers list |
-| [#10](https://github.com/changgoo/astro-coffee-page/issues/10) | Listing order doesn't match arXiv: new submissions vs cross-listings |
 
 Ideas under consideration:
-- **Search bar** — real-time filter across title, authors, and abstract
 - **Discussed papers** — per-session marking via `localStorage` as a first step; global persistence (shared across all users) requires a write mechanism (options: manual `data/discussed.json` in the repo, GitHub Actions `workflow_dispatch`, or an external free-tier backend such as Supabase)

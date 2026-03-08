@@ -9,32 +9,36 @@ const CAT_LABELS = {
   "astro-ph.IM": "IM – Instrumentation",
   "astro-ph.SR": "SR – Stars",
 };
+const CAT_COLORS = {
+  "astro-ph.GA": { bg: "var(--cat-ga)", color: "#fff" },
+  "astro-ph.CO": { bg: "var(--cat-co)", color: "#000" },
+  "astro-ph.EP": { bg: "var(--cat-ep)", color: "#fff" },
+  "astro-ph.HE": { bg: "var(--cat-he)", color: "#fff" },
+  "astro-ph.IM": { bg: "var(--cat-im)", color: "#fff" },
+  "astro-ph.SR": { bg: "var(--cat-sr)", color: "#fff" },
+};
 
 let allPapers = [];
-let favoriteAuthors = [];
 let activeCats = new Set(ASTRO_CATS);
 let currentSort = "local";
-let availableDates = [];
 let currentDate = null;
-let localTenDayMode = false;
+let archiveMode = false;
+let archivePapers = [];
+let archiveDisplayCount = 100;
+let archiveSearchQuery = "";
 
 // ── Initialise ────────────────────────────────────────────────────────────────
 
 async function init() {
-  await Promise.all([loadIndex(), loadAuthors()]);
+  await loadIndex();
   buildCatFilter();
 
-  if (availableDates.length === 0) {
+  if (!currentDate) {
     showEmptyState("No data available yet. The GitHub Action will populate data daily.");
     return;
   }
 
-  // Honour ?date= query param
-  const params = new URLSearchParams(location.search);
-  const requested = params.get("date");
-  currentDate = availableDates.includes(requested) ? requested : availableDates[0];
-
-  populateDateSelector();
+  updateDateLabel(currentDate);
   await loadDay(currentDate);
 }
 
@@ -43,130 +47,37 @@ async function init() {
 async function loadIndex() {
   const res = await fetch("data/index.json");
   const data = await res.json();
-  availableDates = data.dates || [];
+  currentDate = data.current || null;
 }
 
-async function loadAuthors() {
-  const load = async (path) => {
-    try {
-      const res = await fetch(path);
-      const data = await res.json();
-      return data.authors || [];
-    } catch {
-      return [];
-    }
-  };
-  const [auto, manual] = await Promise.all([
-    load("config/authors.json"),
-    load("config/authors_manual.json"),
-  ]);
-  // Merge, deduplicating by name (manual entries take precedence / come first)
-  const seen = new Set();
-  favoriteAuthors = [...manual, ...auto].filter((name) => {
-    if (seen.has(name)) return false;
-    seen.add(name);
-    return true;
-  });
-}
-
-async function loadAllDays() {
-  document.getElementById("loading").style.display = "block";
-  document.getElementById("paper-list").innerHTML = "";
-  document.getElementById("stats").textContent = "";
-  document.getElementById("fetched-at").textContent = "";
-
-  try {
-    // Load live days (filter to strong matches)
-    const liveResults = await Promise.all(
-      availableDates.map(async (d) => {
-        const res = await fetch(`data/${d}.json`);
-        if (!res.ok) return { date: d, papers: [] };
-        const data = await res.json();
-        const raw = data.papers || [];
-        return { date: d, papers: raw.map((p, i) => ({ ...p, _arxivIndex: raw.length - i })) };
-      })
-    );
-    const livePapers = liveResults.flatMap(({ date, papers }) =>
-      papers
-        .filter((p) => bestMatchStrength(p) === "strong")
-        .map((p) => ({ ...p, _date: date }))
-    );
-
-    // Load archived strong-match papers
-    let archivedPapers = [];
-    try {
-      const archRes = await fetch("data/local-archive.json");
-      if (archRes.ok) {
-        const archData = await archRes.json();
-        // archData is { "YYYY-MM-DD": [...papers], ... }
-        for (const [date, papers] of Object.entries(archData)) {
-          papers.forEach((p, i) => {
-            archivedPapers.push({ ...p, _date: date, _arxivIndex: papers.length - i });
-          });
-        }
-      }
-    } catch { /* archive not yet created — ignore */ }
-
-    // Merge: live dates take precedence; skip archived dates already in live index
-    const liveDates = new Set(availableDates);
-    archivedPapers = archivedPapers.filter((p) => !liveDates.has(p._date));
-
-    allPapers = [...livePapers, ...archivedPapers];
-  } catch (e) {
-    allPapers = [];
-    showEmptyState("Could not load data.");
-  } finally {
-    document.getElementById("loading").style.display = "none";
-  }
-
-  renderAllDays();
-}
-
-function renderAllDays() {
-  const list = document.getElementById("paper-list");
-  list.innerHTML = "";
-
-  // Group by date
-  const byDate = {};
-  for (const paper of allPapers) {
-    (byDate[paper._date] = byDate[paper._date] || []).push(paper);
-  }
-
-  // All dates across live + archive, sorted descending
-  const allDates = Object.keys(byDate).sort((a, b) => b.localeCompare(a));
-
-  let total = 0;
-  for (const date of allDates) {
-    const papers = byDate[date];
-    if (!papers || papers.length === 0) continue;
-    total += papers.length;
-
-    const header = document.createElement("div");
-    header.className = "date-section-header";
-    header.textContent = formatDate(date);
-    list.appendChild(header);
-
-    papers.forEach((paper) => list.appendChild(buildCard(paper)));
-  }
-
-  document.getElementById("stats").textContent =
-    total === 0 ? "No strong local author matches found."
-                : `${total} papers with strong local author matches across ${allDates.length} days`;
-}
 
 async function loadDay(dateStr) {
   document.getElementById("loading").style.display = "block";
   document.getElementById("paper-list").innerHTML = "";
   document.getElementById("stats").textContent = "";
 
-
   try {
     const res = await fetch(`data/${dateStr}.json`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    // Papers are stored newest-first; arXiv listing number 1 = earliest submission.
     const raw = data.papers || [];
-    allPapers = raw.map((p, i) => ({ ...p, _arxivIndex: raw.length - i }));
+
+    // Assign arXiv listing numbers by ascending ID within each group
+    const newSubs = raw.filter((p) => (p.primary_category || "").startsWith("astro-ph"))
+                       .sort((a, b) => a.id.localeCompare(b.id));
+    const crossList = raw.filter((p) => !(p.primary_category || "").startsWith("astro-ph"))
+                         .sort((a, b) => a.id.localeCompare(b.id));
+    const newNums  = new Map(newSubs.map((p, i)  => [p.id, i + 1]));
+    const crossNums = new Map(crossList.map((p, i) => [p.id, newSubs.length + i + 1]));
+
+    // _arxivIndex: position in descending-ID order (used for sort); _arxivNum: display number
+    allPapers = raw.map((p, i) => ({
+      ...p,
+      _arxivIndex: raw.length - i,
+      _arxivNum: newNums.get(p.id) ?? crossNums.get(p.id),
+      _isCrossListing: !(p.primary_category || "").startsWith("astro-ph"),
+    }));
+
     document.getElementById("fetched-at").textContent =
       data.fetched_at ? `fetched ${data.fetched_at.slice(0, 16).replace("T", " ")} UTC` : "";
   } catch (e) {
@@ -179,27 +90,38 @@ async function loadDay(dateStr) {
   render();
 }
 
-// ── UI builders ───────────────────────────────────────────────────────────────
+async function loadArchive() {
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("loading").textContent = "Loading archive (1000 papers)…";
+  document.getElementById("paper-list").innerHTML = "";
+  document.getElementById("stats").textContent = "";
 
-function populateDateSelector() {
-  const sel = document.getElementById("date-select");
-  sel.innerHTML = "";
-  availableDates.forEach((d) => {
-    const opt = document.createElement("option");
-    opt.value = d;
-    opt.textContent = formatDate(d);
-    if (d === currentDate) opt.selected = true;
-    sel.appendChild(opt);
-  });
+  try {
+    const res = await fetch("data/archive.json");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const raw = data.papers || [];
+    archivePapers = raw.map((p, i) => ({ ...p, _arxivIndex: raw.length - i }));
+    document.getElementById("fetched-at").textContent =
+      data.fetched_at ? `archive fetched ${data.fetched_at.slice(0, 16).replace("T", " ")} UTC` : "";
+  } catch (e) {
+    archivePapers = [];
+    showEmptyState("Could not load archive.");
+  } finally {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("loading").textContent = "Loading…";
+  }
 
-  // Prev/Next buttons
-  updateNavButtons();
+  archiveDisplayCount = 100;
+  renderArchive();
 }
 
-function updateNavButtons() {
-  const idx = availableDates.indexOf(currentDate);
-  document.getElementById("btn-prev").disabled = idx >= availableDates.length - 1;
-  document.getElementById("btn-next").disabled = idx <= 0;
+// ── UI builders ───────────────────────────────────────────────────────────────
+
+function updateDateLabel(dateStr) {
+  const label = document.getElementById("current-date-label");
+  if (!label) return;
+  label.textContent = dateStr === "archive" ? "Archive (1000 papers)" : formatDate(dateStr);
 }
 
 function buildCatFilter() {
@@ -209,12 +131,11 @@ function buildCatFilter() {
     btn.className = "cat-toggle active";
     btn.dataset.cat = cat;
     btn.title = CAT_LABELS[cat] || cat;
-    btn.textContent = cat.split(".")[1]; // GA, CO, etc.
+    btn.textContent = cat.split(".")[1];
     btn.addEventListener("click", () => toggleCat(cat, btn));
     container.appendChild(btn);
   });
 
-  // "All" / "None" shortcuts
   const all = document.createElement("button");
   all.className = "cat-toggle";
   all.textContent = "All";
@@ -222,7 +143,7 @@ function buildCatFilter() {
   all.addEventListener("click", () => {
     activeCats = new Set(ASTRO_CATS);
     document.querySelectorAll(".cat-toggle[data-cat]").forEach((b) => b.classList.add("active"));
-    render();
+    if (archiveMode) renderArchive(); else render();
   });
 
   const none = document.createElement("button");
@@ -231,7 +152,7 @@ function buildCatFilter() {
   none.addEventListener("click", () => {
     activeCats.clear();
     document.querySelectorAll(".cat-toggle[data-cat]").forEach((b) => b.classList.remove("active"));
-    render();
+    if (archiveMode) renderArchive(); else render();
   });
 
   container.appendChild(all);
@@ -246,111 +167,113 @@ function toggleCat(cat, btn) {
     activeCats.add(cat);
     btn.classList.add("active");
   }
-  render();
+  if (archiveMode) renderArchive(); else render();
 }
 
 // ── Render ────────────────────────────────────────────────────────────────────
+
+function applyFilters(papers) {
+  return papers.filter((p) => {
+    const primary = p.primary_category;
+    if (primary && activeCats.has(primary)) return true;
+    // Cross-listings: include if any of their categories is active
+    return p.categories.some((c) => activeCats.has(c));
+  });
+}
+
+function isNewSubmission(paper) {
+  return (paper.primary_category || "").startsWith("astro-ph");
+}
 
 function render() {
   const list = document.getElementById("paper-list");
   list.innerHTML = "";
 
-  // Filter: include paper if its primary_category is active,
-  // OR if it has any active category and no primary.
-  let papers = allPapers.filter((p) => {
-    const primary = p.primary_category;
-    if (primary && activeCats.has(primary)) return true;
-    // cross-listed: include if any active category matches
-    if (!primary) return p.categories.some((c) => activeCats.has(c));
-    return false;
-  });
-
-  // Sort
+  let papers = applyFilters(allPapers);
   papers = sortPapers(papers, currentSort);
 
-  document.getElementById("stats").textContent =
-    `${papers.length} of ${allPapers.length} papers`;
-
   if (papers.length === 0) {
+    document.getElementById("stats").textContent = `0 of ${allPapers.length} papers`;
     list.innerHTML = `<div id="empty-state">No papers match the current filters.</div>`;
     return;
   }
 
-  papers.forEach((paper, i) => {
-    list.appendChild(buildCard(paper, i));
-  });
+  const isArxivOrder = currentSort === "arxiv" || currentSort === "arxiv-rev";
+  if (isArxivOrder) {
+    const newSubs = papers.filter(isNewSubmission);
+    const crossList = papers.filter((p) => !isNewSubmission(p));
+    document.getElementById("stats").textContent =
+      `${newSubs.length} new submission${newSubs.length !== 1 ? "s" : ""}` +
+      (crossList.length ? `, ${crossList.length} cross-listing${crossList.length !== 1 ? "s" : ""}` : "") +
+      ` (${papers.length} of ${allPapers.length} papers)`;
+    newSubs.forEach((paper) => list.appendChild(buildCard(paper)));
+    if (crossList.length > 0) {
+      list.appendChild(makeSectionHeader(`Cross-listings (${crossList.length})`));
+      crossList.forEach((paper) => list.appendChild(buildCard(paper)));
+    }
+  } else {
+    document.getElementById("stats").textContent = `${papers.length} of ${allPapers.length} papers`;
+    papers.forEach((paper) => list.appendChild(buildCard(paper)));
+  }
+}
+
+function renderArchive() {
+  const list = document.getElementById("paper-list");
+  list.innerHTML = "";
+
+  // Apply text search
+  let papers = archivePapers;
+  if (archiveSearchQuery) {
+    const q = archiveSearchQuery.toLowerCase();
+    papers = papers.filter((p) =>
+      p.title.toLowerCase().includes(q) ||
+      p.authors.some((a) => a.toLowerCase().includes(q))
+    );
+  }
+
+  // Apply category filter and sort
+  papers = applyFilters(papers);
+  papers = sortPapers(papers, currentSort);
+
+  const total = papers.length;
+  const shown = papers.slice(0, archiveDisplayCount);
+
+  document.getElementById("stats").textContent =
+    `Showing ${shown.length} of ${total} papers in archive`;
+
+  if (shown.length === 0) {
+    list.innerHTML = `<div id="empty-state">No papers match the current filters.</div>`;
+    return;
+  }
+
+  const isArxivOrder = currentSort === "arxiv" || currentSort === "arxiv-rev";
+  if (isArxivOrder) {
+    const newSubs = shown.filter(isNewSubmission);
+    const crossList = shown.filter((p) => !isNewSubmission(p));
+    newSubs.forEach((paper) => list.appendChild(buildCard(paper)));
+    if (crossList.length > 0) {
+      list.appendChild(makeSectionHeader(`Cross-listings (${crossList.length}${shown.length < total ? "+" : ""})`));
+      crossList.forEach((paper) => list.appendChild(buildCard(paper)));
+    }
+  } else {
+    shown.forEach((paper) => list.appendChild(buildCard(paper)));
+  }
+
+  if (shown.length < total) {
+    const btn = document.createElement("button");
+    btn.className = "load-more-btn";
+    btn.textContent = `Load ${Math.min(100, total - shown.length)} more  (${total - shown.length} remaining)`;
+    btn.addEventListener("click", () => {
+      archiveDisplayCount += 100;
+      renderArchive();
+    });
+    list.appendChild(btn);
+  }
 }
 
 // ── Name matching ─────────────────────────────────────────────────────────────
-
-const NAME_SUFFIXES = new Set(["iii", "ii", "iv", "jr.", "jr", "sr.", "sr"]);
-const NAME_TITLES   = new Set(["sir", "dr.", "dr", "prof.", "prof"]);
-
-/**
- * Parse a name into {first, last, middleInitial} components, handling two formats:
- *   "Last, First [Middle]"  (arXiv)
- *   "[Title] First [Middle] Last [Suffix]"  (Princeton people page)
- * Returns lowercase, dot-stripped first name, lowercase last name, and the
- * first character of the middle token (or null if absent).
- */
-function parseNameParts(name) {
-  if (name.includes(",")) {
-    // arXiv format: "Last, First [Middle...]"
-    const comma = name.indexOf(",");
-    const last   = name.slice(0, comma).trim().toLowerCase();
-    const rest   = name.slice(comma + 1).trim().split(/\s+/);
-    const first  = rest[0].replace(/\./g, "").toLowerCase();
-    const middleInitial = rest.length > 1 ? rest[1].replace(/\./g, "").toLowerCase()[0] : null;
-    return { first, last, middleInitial };
-  }
-  // Princeton format: strip leading titles and trailing suffixes, then
-  // first token = first name, middle token (if any) = middle, last token = last name.
-  let tokens = name.trim().split(/\s+/);
-  while (tokens.length > 1 && NAME_TITLES.has(tokens[0].toLowerCase()))
-    tokens = tokens.slice(1);
-  while (tokens.length > 1 && NAME_SUFFIXES.has(tokens[tokens.length - 1].toLowerCase()))
-    tokens = tokens.slice(0, -1);
-  const last  = tokens[tokens.length - 1].toLowerCase();
-  const first = tokens[0].replace(/\./g, "").toLowerCase();
-  const middleInitial = tokens.length > 2 ? tokens[1].replace(/\./g, "").toLowerCase()[0] : null;
-  return { first, last, middleInitial };
-}
-
-/**
- * Compare a favorite name (Princeton format) against an arXiv author name.
- * Returns "strong" (last + first match, or last + first & middle initial match),
- * "weak" (last + first initial match), or null (last name mismatch).
- */
-function matchAuthor(favName, arxivName) {
-  const fav = parseNameParts(favName);
-  const arx = parseNameParts(arxivName);
-  if (fav.last !== arx.last) return null;
-  if (fav.first === arx.first) return "strong";
-  if (fav.first[0] === arx.first[0]) {
-    // Upgrade to strong when both names carry a middle initial and they agree
-    if (fav.middleInitial && arx.middleInitial && fav.middleInitial === arx.middleInitial)
-      return "strong";
-    return "weak";
-  }
-  return null;
-}
-
-/** Return the best match strength ("strong" | "weak" | null) across all authors. */
-function bestMatchStrength(paper) {
-  let best = null;
-  for (const author of paper.authors) {
-    for (const fav of favoriteAuthors) {
-      const s = matchAuthor(fav, author);
-      if (s === "strong") return "strong";
-      if (s === "weak") best = "weak";
-    }
-  }
-  return best;
-}
-
-function hasLocalAuthor(paper) {
-  return bestMatchStrength(paper) !== null;
-}
+// Match strength is precomputed during scraping and stored in paper.local_match
+// and paper.local_authors — no client-side name matching needed.
 
 function sortPapers(papers, mode) {
   const copy = [...papers];
@@ -361,35 +284,42 @@ function sortPapers(papers, mode) {
   } else if (mode === "title") {
     copy.sort((a, b) => a.title.localeCompare(b.title));
   } else if (mode === "author") {
-    copy.sort((a, b) => {
-      const aFirst = a.authors[0] || "";
-      const bFirst = b.authors[0] || "";
-      return aFirst.localeCompare(bFirst);
-    });
+    copy.sort((a, b) => (a.authors[0] || "").localeCompare(b.authors[0] || ""));
   } else if (mode === "category") {
     copy.sort((a, b) => (a.primary_category || "").localeCompare(b.primary_category || ""));
   } else if (mode === "local") {
-    // strong matches first, then weak, then the rest; arXiv order as tiebreaker
     const rank = { "strong": 0, "weak": 1, null: 2 };
     copy.sort((a, b) =>
-      rank[bestMatchStrength(a)] - rank[bestMatchStrength(b)] ||
+      rank[a.local_match] - rank[b.local_match] ||
       (a._arxivIndex || 0) - (b._arxivIndex || 0)
     );
   }
   return copy;
 }
 
-function buildCard(paper, idx) {
+function makeSectionHeader(text) {
+  const div = document.createElement("div");
+  div.className = "section-header";
+  div.textContent = text;
+  return div;
+}
+
+function buildCard(paper) {
   const card = document.createElement("div");
   card.className = "paper-card";
 
-  const strength = bestMatchStrength(paper);
-  if (strength === "strong") card.classList.add("highlighted-strong");
-  else if (strength === "weak") card.classList.add("highlighted-weak");
+  if (paper.local_match === "strong") card.classList.add("highlighted-strong");
+  else if (paper.local_match === "weak") card.classList.add("highlighted-weak");
 
-  // Meta row: ID, PDF link, categories
   const meta = document.createElement("div");
   meta.className = "paper-meta";
+
+  if (paper._arxivNum != null) {
+    const numSpan = document.createElement("span");
+    numSpan.className = "arxiv-num" + (paper._isCrossListing ? " arxiv-num-cross" : "");
+    numSpan.textContent = `[${paper._arxivNum}]`;
+    meta.appendChild(numSpan);
+  }
 
   const idSpan = document.createElement("span");
   idSpan.className = "paper-id";
@@ -404,16 +334,13 @@ function buildCard(paper, idx) {
 
   const primaryBadge = buildCatBadge(paper.primary_category);
 
-  const secondaryCats = paper.categories
-    .filter((c) => c !== paper.primary_category)
-    .map((c) => c);
+  const secondaryCats = paper.categories.filter((c) => c !== paper.primary_category);
   const secSpan = document.createElement("span");
   secSpan.className = "secondary-cats";
   if (secondaryCats.length) secSpan.textContent = "+ " + secondaryCats.join(", ");
 
   meta.append(idSpan, pdfLink, primaryBadge, secSpan);
 
-  // Title
   const titleDiv = document.createElement("div");
   titleDiv.className = "paper-title";
   const titleLink = document.createElement("a");
@@ -423,12 +350,10 @@ function buildCard(paper, idx) {
   titleLink.textContent = paper.title;
   titleDiv.appendChild(titleLink);
 
-  // Authors
   const authorsDiv = document.createElement("div");
   authorsDiv.className = "paper-authors";
-  authorsDiv.innerHTML = paper.authors.map((a) => highlightAuthor(a)).join(", ");
+  authorsDiv.innerHTML = paper.authors.map((a) => highlightAuthor(a, paper.local_authors)).join(", ");
 
-  // Abstract toggle
   const toggleBtn = document.createElement("button");
   toggleBtn.className = "abstract-toggle";
   toggleBtn.textContent = "Show abstract";
@@ -449,27 +374,22 @@ function buildCard(paper, idx) {
 function buildCatBadge(cat) {
   const badge = document.createElement("span");
   badge.className = "cat-badge";
-  if (cat) {
-    const safe = cat.replace(".", "\\.");
-    badge.classList.add(cat);
-    badge.textContent = cat.split(".")[1] || cat;
-    badge.title = CAT_LABELS[cat] || cat;
+  badge.textContent = cat ? (cat.split(".")[1] || cat) : "other";
+  badge.title = cat || "";
+  const style = cat && CAT_COLORS[cat];
+  if (style) {
+    badge.style.background = style.bg;
+    badge.style.color = style.color;
   } else {
     badge.classList.add("other");
-    badge.textContent = "other";
   }
   return badge;
 }
 
-function highlightAuthor(name) {
-  let best = null;
-  for (const fav of favoriteAuthors) {
-    const s = matchAuthor(fav, name);
-    if (s === "strong") { best = "strong"; break; }
-    if (s === "weak") best = "weak";
-  }
-  if (best === "strong") return `<span class="author-highlight-strong">${escHtml(name)}</span>`;
-  if (best === "weak")   return `<span class="author-highlight-weak">${escHtml(name)}</span>`;
+function highlightAuthor(name, localAuthors) {
+  const strength = localAuthors && localAuthors[name];
+  if (strength === "strong") return `<span class="author-highlight-strong">${escHtml(name)}</span>`;
+  if (strength === "weak")   return `<span class="author-highlight-weak">${escHtml(name)}</span>`;
   return escHtml(name);
 }
 
@@ -504,76 +424,42 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem(ANN_KEY, open ? "1" : "0");
   }
 
-  // Restore saved state (default: collapsed)
   setAnnouncement(localStorage.getItem(ANN_KEY) === "1");
+  annToggle.addEventListener("click", () => setAnnouncement(annBody.hidden));
 
-  annToggle.addEventListener("click", () => {
-    setAnnouncement(annBody.hidden);
-  });
-
+  // ── Sort ──
   document.getElementById("sort-select").addEventListener("change", (e) => {
     currentSort = e.target.value;
-    render();
+    if (archiveMode) renderArchive(); else render();
   });
 
-  document.getElementById("date-select").addEventListener("change", async (e) => {
-    currentDate = e.target.value;
-    updateNavButtons();
-    history.pushState({}, "", `?date=${currentDate}`);
-    await loadDay(currentDate);
-  });
+  // ── Archive toggle ──
+  document.getElementById("btn-archive").addEventListener("click", async () => {
+    archiveMode = !archiveMode;
+    const btn = document.getElementById("btn-archive");
+    const searchContainer = document.getElementById("search-container");
 
-  document.getElementById("btn-local-10").addEventListener("click", async () => {
-    localTenDayMode = !localTenDayMode;
-    const btn = document.getElementById("btn-local-10");
-    const navEls = [
-      document.getElementById("btn-prev"),
-      document.getElementById("date-select"),
-      document.getElementById("btn-next"),
-      document.getElementById("btn-today"),
-    ];
-    if (localTenDayMode) {
+    if (archiveMode) {
       btn.classList.add("active");
-      navEls.forEach((el) => { el.disabled = true; el.style.opacity = "0.4"; });
-      await loadAllDays();
+      searchContainer.style.display = "";
+      updateDateLabel("archive");
+      await loadArchive();
     } else {
       btn.classList.remove("active");
-      navEls.forEach((el) => { el.disabled = false; el.style.opacity = ""; });
-      // Restore nav button disabled state based on position
-      updateNavButtons();
+      searchContainer.style.display = "none";
+      archiveSearchQuery = "";
+      document.getElementById("search-input").value = "";
+      archiveDisplayCount = 100;
+      updateDateLabel(currentDate);
       await loadDay(currentDate);
     }
   });
 
-  document.getElementById("btn-today").addEventListener("click", async () => {
-    if (availableDates.length === 0) return;
-    currentDate = availableDates[0];
-    document.getElementById("date-select").value = currentDate;
-    updateNavButtons();
-    history.pushState({}, "", `?date=${currentDate}`);
-    await loadDay(currentDate);
-  });
-
-  document.getElementById("btn-prev").addEventListener("click", async () => {
-    const idx = availableDates.indexOf(currentDate);
-    if (idx < availableDates.length - 1) {
-      currentDate = availableDates[idx + 1];
-      document.getElementById("date-select").value = currentDate;
-      updateNavButtons();
-      history.pushState({}, "", `?date=${currentDate}`);
-      await loadDay(currentDate);
-    }
-  });
-
-  document.getElementById("btn-next").addEventListener("click", async () => {
-    const idx = availableDates.indexOf(currentDate);
-    if (idx > 0) {
-      currentDate = availableDates[idx - 1];
-      document.getElementById("date-select").value = currentDate;
-      updateNavButtons();
-      history.pushState({}, "", `?date=${currentDate}`);
-      await loadDay(currentDate);
-    }
+  // ── Archive search ──
+  document.getElementById("search-input").addEventListener("input", (e) => {
+    archiveSearchQuery = e.target.value.trim();
+    archiveDisplayCount = 100;
+    renderArchive();
   });
 
   init();
