@@ -203,7 +203,15 @@ def parse_name_parts(name):
 
 
 def match_author(arxiv_name, fav_authors):
-    """Return "strong", "weak", or None for one arXiv author against fav_authors."""
+    """Return "strong", "weak", or None for one arXiv author against fav_authors.
+
+    Strong match conditions (beyond exact first-name match):
+      - Hyphenated first name matched by hyphenated initials only:
+        "C.-G." == "Chang-Goo Kim" → strong; "C.G." is NOT strong
+      - First initial + matching middle initial: "M. W." == "Matthew W." → strong
+    A single bare first initial is always weak; add the abbreviated form to
+    authors_manual.json to get a strong match (e.g. "G. Livadiotis").
+    """
     arx_first, arx_last, arx_mid = parse_name_parts(arxiv_name)
     best = None
     for fav_name in fav_authors:
@@ -212,7 +220,20 @@ def match_author(arxiv_name, fav_authors):
             continue
         if fav_first == arx_first:
             return "strong"
-        if fav_first and arx_first and fav_first[0] == arx_first[0]:
+        if not fav_first or not arx_first:
+            continue
+        # Hyphenated favorite first name: only hyphenated initials are strong
+        # (e.g. "C.-G." == "Chang-Goo"); concatenated "C.G." is NOT strong
+        if "-" in fav_first and "-" in arx_first:
+            fav_parts = fav_first.split("-")
+            arx_parts = arx_first.split("-")
+            if (len(fav_parts) == len(arx_parts) and
+                    all(len(ap) == 1 and ap == fp[0]
+                        for ap, fp in zip(arx_parts, fav_parts))):
+                return "strong"
+
+        # First initial match with optional middle initial agreement
+        if fav_first[0] == arx_first[0]:
             if fav_mid and arx_mid and fav_mid == arx_mid:
                 return "strong"
             best = "weak"

@@ -11,6 +11,9 @@ A daily arXiv astro-ph paper browser hosted on GitHub Pages.
 - Highlight Princeton authors (strong: bold amber; weak: italic pale yellow)
 - **Archive view** — browse the 1000 most recent astro-ph papers with full-text search (title + author) and 100-paper paginated loading
 - Author match strength (`local_match`, `local_authors`) precomputed during scraping — no client-side name matching
+- **Font size control** — S / M / L buttons scale all paper content; persisted across sessions
+- **Abstract expand mode** — collapsed (default), local strong authors open, or all open; persisted across sessions
+- **Author truncation** — long author lists collapsed to 5 with expand toggle; strong-match papers always show full list
 
 ## Setup
 
@@ -86,9 +89,7 @@ python scripts/scrape_authors.py
 To adapt for a different institution, edit the `PAGES` list and CSS selectors in
 `scripts/scrape_authors.py`. Use `--dry-run` to preview without writing.
 
-Names are matched by last name (exact) then first name: an exact first-name match is a
-**strong** match (bold amber highlight); a matching first initial only is a **weak**
-match (italic grey highlight). Titles (Dr., Sir) and suffixes (Jr., III) are ignored.
+Names are matched by last name (exact) then first name. **Strong** match (bold amber): exact first name, hyphenated initials matching a hyphenated first name (`C.-G.` == `Chang-Goo`), or first + middle initial both match (`M. W.` == `Matthew W.`). **Weak** match (italic grey): first initial only (including single bare initials). To get a strong match for someone who publishes under an abbreviated name, add that form to `config/authors_manual.json` (e.g. `"G. Livadiotis"`). Titles (Dr., Sir) and suffixes (Jr., III) are ignored.
 
 ## Local development
 

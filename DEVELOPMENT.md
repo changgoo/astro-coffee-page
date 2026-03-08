@@ -179,6 +179,34 @@ Added `Associated Faculty & Department Affiliates` page to `scripts/scrape_autho
 
 ---
 
+## 14. Reader preferences: font size, abstract mode, author truncation (PR #13)
+
+Three UI quality-of-life improvements to `app.js`, `index.html`, and `style.css`:
+
+**Font size buttons (S / M / L)** — three buttons in the toolbar cycle the base font size between 13 px (S), 15 px (M, default), and 17 px (L). Paper card content (`paper-title`, `paper-authors`, `paper-abstract`, and all meta spans) uses `em` units so it scales with the body font size. The active size is highlighted and persisted in `localStorage`.
+
+**Abstract expand mode** — a select next to the sort control offers three modes:
+- *Collapsed* (default) — all abstracts hidden, click to open individually
+- *Local (strong) open* — abstracts for strong-match Princeton author papers open automatically
+- *All open* — every abstract expanded on page load
+
+The selected mode is persisted in `localStorage` and applied on every render.
+
+**Author list truncation** — papers with more than 5 authors show the first 5 followed by a "… and N more" link; clicking expands to the full list, with a "(collapse)" link to shrink it back. Strong-match papers always show the full author list so no highlighted name is hidden.
+
+**Refined author matching** — `match_author()` in `scripts/scrape.py` gains two new strong-match rules:
+
+| Case | Example | Result |
+|------|---------|--------|
+| Hyphenated first name + hyphenated initials | `C.-G. Kim` vs `Chang-Goo Kim` | strong |
+| Hyphenated first name + concatenated initials | `C.G. Kim` vs `Chang-Goo Kim` | weak |
+| Single bare initial (any case) | `C. Kim`, `G. Livadiotis` | weak |
+| First initial + matching middle initial | `M. W. Kunz` vs `Matthew W. Kunz` | strong |
+
+Single bare initials are always weak. To get a strong match for an author who publishes under an abbreviated name, add that form directly to `config/authors_manual.json` (e.g. `"G. Livadiotis"`).
+
+---
+
 ## Planned / open issues
 
 | # | Title |

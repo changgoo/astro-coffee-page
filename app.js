@@ -26,10 +26,23 @@ let archiveMode = false;
 let archivePapers = [];
 let archiveDisplayCount = 100;
 let archiveSearchQuery = "";
+let currentFontSize = localStorage.getItem("font-size") || "medium";
+let abstractMode = localStorage.getItem("abstract-mode") || "none";
 
 // ── Initialise ────────────────────────────────────────────────────────────────
 
+function applyFontSize(size) {
+  currentFontSize = size;
+  document.body.dataset.font = size;
+  localStorage.setItem("font-size", size);
+  document.querySelectorAll(".btn-font").forEach((b) => {
+    b.classList.toggle("active", b.dataset.size === size);
+  });
+}
+
 async function init() {
+  applyFontSize(currentFontSize);
+  document.getElementById("abstract-mode").value = abstractMode;
   await loadIndex();
   buildCatFilter();
 
@@ -304,6 +317,52 @@ function makeSectionHeader(text) {
   return div;
 }
 
+const MAX_AUTHORS_SHOWN = 5;
+
+function buildAuthorsDiv(paper) {
+  const div = document.createElement("div");
+  div.className = "paper-authors";
+  const authors = paper.authors;
+  const truncate = paper.local_match !== "strong" && authors.length > MAX_AUTHORS_SHOWN;
+
+  if (!truncate) {
+    div.innerHTML = authors.map((a) => highlightAuthor(a, paper.local_authors)).join(", ");
+    return div;
+  }
+
+  const shownSpan = document.createElement("span");
+  shownSpan.innerHTML = authors.slice(0, MAX_AUTHORS_SHOWN)
+    .map((a) => highlightAuthor(a, paper.local_authors)).join(", ");
+
+  const hiddenSpan = document.createElement("span");
+  hiddenSpan.innerHTML = ", " + authors.slice(MAX_AUTHORS_SHOWN)
+    .map((a) => highlightAuthor(a, paper.local_authors)).join(", ");
+  hiddenSpan.hidden = true;
+
+  const expandBtn = document.createElement("button");
+  expandBtn.className = "author-expand-btn";
+  expandBtn.textContent = ` … and ${authors.length - MAX_AUTHORS_SHOWN} more`;
+
+  const collapseBtn = document.createElement("button");
+  collapseBtn.className = "author-expand-btn";
+  collapseBtn.textContent = " (collapse)";
+  collapseBtn.hidden = true;
+
+  expandBtn.addEventListener("click", () => {
+    expandBtn.hidden = true;
+    hiddenSpan.hidden = false;
+    collapseBtn.hidden = false;
+  });
+  collapseBtn.addEventListener("click", () => {
+    expandBtn.hidden = false;
+    hiddenSpan.hidden = true;
+    collapseBtn.hidden = true;
+  });
+
+  div.append(shownSpan, expandBtn, hiddenSpan, collapseBtn);
+  return div;
+}
+
 function buildCard(paper) {
   const card = document.createElement("div");
   card.className = "paper-card";
@@ -350,13 +409,13 @@ function buildCard(paper) {
   titleLink.textContent = paper.title;
   titleDiv.appendChild(titleLink);
 
-  const authorsDiv = document.createElement("div");
-  authorsDiv.className = "paper-authors";
-  authorsDiv.innerHTML = paper.authors.map((a) => highlightAuthor(a, paper.local_authors)).join(", ");
+  const authorsDiv = buildAuthorsDiv(paper);
 
   const toggleBtn = document.createElement("button");
   toggleBtn.className = "abstract-toggle";
-  toggleBtn.textContent = "Show abstract";
+  const startOpen = abstractMode === "all" ||
+    (abstractMode === "strong" && paper.local_match === "strong");
+  toggleBtn.textContent = startOpen ? "Hide abstract" : "Show abstract";
   toggleBtn.addEventListener("click", () => {
     const abs = card.querySelector(".paper-abstract");
     const open = abs.classList.toggle("open");
@@ -364,7 +423,7 @@ function buildCard(paper) {
   });
 
   const abstractDiv = document.createElement("div");
-  abstractDiv.className = "paper-abstract";
+  abstractDiv.className = "paper-abstract" + (startOpen ? " open" : "");
   abstractDiv.textContent = paper.abstract;
 
   card.append(meta, titleDiv, authorsDiv, toggleBtn, abstractDiv);
@@ -426,6 +485,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setAnnouncement(localStorage.getItem(ANN_KEY) === "1");
   annToggle.addEventListener("click", () => setAnnouncement(annBody.hidden));
+
+  // ── Font size ──
+  document.querySelectorAll(".btn-font").forEach((btn) => {
+    btn.addEventListener("click", () => applyFontSize(btn.dataset.size));
+  });
+
+  // ── Abstract mode ──
+  document.getElementById("abstract-mode").addEventListener("change", (e) => {
+    abstractMode = e.target.value;
+    localStorage.setItem("abstract-mode", abstractMode);
+    if (archiveMode) renderArchive(); else render();
+  });
 
   // ── Sort ──
   document.getElementById("sort-select").addEventListener("change", (e) => {

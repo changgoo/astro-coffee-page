@@ -217,17 +217,57 @@ def test_match_author_strong_middle_initial():
     assert scrape.match_author("Ostriker, Eve C.", FAV_AUTHORS) == "strong"
 
 
-def test_match_author_weak_first_initial_only():
-    """First initial match without middle initial → weak."""
-    assert scrape.match_author("Ostriker, E.", FAV_AUTHORS) == "weak"
+FAV_AUTHORS_EXTENDED = ["Chang-Goo Kim", "Eve C. Ostriker", "Matthew W. Kunz", "George Livadiotis"]
 
+
+# Chang-Goo Kim (hyphenated first name, no middle initial)
+def test_match_author_hyphenated_exact_strong():
+    assert scrape.match_author("Kim, Chang-Goo", FAV_AUTHORS_EXTENDED) == "strong"
+
+def test_match_author_hyphenated_initials_strong():
+    """C.-G. Kim → strong (hyphenated initials match hyphenated first name)."""
+    assert scrape.match_author("Kim, C.-G.", FAV_AUTHORS_EXTENDED) == "strong"
+
+def test_match_author_concatenated_initials_weak():
+    """C.G. Kim → weak (concatenated initials are not strong)."""
+    assert scrape.match_author("Kim, C.G.", FAV_AUTHORS_EXTENDED) == "weak"
+
+def test_match_author_single_initial_hyphenated_fav_weak():
+    """C. Kim → weak (single initial, fav first name is hyphenated)."""
+    assert scrape.match_author("Kim, C.", FAV_AUTHORS_EXTENDED) == "weak"
+
+
+# Matthew W. Kunz (non-hyphenated, has middle initial)
+def test_match_author_first_and_middle_initial_strong():
+    """M. W. Kunz → strong (first + middle initial both match)."""
+    assert scrape.match_author("Kunz, M. W.", FAV_AUTHORS_EXTENDED) == "strong"
+
+def test_match_author_exact_no_middle_strong():
+    """Matthew Kunz → strong (exact first name, middle initial not required)."""
+    assert scrape.match_author("Kunz, Matthew", FAV_AUTHORS_EXTENDED) == "strong"
+
+def test_match_author_single_initial_fav_has_middle_weak():
+    """M. Kunz → weak (single initial, fav has middle initial)."""
+    assert scrape.match_author("Kunz, M.", FAV_AUTHORS_EXTENDED) == "weak"
+
+
+# George Livadiotis (non-hyphenated, no middle initial)
+def test_match_author_single_initial_always_weak():
+    """Single bare initial is always weak; use authors_manual.json for exact match."""
+    assert scrape.match_author("Livadiotis, G.", FAV_AUTHORS_EXTENDED) == "weak"
+    assert scrape.match_author("Livadiotis, G. A.", FAV_AUTHORS_EXTENDED) == "weak"
+
+
+# Generic weak/none
+def test_match_author_weak_first_letter_only():
+    """Different full first name with same initial → weak."""
+    assert scrape.match_author("Kim, Christopher", FAV_AUTHORS_EXTENDED) == "weak"
 
 def test_match_author_last_name_mismatch():
-    assert scrape.match_author("Lee, Chang-Goo", FAV_AUTHORS) is None
-
+    assert scrape.match_author("Lee, Chang-Goo", FAV_AUTHORS_EXTENDED) is None
 
 def test_match_author_no_match():
-    assert scrape.match_author("Nobody, Jane", FAV_AUTHORS) is None
+    assert scrape.match_author("Nobody, Jane", FAV_AUTHORS_EXTENDED) is None
 
 
 # ── annotate_papers ───────────────────────────────────────────────────────────
@@ -256,6 +296,31 @@ def test_annotate_papers_no_match():
 
 
 def test_annotate_papers_weak_match():
+    """Full first name with only first-initial overlap → weak."""
+    papers = [{"authors": ["Ostriker, Elaine"], "title": "Test"}]
+    scrape.annotate_papers(papers, ["Eve C. Ostriker"])
+    assert papers[0]["local_match"] == "weak"
+    assert papers[0]["local_authors"] == {"Ostriker, Elaine": "weak"}
+
+
+def test_annotate_papers_single_initial_always_weak():
+    """Single initial is always weak; add abbreviated form to manual list for strong."""
+    papers = [{"authors": ["Livadiotis, G."], "title": "Test"}]
+    scrape.annotate_papers(papers, ["George Livadiotis"])
+    assert papers[0]["local_match"] == "weak"
+    assert papers[0]["local_authors"] == {"Livadiotis, G.": "weak"}
+
+
+def test_annotate_papers_manual_initial_name_strong():
+    """Adding abbreviated form to fav list gives exact match → strong."""
+    papers = [{"authors": ["Livadiotis, G."], "title": "Test"}]
+    scrape.annotate_papers(papers, ["George Livadiotis", "G. Livadiotis"])
+    assert papers[0]["local_match"] == "strong"
+    assert papers[0]["local_authors"] == {"Livadiotis, G.": "strong"}
+
+
+def test_annotate_papers_single_initial_fav_has_middle_weak():
+    """Single initial, fav has middle initial → weak."""
     papers = [{"authors": ["Ostriker, E."], "title": "Test"}]
     scrape.annotate_papers(papers, ["Eve C. Ostriker"])
     assert papers[0]["local_match"] == "weak"
