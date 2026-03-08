@@ -364,6 +364,41 @@ main {
 
 .paper-abstract.open { display: block; }
 
+/* ── Font size ── */
+body[data-font="small"] { font-size: 13px; }
+body[data-font="large"]  { font-size: 17px; }
+
+.font-size-btns { display: flex; gap: 2px; }
+
+.btn-font {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 7px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  background: var(--surface);
+  color: var(--text-muted);
+}
+
+.btn-font.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+/* ── Author truncation ── */
+.author-expand-btn {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: inherit;
+  font-style: italic;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 /* ── Archive view ── */
 .btn-archive {
   font-size: 13px;
