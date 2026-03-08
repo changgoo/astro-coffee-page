@@ -5,10 +5,12 @@ A daily arXiv astro-ph paper browser hosted on GitHub Pages.
 ## Features
 
 - Daily arXiv astro-ph listings (all subcategories: GA, CO, EP, HE, IM, SR)
-- Browse papers from the last 10 days
-- Sort by arXiv order (earliest/latest first), first author, title, or category
+- Sequential arXiv listing numbers [1]…[N] matching `arxiv.org/list/astro-ph/new`, with cross-listings labelled and numbered continuously
+- Sort by local authors first, arXiv order, first author, title, or category
 - Filter by sub-category
-- Highlight favorite authors
+- Highlight Princeton authors (strong: bold amber; weak: italic pale yellow)
+- **Archive view** — browse the 1000 most recent astro-ph papers with full-text search (title + author) and 100-paper paginated loading
+- Author match strength (`local_match`, `local_authors`) precomputed during scraping — no client-side name matching
 
 ## Setup
 
@@ -94,8 +96,15 @@ match (italic grey highlight). Titles (Dr., Sir) and suffixes (Jr., III) are ign
 # Install dependencies for the author scraper
 pip install -r requirements.txt
 
-# Scrape a specific date (scrape.py has no pip dependencies)
-python scripts/scrape.py 2025-03-05
+# First-time setup: seed archive.json and today's listing
+# N = number of papers in today's arXiv listing (check arxiv.org/list/astro-ph/new)
+python scripts/scrape.py --bootstrap N
+
+# Subsequent runs (automated by GitHub Action): diff vs archive
+python scripts/scrape.py
+
+# Scrape a specific date manually
+python scripts/scrape.py 2026-03-06
 
 # Update the author list from the Princeton Astro people page
 python scripts/scrape_authors.py
