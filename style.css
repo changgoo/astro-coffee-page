@@ -267,7 +267,7 @@ main {
 }
 
 .arxiv-num {
-  font-size: 12px;
+  font-size: 0.8em;
   font-weight: 700;
   color: var(--primary);
   font-family: monospace;
@@ -279,7 +279,7 @@ main {
 }
 
 .paper-id {
-  font-size: 12px;
+  font-size: 0.8em;
   color: var(--text-muted);
   font-family: monospace;
 }
@@ -290,10 +290,10 @@ main {
 }
 .paper-id a:hover, .pdf-link:hover { text-decoration: underline; }
 
-.pdf-link { font-size: 12px; }
+.pdf-link { font-size: 0.8em; }
 
 .cat-badge {
-  font-size: 11px;
+  font-size: 0.73em;
   padding: 1px 6px;
   border-radius: 10px;
   color: #fff;
@@ -304,12 +304,12 @@ main {
 .cat-badge.other { background: var(--cat-other); color: #fff; }
 
 .secondary-cats {
-  font-size: 11px;
+  font-size: 0.73em;
   color: var(--text-muted);
 }
 
 .paper-title {
-  font-size: 17px;
+  font-size: 1.13em;
   font-weight: 600;
   margin-bottom: 5px;
   line-height: 1.4;
@@ -319,7 +319,7 @@ main {
 .paper-title a:hover { color: var(--primary); text-decoration: underline; }
 
 .paper-authors {
-  font-size: 14px;
+  font-size: 0.93em;
   color: var(--text-muted);
   margin-bottom: 6px;
   line-height: 1.4;
@@ -348,14 +348,14 @@ main {
   background: none;
   border: none;
   color: var(--primary);
-  font-size: 12px;
+  font-size: 0.8em;
   padding: 0;
   cursor: pointer;
   text-decoration: underline;
 }
 
 .paper-abstract {
-  font-size: 14px;
+  font-size: 0.93em;
   color: var(--text);
   margin-top: 8px;
   line-height: 1.6;
