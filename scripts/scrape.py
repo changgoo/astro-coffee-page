@@ -206,12 +206,11 @@ def match_author(arxiv_name, fav_authors):
     """Return "strong", "weak", or None for one arXiv author against fav_authors.
 
     Strong match conditions (beyond exact first-name match):
-      - Single first initial when fav first name is simple (not hyphenated)
-        and has no middle initial: "G." == "George Livadiotis" → strong,
-        but "C." != "Chang-Goo Kim" and "M." != "Matthew W. Kunz"
       - Hyphenated first name matched by hyphenated initials only:
         "C.-G." == "Chang-Goo Kim" → strong; "C.G." is NOT strong
       - First initial + matching middle initial: "M. W." == "Matthew W." → strong
+    A single bare first initial is always weak; add the abbreviated form to
+    authors_manual.json to get a strong match (e.g. "G. Livadiotis").
     """
     arx_first, arx_last, arx_mid = parse_name_parts(arxiv_name)
     best = None
@@ -223,14 +222,6 @@ def match_author(arxiv_name, fav_authors):
             return "strong"
         if not fav_first or not arx_first:
             continue
-        # Single initial in paper → strong only when fav first name is simple
-        # (not hyphenated, no middle initial) AND paper shows no middle initial
-        # either. "G. Livadiotis" == "George Livadiotis" → strong, but
-        # "G. A. Livadiotis" → weak (paper has middle initial, fav does not).
-        if len(arx_first) == 1 and fav_first[0] == arx_first:
-            if not fav_mid and not arx_mid and "-" not in fav_first:
-                return "strong"
-
         # Hyphenated favorite first name: only hyphenated initials are strong
         # (e.g. "C.-G." == "Chang-Goo"); concatenated "C.G." is NOT strong
         if "-" in fav_first and "-" in arx_first:
