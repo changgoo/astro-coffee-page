@@ -223,11 +223,12 @@ def match_author(arxiv_name, fav_authors):
             return "strong"
         if not fav_first or not arx_first:
             continue
-        # Single initial in paper → strong only when fav first name is not
-        # hyphenated and has no middle initial (e.g. "G." == "George" but
-        # not "C." == "Chang-Goo" and not "M." == "Matthew W.")
+        # Single initial in paper → strong only when fav first name is simple
+        # (not hyphenated, no middle initial) AND paper shows no middle initial
+        # either. "G. Livadiotis" == "George Livadiotis" → strong, but
+        # "G. A. Livadiotis" → weak (paper has middle initial, fav does not).
         if len(arx_first) == 1 and fav_first[0] == arx_first:
-            if not fav_mid and "-" not in fav_first:
+            if not fav_mid and not arx_mid and "-" not in fav_first:
                 return "strong"
 
         # Hyphenated favorite first name: only hyphenated initials are strong

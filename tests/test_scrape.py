@@ -256,6 +256,10 @@ def test_match_author_single_initial_simple_fav_strong():
     """G. Livadiotis → strong (single initial, fav has simple name, no middle)."""
     assert scrape.match_author("Livadiotis, G.", FAV_AUTHORS_EXTENDED) == "strong"
 
+def test_match_author_two_initials_simple_fav_weak():
+    """G. A. Livadiotis → weak (paper has middle initial, fav does not)."""
+    assert scrape.match_author("Livadiotis, G. A.", FAV_AUTHORS_EXTENDED) == "weak"
+
 
 # Generic weak/none
 def test_match_author_weak_first_letter_only():
