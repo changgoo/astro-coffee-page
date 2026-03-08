@@ -194,6 +194,10 @@ The selected mode is persisted in `localStorage` and applied on every render.
 
 **Author list truncation** — papers with more than 5 authors show the first 5 followed by a "… and N more" link; clicking expands to the full list, with a "(collapse)" link to shrink it back. Strong-match papers always show the full author list so no highlighted name is hidden.
 
+**Stronger author matching** — two additional cases now qualify as strong matches in `scripts/scrape.py`:
+- *Single first initial in paper* — `"Kim, C."` matches `"Chang-Goo Kim"` as strong (previously weak)
+- *Hyphenated first name initials* — `"Kim, C.-G."` and `"Kim, C.G."` both match `"Chang-Goo Kim"` as strong
+
 ---
 
 ## Planned / open issues

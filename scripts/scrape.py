@@ -203,7 +203,15 @@ def parse_name_parts(name):
 
 
 def match_author(arxiv_name, fav_authors):
-    """Return "strong", "weak", or None for one arXiv author against fav_authors."""
+    """Return "strong", "weak", or None for one arXiv author against fav_authors.
+
+    Strong match conditions (beyond exact first-name match):
+      - arXiv paper lists only a single first initial (e.g. "Kim, C.")
+      - Favorite has a hyphenated first name and arXiv shows matching
+        hyphenated initials (e.g. "Kim, C.-G." == "Chang-Goo Kim") or
+        their concatenation (e.g. "Kim, C.G." == "Chang-Goo Kim")
+      - First initials agree and middle initials agree
+    """
     arx_first, arx_last, arx_mid = parse_name_parts(arxiv_name)
     best = None
     for fav_name in fav_authors:
@@ -212,7 +220,27 @@ def match_author(arxiv_name, fav_authors):
             continue
         if fav_first == arx_first:
             return "strong"
-        if fav_first and arx_first and fav_first[0] == arx_first[0]:
+        if not fav_first or not arx_first:
+            continue
+        # Single initial in paper → strong
+        if len(arx_first) == 1 and fav_first[0] == arx_first:
+            return "strong"
+        # Hyphenated favorite first name vs. abbreviated arXiv form
+        if "-" in fav_first:
+            fav_parts = fav_first.split("-")
+            if "-" in arx_first:
+                # e.g. "c-g" matches "chang-goo"
+                arx_parts = arx_first.split("-")
+                if (len(fav_parts) == len(arx_parts) and
+                        all(len(ap) == 1 and ap == fp[0]
+                            for ap, fp in zip(arx_parts, fav_parts))):
+                    return "strong"
+            else:
+                # e.g. "cg" matches "chang-goo"
+                if arx_first == "".join(p[0] for p in fav_parts):
+                    return "strong"
+        # First initial match with optional middle initial agreement
+        if fav_first[0] == arx_first[0]:
             if fav_mid and arx_mid and fav_mid == arx_mid:
                 return "strong"
             best = "weak"
