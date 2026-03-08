@@ -8,7 +8,7 @@ Usage:
 Requirements:
     pip install requests beautifulsoup4
 
-By default scrapes: Faculty, Postdocs/Researchers, and Graduate Students.
+By default scrapes: Faculty, Postdocs/Researchers, Graduate Students, and Associated Faculty/Affiliates.
 Edit PAGES below to customise which groups are included.
 """
 
@@ -37,6 +37,8 @@ PAGES = [
      f"{BASE_URL}/people/postdocs-researchers"),
     ("Graduate Students",
      f"{BASE_URL}/people/graduate-students"),
+    ("Associated Faculty & Affiliates",
+     f"{BASE_URL}/people/associated-faculty-department-affiliates"),
 ]
 
 # CSS selectors (Princeton Astro site structure as of 2024)

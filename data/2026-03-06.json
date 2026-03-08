@@ -1,7 +1,7 @@
 {
   "date": "2026-03-06",
-  "fetched_at": "2026-03-07T15:32:57Z",
-  "total": 71,
+  "fetched_at": "2026-03-08T01:48:14Z",
+  "total": 74,
   "papers": [
     {
       "id": "2603.05477",
@@ -1780,6 +1780,97 @@
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04488",
       "pdf_url": "https://arxiv.org/pdf/2603.04488"
+    },
+    {
+      "id": "2603.04471",
+      "title": "Experiments towards a neutron target for measurements in inverse kinematics",
+      "authors": [
+        "S. F. Dellmann",
+        "C. M. Harrington",
+        "O. R. Cantrell",
+        "A. L. Cooper",
+        "A. Couture",
+        "D. V. Gorelov",
+        "I. Knapov\u00e1",
+        "S. M. Mosby",
+        "R. Reifarth",
+        "A. Alvarez",
+        "A. Aprahamian",
+        "J. Butz",
+        "I. J. Bos",
+        "M. T. Febbraro",
+        "T. Hankins",
+        "B. M. Harvey",
+        "T. Heftrich",
+        "M. Le",
+        "J. J. Manfredi",
+        "A. B. McIntosh",
+        "K. V. Manukyan",
+        "M. Matney",
+        "S. Regener",
+        "D. Robertson",
+        "A. Simon",
+        "D. Sokolovic",
+        "E. Stech",
+        "G. Tabacaru",
+        "W. Tan",
+        "M. Wiescher",
+        "S. Yennello"
+      ],
+      "abstract": "Neutron-induced reactions play an important role in fundamental nuclear physics, nuclear astrophysics, and applications. In the case of reactions on rare isotopes, there are limited options for direct experimental measurements. The Neutron Target Demonstrator project at Los Alamos National Laboratory seeks to test the feasibility of moderating spallation neutrons within a 1~m$^3$ graphite cube to create a standing neutron target for neutron-induced reaction measurements in inverse kinematics. This paper presents the results of experimental neutron flux distribution tests using neutron sources (ranging from 1~keV to 50~MeV) created by accelerators at the University of Notre Dame and Texas A\\&M University. Measurements were made with both the full graphite cube as well as a ''half cube'' setup in which half of the graphite cube was removed. The measured distributions agree with simulated distributions in the case of the full cube moderator, although there remain discrepancies in certain cases for the half cube moderator. The results shown here will provide useful information for an upcoming experimental campaign to test the neutron target proof-of-principle.",
+      "primary_category": "physics.ins-det",
+      "categories": [
+        "physics.ins-det",
+        "astro-ph.IM",
+        "nucl-ex"
+      ],
+      "submitted": "2026-03-04",
+      "arxiv_url": "https://arxiv.org/abs/2603.04471",
+      "pdf_url": "https://arxiv.org/pdf/2603.04471"
+    },
+    {
+      "id": "2603.04467",
+      "title": "SNAPPY CubeSat Control Script Generation and Data File Processing",
+      "authors": [
+        "Edward Bierens",
+        "Jonathan Folkerts",
+        "Brian Doty",
+        "Holger Meyer",
+        "Nickolas Solomey"
+      ],
+      "abstract": "This is a document discussing the creation and usage of a server system dedicated to retrieving, processing, and storing data generated from the Solar Neutrino and Astro-Particle PhYsics (SNAPPY) CubeSat by the nuSOL (Neutrino Solar Orbiting Laboratory) Project. On a traditional desktop computer with CERN's ROOT and PostgreSQL software installed, and with a file system on two mirrored drives, it is possible to automatically process and organize incoming data, along with keeping a database to record each incoming file along with a command record. In addition to this, an application was created to provide a Graphical User Interface to assist with creating commands to communicate with the CubeSat. With that said, there are still plenty of plans to improve the software, mainly providing an automatic emailing system to notify team members when they are not around the server.",
+      "primary_category": "astro-ph.IM",
+      "categories": [
+        "astro-ph.IM",
+        "physics.ins-det"
+      ],
+      "submitted": "2026-03-03",
+      "arxiv_url": "https://arxiv.org/abs/2603.04467",
+      "pdf_url": "https://arxiv.org/pdf/2603.04467"
+    },
+    {
+      "id": "2603.04462",
+      "title": "Parameter estimation of eccentric massive black hole binaries with LISA and its cosmological implications",
+      "authors": [
+        "Jia-Hao Zhong",
+        "Jin-Zhao Yang",
+        "Tao Yang",
+        "Xu-Heng Ding",
+        "Xi-Long Fan",
+        "Kai Liao",
+        "Bei You"
+      ],
+      "abstract": "Future space-based gravitational wave (GW) observatories such as LISA will detect massive black hole binaries (MBHBs), which are expected to be accompanied by electromagnetic counterparts, thereby providing bright standard sirens for cosmology. The orbital eccentricity of MBHBs can significantly improve the parameter estimation of GWs because the multiple harmonics induced by eccentricity provide additional information and help break down the degeneracies among waveform parameters. In this paper, we use the EccentricFD waveform and construct 5-year GW event catalogs for LISA under three population models (popIII, Q3d and Q3nod). For the three models, we find that an initial eccentricity of $e_0=0.4$ at $10^{-4}$ Hz yields improvements in sky localization and distance inference by a factor of $\\mathcal{O}(10)$ in the best cases. As a consequence, the average number of bright sirens increases substantially: from 8 to 11 (PopIII), 6 to 12 (Q3d) and 13 to 24 (Q3nod). This increase in event number, together with enhanced localization and distance inference, leads to tighter cosmological constraints. In the $\u039b$CDM model, for instance, the relative uncertainty on $H_0$ is reduced from $8.17\\%$ to $4.35\\%$ for the Q3d model, corresponding to an improvement of approximately $47\\%$. We also investigate the improvement in constraints on the dark energy equation of state and modified GW propagation when combining bright sirens with the latest cosmic microwave background data. These results demonstrate that eccentricity is a remarkably significant feature in GW detection and parameter estimation, enabling more accurate measurements of the Universe with future space-based observatories.",
+      "primary_category": "astro-ph.IM",
+      "categories": [
+        "astro-ph.IM",
+        "astro-ph.CO",
+        "gr-qc",
+        "hep-ph"
+      ],
+      "submitted": "2026-03-03",
+      "arxiv_url": "https://arxiv.org/abs/2603.04462",
+      "pdf_url": "https://arxiv.org/pdf/2603.04462"
     }
   ]
 }
