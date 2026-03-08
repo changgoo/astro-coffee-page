@@ -206,11 +206,12 @@ def match_author(arxiv_name, fav_authors):
     """Return "strong", "weak", or None for one arXiv author against fav_authors.
 
     Strong match conditions (beyond exact first-name match):
-      - arXiv paper lists only a single first initial (e.g. "Kim, C.")
-      - Favorite has a hyphenated first name and arXiv shows matching
-        hyphenated initials (e.g. "Kim, C.-G." == "Chang-Goo Kim") or
-        their concatenation (e.g. "Kim, C.G." == "Chang-Goo Kim")
-      - First initials agree and middle initials agree
+      - Single first initial when fav first name is simple (not hyphenated)
+        and has no middle initial: "G." == "George Livadiotis" → strong,
+        but "C." != "Chang-Goo Kim" and "M." != "Matthew W. Kunz"
+      - Hyphenated first name matched by hyphenated initials only:
+        "C.-G." == "Chang-Goo Kim" → strong; "C.G." is NOT strong
+      - First initial + matching middle initial: "M. W." == "Matthew W." → strong
     """
     arx_first, arx_last, arx_mid = parse_name_parts(arxiv_name)
     best = None
@@ -222,27 +223,23 @@ def match_author(arxiv_name, fav_authors):
             return "strong"
         if not fav_first or not arx_first:
             continue
-        # Single initial in paper → strong only if fav has no middle initial;
-        # if fav has a middle initial, a bare first initial is ambiguous → weak
+        # Single initial in paper → strong only when fav first name is not
+        # hyphenated and has no middle initial (e.g. "G." == "George" but
+        # not "C." == "Chang-Goo" and not "M." == "Matthew W.")
         if len(arx_first) == 1 and fav_first[0] == arx_first:
-            if not fav_mid:
+            if not fav_mid and "-" not in fav_first:
                 return "strong"
-            best = "weak"
-            continue
-        # Hyphenated favorite first name vs. abbreviated arXiv form
-        if "-" in fav_first:
+
+        # Hyphenated favorite first name: only hyphenated initials are strong
+        # (e.g. "C.-G." == "Chang-Goo"); concatenated "C.G." is NOT strong
+        if "-" in fav_first and "-" in arx_first:
             fav_parts = fav_first.split("-")
-            if "-" in arx_first:
-                # e.g. "c-g" matches "chang-goo"
-                arx_parts = arx_first.split("-")
-                if (len(fav_parts) == len(arx_parts) and
-                        all(len(ap) == 1 and ap == fp[0]
-                            for ap, fp in zip(arx_parts, fav_parts))):
-                    return "strong"
-            else:
-                # e.g. "cg" matches "chang-goo"
-                if arx_first == "".join(p[0] for p in fav_parts):
-                    return "strong"
+            arx_parts = arx_first.split("-")
+            if (len(fav_parts) == len(arx_parts) and
+                    all(len(ap) == 1 and ap == fp[0]
+                        for ap, fp in zip(arx_parts, fav_parts))):
+                return "strong"
+
         # First initial match with optional middle initial agreement
         if fav_first[0] == arx_first[0]:
             if fav_mid and arx_mid and fav_mid == arx_mid:
