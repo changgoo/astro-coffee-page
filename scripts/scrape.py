@@ -157,6 +157,89 @@ def fetch_latest_papers(n=ARCHIVE_SIZE):
     return papers
 
 
+def load_favorite_authors(repo_root):
+    """Load and merge favorite authors from both config files (manual first, deduped)."""
+    names = []
+    seen = set()
+    for filename in ("authors_manual.json", "authors.json"):
+        path = repo_root / "config" / filename
+        if not path.exists():
+            continue
+        with open(path) as f:
+            data = json.load(f)
+        for name in data.get("authors", []):
+            if name not in seen:
+                seen.add(name)
+                names.append(name)
+    return names
+
+
+def parse_name_parts(name):
+    """Parse a name into (first, last, middle_initial) components.
+
+    Handles arXiv format "Last, First [Middle]" and Princeton format
+    "[Title] First [Middle] Last [Suffix]". Returns lowercase strings.
+    """
+    suffixes = {"iii", "ii", "iv", "jr.", "jr", "sr.", "sr"}
+    titles = {"sir", "dr.", "dr", "prof.", "prof"}
+
+    if "," in name:
+        comma = name.index(",")
+        last = name[:comma].strip().lower()
+        rest = name[comma + 1:].strip().split()
+        first = rest[0].replace(".", "").lower() if rest else ""
+        middle_initial = rest[1].replace(".", "").lower()[0] if len(rest) > 1 else None
+        return first, last, middle_initial
+
+    tokens = name.strip().split()
+    while len(tokens) > 1 and tokens[0].lower() in titles:
+        tokens = tokens[1:]
+    while len(tokens) > 1 and tokens[-1].lower() in suffixes:
+        tokens = tokens[:-1]
+    last = tokens[-1].lower() if tokens else ""
+    first = tokens[0].replace(".", "").lower() if tokens else ""
+    middle_initial = tokens[1].replace(".", "").lower()[0] if len(tokens) > 2 else None
+    return first, last, middle_initial
+
+
+def match_author(arxiv_name, fav_authors):
+    """Return "strong", "weak", or None for one arXiv author against fav_authors."""
+    arx_first, arx_last, arx_mid = parse_name_parts(arxiv_name)
+    best = None
+    for fav_name in fav_authors:
+        fav_first, fav_last, fav_mid = parse_name_parts(fav_name)
+        if fav_last != arx_last:
+            continue
+        if fav_first == arx_first:
+            return "strong"
+        if fav_first and arx_first and fav_first[0] == arx_first[0]:
+            if fav_mid and arx_mid and fav_mid == arx_mid:
+                return "strong"
+            best = "weak"
+    return best
+
+
+def annotate_papers(papers, fav_authors):
+    """Add local_match and local_authors fields to each paper dict in-place.
+
+    local_match:   "strong" | "weak" | None  (best match across all authors)
+    local_authors: {arxiv_name: "strong"|"weak"}  (matched authors only)
+    """
+    for paper in papers:
+        local_authors = {}
+        best = None
+        for arxiv_name in paper.get("authors", []):
+            strength = match_author(arxiv_name, fav_authors)
+            if strength:
+                local_authors[arxiv_name] = strength
+                if strength == "strong":
+                    best = "strong"
+                elif best != "strong":
+                    best = "weak"
+        paper["local_match"] = best
+        paper["local_authors"] = local_authors
+
+
 def load_archive(data_dir):
     """Load data/archive.json; return (papers_list, ids_set) or ([], set())."""
     archive_path = data_dir / "archive.json"
@@ -217,6 +300,11 @@ def main():
 
     print(f"  Fetched {len(fetched)} papers.")
 
+    repo_root = Path(__file__).parent.parent
+    fav_authors = load_favorite_authors(repo_root)
+    print(f"  Annotating local author matches ({len(fav_authors)} favorites) ...")
+    annotate_papers(fetched, fav_authors)
+
     _, archive_ids = load_archive(data_dir)
 
     if bootstrap_n is not None:
@@ -259,6 +347,7 @@ def main():
     save_archive(data_dir, fetched)
     update_index(data_dir, listing_date)
     print("Done.")
+
 
 
 if __name__ == "__main__":

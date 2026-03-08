@@ -1,6 +1,6 @@
 {
   "date": "2026-03-06",
-  "fetched_at": "2026-03-08T01:48:14Z",
+  "fetched_at": "2026-03-08T02:19:59Z",
   "total": 74,
   "papers": [
     {
@@ -21,7 +21,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05477",
-      "pdf_url": "https://arxiv.org/pdf/2603.05477"
+      "pdf_url": "https://arxiv.org/pdf/2603.05477",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05472",
@@ -39,7 +41,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05472",
-      "pdf_url": "https://arxiv.org/pdf/2603.05472"
+      "pdf_url": "https://arxiv.org/pdf/2603.05472",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05457",
@@ -57,7 +61,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05457",
-      "pdf_url": "https://arxiv.org/pdf/2603.05457"
+      "pdf_url": "https://arxiv.org/pdf/2603.05457",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05445",
@@ -79,7 +85,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05445",
-      "pdf_url": "https://arxiv.org/pdf/2603.05445"
+      "pdf_url": "https://arxiv.org/pdf/2603.05445",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05434",
@@ -99,7 +107,11 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05434",
-      "pdf_url": "https://arxiv.org/pdf/2603.05434"
+      "pdf_url": "https://arxiv.org/pdf/2603.05434",
+      "local_match": "weak",
+      "local_authors": {
+        "Yuguang Chen": "weak"
+      }
     },
     {
       "id": "2603.05412",
@@ -116,7 +128,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05412",
-      "pdf_url": "https://arxiv.org/pdf/2603.05412"
+      "pdf_url": "https://arxiv.org/pdf/2603.05412",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05394",
@@ -133,7 +147,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05394",
-      "pdf_url": "https://arxiv.org/pdf/2603.05394"
+      "pdf_url": "https://arxiv.org/pdf/2603.05394",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05365",
@@ -157,7 +173,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05365",
-      "pdf_url": "https://arxiv.org/pdf/2603.05365"
+      "pdf_url": "https://arxiv.org/pdf/2603.05365",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05356",
@@ -177,7 +195,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05356",
-      "pdf_url": "https://arxiv.org/pdf/2603.05356"
+      "pdf_url": "https://arxiv.org/pdf/2603.05356",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05351",
@@ -250,7 +270,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05351",
-      "pdf_url": "https://arxiv.org/pdf/2603.05351"
+      "pdf_url": "https://arxiv.org/pdf/2603.05351",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05342",
@@ -276,7 +298,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05342",
-      "pdf_url": "https://arxiv.org/pdf/2603.05342"
+      "pdf_url": "https://arxiv.org/pdf/2603.05342",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05322",
@@ -295,7 +319,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05322",
-      "pdf_url": "https://arxiv.org/pdf/2603.05322"
+      "pdf_url": "https://arxiv.org/pdf/2603.05322",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05307",
@@ -313,7 +339,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05307",
-      "pdf_url": "https://arxiv.org/pdf/2603.05307"
+      "pdf_url": "https://arxiv.org/pdf/2603.05307",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05289",
@@ -347,7 +375,11 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05289",
-      "pdf_url": "https://arxiv.org/pdf/2603.05289"
+      "pdf_url": "https://arxiv.org/pdf/2603.05289",
+      "local_match": "weak",
+      "local_authors": {
+        "Yuheng Zhang": "weak"
+      }
     },
     {
       "id": "2603.05287",
@@ -365,7 +397,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05287",
-      "pdf_url": "https://arxiv.org/pdf/2603.05287"
+      "pdf_url": "https://arxiv.org/pdf/2603.05287",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05265",
@@ -401,7 +435,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05265",
-      "pdf_url": "https://arxiv.org/pdf/2603.05265"
+      "pdf_url": "https://arxiv.org/pdf/2603.05265",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05243",
@@ -421,7 +457,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05243",
-      "pdf_url": "https://arxiv.org/pdf/2603.05243"
+      "pdf_url": "https://arxiv.org/pdf/2603.05243",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05224",
@@ -438,7 +476,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05224",
-      "pdf_url": "https://arxiv.org/pdf/2603.05224"
+      "pdf_url": "https://arxiv.org/pdf/2603.05224",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05223",
@@ -455,7 +495,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05223",
-      "pdf_url": "https://arxiv.org/pdf/2603.05223"
+      "pdf_url": "https://arxiv.org/pdf/2603.05223",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05215",
@@ -473,7 +515,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05215",
-      "pdf_url": "https://arxiv.org/pdf/2603.05215"
+      "pdf_url": "https://arxiv.org/pdf/2603.05215",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05191",
@@ -492,7 +536,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05191",
-      "pdf_url": "https://arxiv.org/pdf/2603.05191"
+      "pdf_url": "https://arxiv.org/pdf/2603.05191",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05141",
@@ -510,7 +556,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05141",
-      "pdf_url": "https://arxiv.org/pdf/2603.05141"
+      "pdf_url": "https://arxiv.org/pdf/2603.05141",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05124",
@@ -529,7 +577,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05124",
-      "pdf_url": "https://arxiv.org/pdf/2603.05124"
+      "pdf_url": "https://arxiv.org/pdf/2603.05124",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05101",
@@ -550,7 +600,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05101",
-      "pdf_url": "https://arxiv.org/pdf/2603.05101"
+      "pdf_url": "https://arxiv.org/pdf/2603.05101",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05049",
@@ -566,7 +618,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05049",
-      "pdf_url": "https://arxiv.org/pdf/2603.05049"
+      "pdf_url": "https://arxiv.org/pdf/2603.05049",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05045",
@@ -587,7 +641,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05045",
-      "pdf_url": "https://arxiv.org/pdf/2603.05045"
+      "pdf_url": "https://arxiv.org/pdf/2603.05045",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05033",
@@ -607,7 +663,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05033",
-      "pdf_url": "https://arxiv.org/pdf/2603.05033"
+      "pdf_url": "https://arxiv.org/pdf/2603.05033",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05032",
@@ -622,7 +680,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05032",
-      "pdf_url": "https://arxiv.org/pdf/2603.05032"
+      "pdf_url": "https://arxiv.org/pdf/2603.05032",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05014",
@@ -641,7 +701,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05014",
-      "pdf_url": "https://arxiv.org/pdf/2603.05014"
+      "pdf_url": "https://arxiv.org/pdf/2603.05014",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05006",
@@ -699,7 +761,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05006",
-      "pdf_url": "https://arxiv.org/pdf/2603.05006"
+      "pdf_url": "https://arxiv.org/pdf/2603.05006",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04961",
@@ -715,7 +779,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.04961",
-      "pdf_url": "https://arxiv.org/pdf/2603.04961"
+      "pdf_url": "https://arxiv.org/pdf/2603.04961",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04960",
@@ -885,7 +951,11 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.04960",
-      "pdf_url": "https://arxiv.org/pdf/2603.04960"
+      "pdf_url": "https://arxiv.org/pdf/2603.04960",
+      "local_match": "weak",
+      "local_authors": {
+        "M. Kunz": "weak"
+      }
     },
     {
       "id": "2603.04928",
@@ -911,7 +981,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.04928",
-      "pdf_url": "https://arxiv.org/pdf/2603.04928"
+      "pdf_url": "https://arxiv.org/pdf/2603.04928",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04919",
@@ -940,7 +1012,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.04919",
-      "pdf_url": "https://arxiv.org/pdf/2603.04919"
+      "pdf_url": "https://arxiv.org/pdf/2603.04919",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04872",
@@ -961,7 +1035,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.04872",
-      "pdf_url": "https://arxiv.org/pdf/2603.04872"
+      "pdf_url": "https://arxiv.org/pdf/2603.04872",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04850",
@@ -980,7 +1056,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.04850",
-      "pdf_url": "https://arxiv.org/pdf/2603.04850"
+      "pdf_url": "https://arxiv.org/pdf/2603.04850",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04841",
@@ -999,7 +1077,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.04841",
-      "pdf_url": "https://arxiv.org/pdf/2603.04841"
+      "pdf_url": "https://arxiv.org/pdf/2603.04841",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04830",
@@ -1031,7 +1111,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.04830",
-      "pdf_url": "https://arxiv.org/pdf/2603.04830"
+      "pdf_url": "https://arxiv.org/pdf/2603.04830",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04821",
@@ -1050,7 +1132,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.04821",
-      "pdf_url": "https://arxiv.org/pdf/2603.04821"
+      "pdf_url": "https://arxiv.org/pdf/2603.04821",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04792",
@@ -1082,7 +1166,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.04792",
-      "pdf_url": "https://arxiv.org/pdf/2603.04792"
+      "pdf_url": "https://arxiv.org/pdf/2603.04792",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04784",
@@ -1097,7 +1183,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.04784",
-      "pdf_url": "https://arxiv.org/pdf/2603.04784"
+      "pdf_url": "https://arxiv.org/pdf/2603.04784",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04781",
@@ -1118,7 +1206,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.04781",
-      "pdf_url": "https://arxiv.org/pdf/2603.04781"
+      "pdf_url": "https://arxiv.org/pdf/2603.04781",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04719",
@@ -1146,7 +1236,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.04719",
-      "pdf_url": "https://arxiv.org/pdf/2603.04719"
+      "pdf_url": "https://arxiv.org/pdf/2603.04719",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04713",
@@ -1173,7 +1265,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.04713",
-      "pdf_url": "https://arxiv.org/pdf/2603.04713"
+      "pdf_url": "https://arxiv.org/pdf/2603.04713",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04687",
@@ -1191,7 +1285,9 @@
       ],
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.04687",
-      "pdf_url": "https://arxiv.org/pdf/2603.04687"
+      "pdf_url": "https://arxiv.org/pdf/2603.04687",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04679",
@@ -1208,7 +1304,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04679",
-      "pdf_url": "https://arxiv.org/pdf/2603.04679"
+      "pdf_url": "https://arxiv.org/pdf/2603.04679",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04593",
@@ -1224,7 +1322,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04593",
-      "pdf_url": "https://arxiv.org/pdf/2603.04593"
+      "pdf_url": "https://arxiv.org/pdf/2603.04593",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04586",
@@ -1248,7 +1348,12 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04586",
-      "pdf_url": "https://arxiv.org/pdf/2603.04586"
+      "pdf_url": "https://arxiv.org/pdf/2603.04586",
+      "local_match": "strong",
+      "local_authors": {
+        "Jenny E. Greene": "strong",
+        "Junyao Li": "weak"
+      }
     },
     {
       "id": "2603.04577",
@@ -1268,7 +1373,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04577",
-      "pdf_url": "https://arxiv.org/pdf/2603.04577"
+      "pdf_url": "https://arxiv.org/pdf/2603.04577",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04573",
@@ -1286,7 +1393,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04573",
-      "pdf_url": "https://arxiv.org/pdf/2603.04573"
+      "pdf_url": "https://arxiv.org/pdf/2603.04573",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04559",
@@ -1305,7 +1414,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04559",
-      "pdf_url": "https://arxiv.org/pdf/2603.04559"
+      "pdf_url": "https://arxiv.org/pdf/2603.04559",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04558",
@@ -1343,7 +1454,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04558",
-      "pdf_url": "https://arxiv.org/pdf/2603.04558"
+      "pdf_url": "https://arxiv.org/pdf/2603.04558",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04557",
@@ -1367,7 +1480,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04557",
-      "pdf_url": "https://arxiv.org/pdf/2603.04557"
+      "pdf_url": "https://arxiv.org/pdf/2603.04557",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04554",
@@ -1391,7 +1506,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04554",
-      "pdf_url": "https://arxiv.org/pdf/2603.04554"
+      "pdf_url": "https://arxiv.org/pdf/2603.04554",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04542",
@@ -1408,7 +1525,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04542",
-      "pdf_url": "https://arxiv.org/pdf/2603.04542"
+      "pdf_url": "https://arxiv.org/pdf/2603.04542",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04536",
@@ -1423,7 +1542,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04536",
-      "pdf_url": "https://arxiv.org/pdf/2603.04536"
+      "pdf_url": "https://arxiv.org/pdf/2603.04536",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04535",
@@ -1442,7 +1563,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04535",
-      "pdf_url": "https://arxiv.org/pdf/2603.04535"
+      "pdf_url": "https://arxiv.org/pdf/2603.04535",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04533",
@@ -1458,7 +1581,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04533",
-      "pdf_url": "https://arxiv.org/pdf/2603.04533"
+      "pdf_url": "https://arxiv.org/pdf/2603.04533",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04529",
@@ -1476,7 +1601,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04529",
-      "pdf_url": "https://arxiv.org/pdf/2603.04529"
+      "pdf_url": "https://arxiv.org/pdf/2603.04529",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04527",
@@ -1493,7 +1620,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04527",
-      "pdf_url": "https://arxiv.org/pdf/2603.04527"
+      "pdf_url": "https://arxiv.org/pdf/2603.04527",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04521",
@@ -1515,7 +1644,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04521",
-      "pdf_url": "https://arxiv.org/pdf/2603.04521"
+      "pdf_url": "https://arxiv.org/pdf/2603.04521",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04519",
@@ -1562,7 +1693,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04519",
-      "pdf_url": "https://arxiv.org/pdf/2603.04519"
+      "pdf_url": "https://arxiv.org/pdf/2603.04519",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04517",
@@ -1593,7 +1726,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04517",
-      "pdf_url": "https://arxiv.org/pdf/2603.04517"
+      "pdf_url": "https://arxiv.org/pdf/2603.04517",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04516",
@@ -1615,7 +1750,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04516",
-      "pdf_url": "https://arxiv.org/pdf/2603.04516"
+      "pdf_url": "https://arxiv.org/pdf/2603.04516",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04511",
@@ -1639,7 +1776,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04511",
-      "pdf_url": "https://arxiv.org/pdf/2603.04511"
+      "pdf_url": "https://arxiv.org/pdf/2603.04511",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04508",
@@ -1657,7 +1796,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04508",
-      "pdf_url": "https://arxiv.org/pdf/2603.04508"
+      "pdf_url": "https://arxiv.org/pdf/2603.04508",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04507",
@@ -1679,7 +1820,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04507",
-      "pdf_url": "https://arxiv.org/pdf/2603.04507"
+      "pdf_url": "https://arxiv.org/pdf/2603.04507",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04505",
@@ -1704,7 +1847,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04505",
-      "pdf_url": "https://arxiv.org/pdf/2603.04505"
+      "pdf_url": "https://arxiv.org/pdf/2603.04505",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04492",
@@ -1719,7 +1864,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04492",
-      "pdf_url": "https://arxiv.org/pdf/2603.04492"
+      "pdf_url": "https://arxiv.org/pdf/2603.04492",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04490",
@@ -1738,7 +1885,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04490",
-      "pdf_url": "https://arxiv.org/pdf/2603.04490"
+      "pdf_url": "https://arxiv.org/pdf/2603.04490",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04488",
@@ -1779,7 +1928,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04488",
-      "pdf_url": "https://arxiv.org/pdf/2603.04488"
+      "pdf_url": "https://arxiv.org/pdf/2603.04488",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04471",
@@ -1826,7 +1977,9 @@
       ],
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04471",
-      "pdf_url": "https://arxiv.org/pdf/2603.04471"
+      "pdf_url": "https://arxiv.org/pdf/2603.04471",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04467",
@@ -1846,7 +1999,9 @@
       ],
       "submitted": "2026-03-03",
       "arxiv_url": "https://arxiv.org/abs/2603.04467",
-      "pdf_url": "https://arxiv.org/pdf/2603.04467"
+      "pdf_url": "https://arxiv.org/pdf/2603.04467",
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04462",
@@ -1870,7 +2025,9 @@
       ],
       "submitted": "2026-03-03",
       "arxiv_url": "https://arxiv.org/abs/2603.04462",
-      "pdf_url": "https://arxiv.org/pdf/2603.04462"
+      "pdf_url": "https://arxiv.org/pdf/2603.04462",
+      "local_match": null,
+      "local_authors": {}
     }
   ]
 }

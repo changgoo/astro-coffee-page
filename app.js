@@ -19,7 +19,6 @@ const CAT_COLORS = {
 };
 
 let allPapers = [];
-let favoriteAuthors = [];
 let activeCats = new Set(ASTRO_CATS);
 let currentSort = "local";
 let currentDate = null;
@@ -31,7 +30,7 @@ let archiveSearchQuery = "";
 // ── Initialise ────────────────────────────────────────────────────────────────
 
 async function init() {
-  await Promise.all([loadIndex(), loadAuthors()]);
+  await loadIndex();
   buildCatFilter();
 
   if (!currentDate) {
@@ -51,27 +50,6 @@ async function loadIndex() {
   currentDate = data.current || null;
 }
 
-async function loadAuthors() {
-  const load = async (path) => {
-    try {
-      const res = await fetch(path);
-      const data = await res.json();
-      return data.authors || [];
-    } catch {
-      return [];
-    }
-  };
-  const [auto, manual] = await Promise.all([
-    load("config/authors.json"),
-    load("config/authors_manual.json"),
-  ]);
-  const seen = new Set();
-  favoriteAuthors = [...manual, ...auto].filter((name) => {
-    if (seen.has(name)) return false;
-    seen.add(name);
-    return true;
-  });
-}
 
 async function loadDay(dateStr) {
   document.getElementById("loading").style.display = "block";
@@ -123,12 +101,7 @@ async function loadArchive() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const raw = data.papers || [];
-    // Precompute match strength once so sorting 1000 papers is fast
-    archivePapers = raw.map((p, i) => ({
-      ...p,
-      _arxivIndex: raw.length - i,
-      _matchStrength: bestMatchStrength(p),
-    }));
+    archivePapers = raw.map((p, i) => ({ ...p, _arxivIndex: raw.length - i }));
     document.getElementById("fetched-at").textContent =
       data.fetched_at ? `archive fetched ${data.fetched_at.slice(0, 16).replace("T", " ")} UTC` : "";
   } catch (e) {
@@ -299,54 +272,8 @@ function renderArchive() {
 }
 
 // ── Name matching ─────────────────────────────────────────────────────────────
-
-const NAME_SUFFIXES = new Set(["iii", "ii", "iv", "jr.", "jr", "sr.", "sr"]);
-const NAME_TITLES   = new Set(["sir", "dr.", "dr", "prof.", "prof"]);
-
-function parseNameParts(name) {
-  if (name.includes(",")) {
-    const comma = name.indexOf(",");
-    const last   = name.slice(0, comma).trim().toLowerCase();
-    const rest   = name.slice(comma + 1).trim().split(/\s+/);
-    const first  = rest[0].replace(/\./g, "").toLowerCase();
-    const middleInitial = rest.length > 1 ? rest[1].replace(/\./g, "").toLowerCase()[0] : null;
-    return { first, last, middleInitial };
-  }
-  let tokens = name.trim().split(/\s+/);
-  while (tokens.length > 1 && NAME_TITLES.has(tokens[0].toLowerCase()))
-    tokens = tokens.slice(1);
-  while (tokens.length > 1 && NAME_SUFFIXES.has(tokens[tokens.length - 1].toLowerCase()))
-    tokens = tokens.slice(0, -1);
-  const last  = tokens[tokens.length - 1].toLowerCase();
-  const first = tokens[0].replace(/\./g, "").toLowerCase();
-  const middleInitial = tokens.length > 2 ? tokens[1].replace(/\./g, "").toLowerCase()[0] : null;
-  return { first, last, middleInitial };
-}
-
-function matchAuthor(favName, arxivName) {
-  const fav = parseNameParts(favName);
-  const arx = parseNameParts(arxivName);
-  if (fav.last !== arx.last) return null;
-  if (fav.first === arx.first) return "strong";
-  if (fav.first[0] === arx.first[0]) {
-    if (fav.middleInitial && arx.middleInitial && fav.middleInitial === arx.middleInitial)
-      return "strong";
-    return "weak";
-  }
-  return null;
-}
-
-function bestMatchStrength(paper) {
-  let best = null;
-  for (const author of paper.authors) {
-    for (const fav of favoriteAuthors) {
-      const s = matchAuthor(fav, author);
-      if (s === "strong") return "strong";
-      if (s === "weak") best = "weak";
-    }
-  }
-  return best;
-}
+// Match strength is precomputed during scraping and stored in paper.local_match
+// and paper.local_authors — no client-side name matching needed.
 
 function sortPapers(papers, mode) {
   const copy = [...papers];
@@ -363,7 +290,7 @@ function sortPapers(papers, mode) {
   } else if (mode === "local") {
     const rank = { "strong": 0, "weak": 1, null: 2 };
     copy.sort((a, b) =>
-      rank[a._matchStrength ?? bestMatchStrength(a)] - rank[b._matchStrength ?? bestMatchStrength(b)] ||
+      rank[a.local_match] - rank[b.local_match] ||
       (a._arxivIndex || 0) - (b._arxivIndex || 0)
     );
   }
@@ -381,9 +308,8 @@ function buildCard(paper) {
   const card = document.createElement("div");
   card.className = "paper-card";
 
-  const strength = bestMatchStrength(paper);
-  if (strength === "strong") card.classList.add("highlighted-strong");
-  else if (strength === "weak") card.classList.add("highlighted-weak");
+  if (paper.local_match === "strong") card.classList.add("highlighted-strong");
+  else if (paper.local_match === "weak") card.classList.add("highlighted-weak");
 
   const meta = document.createElement("div");
   meta.className = "paper-meta";
@@ -426,7 +352,7 @@ function buildCard(paper) {
 
   const authorsDiv = document.createElement("div");
   authorsDiv.className = "paper-authors";
-  authorsDiv.innerHTML = paper.authors.map((a) => highlightAuthor(a)).join(", ");
+  authorsDiv.innerHTML = paper.authors.map((a) => highlightAuthor(a, paper.local_authors)).join(", ");
 
   const toggleBtn = document.createElement("button");
   toggleBtn.className = "abstract-toggle";
@@ -460,15 +386,10 @@ function buildCatBadge(cat) {
   return badge;
 }
 
-function highlightAuthor(name) {
-  let best = null;
-  for (const fav of favoriteAuthors) {
-    const s = matchAuthor(fav, name);
-    if (s === "strong") { best = "strong"; break; }
-    if (s === "weak") best = "weak";
-  }
-  if (best === "strong") return `<span class="author-highlight-strong">${escHtml(name)}</span>`;
-  if (best === "weak")   return `<span class="author-highlight-weak">${escHtml(name)}</span>`;
+function highlightAuthor(name, localAuthors) {
+  const strength = localAuthors && localAuthors[name];
+  if (strength === "strong") return `<span class="author-highlight-strong">${escHtml(name)}</span>`;
+  if (strength === "weak")   return `<span class="author-highlight-weak">${escHtml(name)}</span>`;
   return escHtml(name);
 }
 
