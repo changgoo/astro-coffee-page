@@ -89,9 +89,7 @@ python scripts/scrape_authors.py
 To adapt for a different institution, edit the `PAGES` list and CSS selectors in
 `scripts/scrape_authors.py`. Use `--dry-run` to preview without writing.
 
-Names are matched by last name (exact) then first name: an exact first-name match is a
-**strong** match (bold amber highlight); a matching first initial only is a **weak**
-match (italic grey highlight). Titles (Dr., Sir) and suffixes (Jr., III) are ignored.
+Names are matched by last name (exact) then first name. **Strong** match (bold amber): exact first name, hyphenated initials matching a hyphenated first name (`C.-G.` == `Chang-Goo`), single initial when the favorite has a simple name with no middle initial (`G.` == `George`), or first + middle initial both match. **Weak** match (italic grey): first initial only with ambiguity (fav has middle initial, or fav first name is hyphenated, or concatenated initials like `C.G.`). Titles (Dr., Sir) and suffixes (Jr., III) are ignored.
 
 ## Local development
 
