@@ -6,7 +6,7 @@ A daily arXiv astro-ph paper browser hosted on GitHub Pages.
 
 - Daily arXiv astro-ph listings (all subcategories: GA, CO, EP, HE, IM, SR)
 - Browse papers from the last 10 days
-- Sort by arXiv order, first author, title, or category
+- Sort by arXiv order (earliest/latest first), first author, title, or category
 - Filter by sub-category
 - Highlight favorite authors
 
