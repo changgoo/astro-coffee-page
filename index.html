@@ -106,12 +106,14 @@
         <button class="source-btn" data-source="archive" title="Recent 1000 papers">Archive</button>
       </div>
     </div>
-    <label for="abstract-mode">Abstracts:</label>
-    <select id="abstract-mode">
-      <option value="none">Collapsed</option>
-      <option value="strong">Local (strong) open</option>
-      <option value="all">All open</option>
-    </select>
+    <div class="sort-group" title="Abstract display">
+      <span class="sort-label">Abstracts:</span>
+      <div class="btn-group">
+        <button class="abstract-btn" data-abstract="none"   title="All collapsed">Off</button>
+        <button class="abstract-btn" data-abstract="strong" title="Strong local matches open">Local</button>
+        <button class="abstract-btn" data-abstract="all"    title="All open">All</button>
+      </div>
+    </div>
   </div>
 
   <div id="search-container" style="display:none;">
@@ -120,13 +122,7 @@
 
   <div id="cat-filter">
     <span>Filter:</span>
-    <!-- category toggle buttons injected by app.js -->
-    <span class="sort-label" style="margin-left:auto;">Font size:</span>
-    <div class="btn-group">
-      <button class="btn-font" data-size="small">S</button>
-      <button class="btn-font" data-size="medium">M</button>
-      <button class="btn-font" data-size="large">L</button>
-    </div>
+    <!-- category toggle buttons and font-size group injected by app.js -->
   </div>
 
   <div id="stats"></div>

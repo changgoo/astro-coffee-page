@@ -43,7 +43,7 @@ function applyFontSize(size) {
   });
 }
 
-/** Sync active class on all three button groups from current state variables. */
+/** Sync active class on all button groups from current state variables. */
 function syncSortUI() {
   document.querySelectorAll(".sort-btn").forEach((b) =>
     b.classList.toggle("active", b.dataset.sortOrder === sortOrder));
@@ -51,11 +51,12 @@ function syncSortUI() {
     b.classList.toggle("active", b.dataset.local === localFirst));
   document.querySelectorAll(".source-btn").forEach((b) =>
     b.classList.toggle("active", b.dataset.source === dataSource));
+  document.querySelectorAll(".abstract-btn").forEach((b) =>
+    b.classList.toggle("active", b.dataset.abstract === abstractMode));
 }
 
 async function init() {
   applyFontSize(currentFontSize);
-  document.getElementById("abstract-mode").value = abstractMode;
   syncSortUI();
   await loadIndex();
   buildCatFilter();
@@ -182,6 +183,26 @@ function buildCatFilter() {
 
   container.appendChild(all);
   container.appendChild(none);
+
+  // Font size controls — appended last so they sit at the end of the filter row
+  const fontLabel = document.createElement("span");
+  fontLabel.className = "sort-label";
+  fontLabel.textContent = "Font size:";
+  fontLabel.style.marginLeft = "8px";
+
+  const fontGroup = document.createElement("div");
+  fontGroup.className = "btn-group";
+  ["small", "medium", "large"].forEach((size) => {
+    const btn = document.createElement("button");
+    btn.className = "btn-font";
+    btn.dataset.size = size;
+    btn.textContent = size[0].toUpperCase();
+    btn.addEventListener("click", () => applyFontSize(size));
+    fontGroup.appendChild(btn);
+  });
+
+  container.appendChild(fontLabel);
+  container.appendChild(fontGroup);
 }
 
 function toggleCat(cat, btn) {
@@ -550,16 +571,14 @@ document.addEventListener("DOMContentLoaded", () => {
   setAnnouncement(localStorage.getItem(ANN_KEY) === "1");
   annToggle.addEventListener("click", () => setAnnouncement(annBody.hidden));
 
-  // ── Font size ──
-  document.querySelectorAll(".btn-font").forEach((btn) => {
-    btn.addEventListener("click", () => applyFontSize(btn.dataset.size));
-  });
-
   // ── Abstract mode ──
-  document.getElementById("abstract-mode").addEventListener("change", (e) => {
-    abstractMode = e.target.value;
-    localStorage.setItem("abstract-mode", abstractMode);
-    renderCurrent();
+  document.querySelectorAll(".abstract-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      abstractMode = btn.dataset.abstract;
+      localStorage.setItem("abstract-mode", abstractMode);
+      syncSortUI();
+      renderCurrent();
+    });
   });
 
   // ── Sort order (asc / desc) ──
