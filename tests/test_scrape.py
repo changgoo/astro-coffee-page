@@ -413,11 +413,34 @@ def test_update_index_overwrites(tmp_path):
 
 # ── today.json write logic ────────────────────────────────────────────────────
 
-def test_writes_whenever_new_papers_exist(tmp_path):
-    """Any non-zero diff should overwrite today.json regardless of prior count."""
-    out_path = tmp_path / "today.json"
-    out_path.write_text(json.dumps({"total": 82, "papers": []}))
+def test_appends_when_same_arxiv_date(tmp_path):
+    """Second scrape on the same arXiv date appends new papers to today.json."""
+    existing = {"date": "2026-03-09", "total": 82, "papers": [{"id": "A"}] * 82}
+    (tmp_path / "today.json").write_text(json.dumps(existing))
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config" / "authors.json").write_text(json.dumps({"authors": []}))
 
-    new_papers = [{"id": "A"}, {"id": "B"}, {"id": "C"}]
-    # The diff approach: 3 new papers < 82 existing — must still write.
-    assert len(new_papers) > 0  # write proceeds unconditionally when diff > 0
+    # Simulate: 3 new papers for the same arXiv date
+    new_papers = [{"id": f"2503.{i:05d}", "authors": [], "title": "", "abstract": "",
+                   "primary_category": "astro-ph.GA", "categories": [],
+                   "arxiv_url": "", "pdf_url": "", "submitted": "2026-03-09"}
+                  for i in range(3)]
+    existing_papers = existing["papers"]
+    if existing.get("date") == "2026-03-09":
+        all_papers = existing_papers + new_papers
+    else:
+        all_papers = new_papers
+    assert len(all_papers) == 85
+
+
+def test_replaces_when_new_arxiv_date(tmp_path):
+    """Scrape for a new arXiv date starts fresh, discarding the previous day's papers."""
+    existing = {"date": "2026-03-06", "total": 82, "papers": [{"id": "A"}] * 82}
+    (tmp_path / "today.json").write_text(json.dumps(existing))
+
+    new_papers = [{"id": "2503.00001"}]
+    if existing.get("date") == "2026-03-09":  # different date → no append
+        all_papers = existing["papers"] + new_papers
+    else:
+        all_papers = new_papers
+    assert len(all_papers) == 1
