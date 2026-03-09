@@ -286,12 +286,13 @@ def save_archive(data_dir, papers):
     print(f"  Saved archive.json with {len(papers)} papers.")
 
 
-def update_index(data_dir, date_str):
-    """Write data/index.json with the current listing date."""
+def update_index(data_dir):
+    """Write data/index.json with today's UTC date (used for the header display)."""
+    today_utc = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     index_path = data_dir / "index.json"
     with open(index_path, "w") as f:
-        json.dump({"current": date_str}, f, indent=2)
-    print(f"  Updated index.json: current={date_str}")
+        json.dump({"current": today_utc}, f, indent=2)
+    print(f"  Updated index.json: current={today_utc}")
 
 
 def main():
@@ -307,8 +308,8 @@ def main():
         bootstrap_n = int(args[idx + 1])
         args = args[:idx] + args[idx + 2:]
 
-    listing_date = args[0] if args else get_target_date()
-    print(f"Listing date: {listing_date}")
+    arxiv_date = args[0] if args else get_target_date()
+    print(f"arXiv date: {arxiv_date}")
 
     data_dir = Path(__file__).parent.parent / "data"
     data_dir.mkdir(exist_ok=True)
@@ -341,22 +342,12 @@ def main():
 
     new_count = len(new_papers)
     if new_count == 0:
-        print(f"  No new papers for {listing_date}. Skipping.")
+        print("  No new papers. Skipping.")
         return
 
-    # Skip redundant writes for non-bootstrap runs
-    out_path = data_dir / f"{listing_date}.json"
-    if bootstrap_n is None and out_path.exists():
-        with open(out_path) as f:
-            existing = json.load(f)
-        existing_count = existing.get("total", 0)
-        if new_count <= existing_count:
-            print(f"  No update: {new_count} new papers, existing {existing_count}. Skipping.")
-            return
-        print(f"  Update detected: {existing_count} -> {new_count} papers.")
-
+    out_path = data_dir / "today.json"
     output = {
-        "date": listing_date,
+        "date": arxiv_date,
         "fetched_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "total": new_count,
         "papers": new_papers,
@@ -366,7 +357,7 @@ def main():
     print(f"  Saved {new_count} papers to {out_path}")
 
     save_archive(data_dir, fetched)
-    update_index(data_dir, listing_date)
+    update_index(data_dir)
     print("Done.")
 
 

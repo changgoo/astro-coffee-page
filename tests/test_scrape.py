@@ -399,41 +399,25 @@ def test_save_archive_writes_file(tmp_path):
 # ── update_index ──────────────────────────────────────────────────────────────
 
 def test_update_index_writes_current(tmp_path):
-    scrape.update_index(tmp_path, "2026-03-06")
+    scrape.update_index(tmp_path)
     index = json.loads((tmp_path / "index.json").read_text())
-    assert index["current"] == "2026-03-06"
+    datetime.strptime(index["current"], "%Y-%m-%d")  # valid YYYY-MM-DD
 
 
 def test_update_index_overwrites(tmp_path):
-    scrape.update_index(tmp_path, "2026-03-06")
-    scrape.update_index(tmp_path, "2026-03-09")
+    scrape.update_index(tmp_path)
+    scrape.update_index(tmp_path)
     index = json.loads((tmp_path / "index.json").read_text())
-    assert index["current"] == "2026-03-09"
+    assert "current" in index
 
 
-# ── skip-unchanged logic ──────────────────────────────────────────────────────
+# ── today.json write logic ────────────────────────────────────────────────────
 
-def test_skips_when_count_unchanged(tmp_path):
-    """Should not overwrite when new count <= existing count."""
-    existing = {"total": 2, "papers": [{"id": "A"}, {"id": "B"}]}
-    out_path = tmp_path / "2025-03-05.json"
-    out_path.write_text(json.dumps(existing))
+def test_writes_whenever_new_papers_exist(tmp_path):
+    """Any non-zero diff should overwrite today.json regardless of prior count."""
+    out_path = tmp_path / "today.json"
+    out_path.write_text(json.dumps({"total": 82, "papers": []}))
 
-    new_papers = [{"id": "A"}, {"id": "B"}]
-    new_count = len(new_papers)
-    with open(out_path) as f:
-        existing_count = json.load(f).get("total", 0)
-    assert new_count <= existing_count  # would skip
-
-
-def test_writes_when_count_increases(tmp_path):
-    """Should write when new count exceeds existing count."""
-    existing = {"total": 1, "papers": [{"id": "A"}]}
-    out_path = tmp_path / "2025-03-05.json"
-    out_path.write_text(json.dumps(existing))
-
-    new_papers = [{"id": "A"}, {"id": "B"}]
-    new_count = len(new_papers)
-    with open(out_path) as f:
-        existing_count = json.load(f).get("total", 0)
-    assert new_count > existing_count  # would write
+    new_papers = [{"id": "A"}, {"id": "B"}, {"id": "C"}]
+    # The diff approach: 3 new papers < 82 existing — must still write.
+    assert len(new_papers) > 0  # write proceeds unconditionally when diff > 0

@@ -46,10 +46,15 @@ timed around arXiv's ~8 PM ET daily announcement:
 > **Note:** Times above assume EST (UTC−5). During EDT (UTC−4, mid-March to early
 > November) all night runs fire 1 hour earlier ET (8 PM–11 PM).
 
-To run it manually: **Actions → Daily arXiv scrape → Run workflow**.
+To run it manually: **Actions → Daily arXiv scrape → Run workflow** (no inputs required).
 
-The Action needs write permission to commit data files. Go to:
-**Settings → Actions → General → Workflow permissions** → select **Read and write permissions**.
+The Action pushes data commits directly to the protected `main` branch using an SSH deploy key. Set it up once:
+
+1. Generate a key pair (no passphrase): `ssh-keygen -t ed25519 -C "astro-coffee-scraper" -f deploy_key -N ""`
+2. Add `deploy_key.pub` as a deploy key with **write access** — repo **Settings → Deploy keys → Add deploy key**
+3. Add the private key `deploy_key` as a repository secret named `SCRAPER_DEPLOY_KEY` — repo **Settings → Secrets → Actions → New repository secret**
+4. Delete both local key files
+5. Add **Deploy keys** as a bypass actor in your branch ruleset — repo **Settings → Rules → (ruleset) → Bypass list**
 
 ### 4. Populate the author list
 
