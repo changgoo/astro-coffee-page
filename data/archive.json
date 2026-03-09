@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-03-09T02:21:51Z",
+  "fetched_at": "2026-03-09T03:23:02Z",
   "total": 1000,
   "papers": [
     {
@@ -519,10 +519,8 @@
       "submitted": "2026-03-06",
       "arxiv_url": "https://arxiv.org/abs/2603.06364",
       "pdf_url": "https://arxiv.org/pdf/2603.06364",
-      "local_match": "weak",
-      "local_authors": {
-        "Lark Wang": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.06344",
@@ -981,11 +979,8 @@
       "submitted": "2026-03-06",
       "arxiv_url": "https://arxiv.org/abs/2603.06150",
       "pdf_url": "https://arxiv.org/pdf/2603.06150",
-      "local_match": "weak",
-      "local_authors": {
-        "Yujie Chen": "weak",
-        "Minglei Guo": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.06128",
@@ -1055,10 +1050,8 @@
       "submitted": "2026-03-06",
       "arxiv_url": "https://arxiv.org/abs/2603.06116",
       "pdf_url": "https://arxiv.org/pdf/2603.06116",
-      "local_match": "weak",
-      "local_authors": {
-        "Alok C. Gupta": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.06110",
@@ -1120,10 +1113,8 @@
       "submitted": "2026-03-06",
       "arxiv_url": "https://arxiv.org/abs/2603.06099",
       "pdf_url": "https://arxiv.org/pdf/2603.06099",
-      "local_match": "weak",
-      "local_authors": {
-        "Alok C. Gupta": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.06097",
@@ -1145,10 +1136,8 @@
       "submitted": "2026-03-06",
       "arxiv_url": "https://arxiv.org/abs/2603.06097",
       "pdf_url": "https://arxiv.org/pdf/2603.06097",
-      "local_match": "weak",
-      "local_authors": {
-        "Alok C. Gupta": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.06056",
@@ -1169,10 +1158,8 @@
       "submitted": "2026-03-06",
       "arxiv_url": "https://arxiv.org/abs/2603.06056",
       "pdf_url": "https://arxiv.org/pdf/2603.06056",
-      "local_match": "weak",
-      "local_authors": {
-        "Shao-Yu Fu": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.06010",
@@ -1265,10 +1252,8 @@
       "submitted": "2026-03-06",
       "arxiv_url": "https://arxiv.org/abs/2603.05958",
       "pdf_url": "https://arxiv.org/pdf/2603.05958",
-      "local_match": "weak",
-      "local_authors": {
-        "Yunchuan Chen": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05934",
@@ -1956,10 +1941,8 @@
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05593",
       "pdf_url": "https://arxiv.org/pdf/2603.05593",
-      "local_match": "weak",
-      "local_authors": {
-        "Yuguang Chen": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05592",
@@ -2201,10 +2184,8 @@
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05434",
       "pdf_url": "https://arxiv.org/pdf/2603.05434",
-      "local_match": "weak",
-      "local_authors": {
-        "Yuguang Chen": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05412",
@@ -2469,10 +2450,8 @@
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.05289",
       "pdf_url": "https://arxiv.org/pdf/2603.05289",
-      "local_match": "weak",
-      "local_authors": {
-        "Yuheng Zhang": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.05287",
@@ -3503,8 +3482,7 @@
       "pdf_url": "https://arxiv.org/pdf/2603.04586",
       "local_match": "strong",
       "local_authors": {
-        "Jenny E. Greene": "strong",
-        "Junyao Li": "weak"
+        "Jenny E. Greene": "strong"
       }
     },
     {
@@ -4152,10 +4130,8 @@
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04392",
       "pdf_url": "https://arxiv.org/pdf/2603.04392",
-      "local_match": "weak",
-      "local_authors": {
-        "Jennifer Li": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04382",
@@ -4893,10 +4869,8 @@
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.04044",
       "pdf_url": "https://arxiv.org/pdf/2603.04044",
-      "local_match": "weak",
-      "local_authors": {
-        "Yanmei Chen": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04041",
@@ -5039,10 +5013,8 @@
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.03951",
       "pdf_url": "https://arxiv.org/pdf/2603.03951",
-      "local_match": "weak",
-      "local_authors": {
-        "Jaehyun Lee": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.03860",
@@ -5192,10 +5164,8 @@
       "submitted": "2026-03-04",
       "arxiv_url": "https://arxiv.org/abs/2603.03732",
       "pdf_url": "https://arxiv.org/pdf/2603.03732",
-      "local_match": "weak",
-      "local_authors": {
-        "Yuhang Zhang": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.03722",
@@ -5667,11 +5637,8 @@
       "submitted": "2026-03-03",
       "arxiv_url": "https://arxiv.org/abs/2603.03463",
       "pdf_url": "https://arxiv.org/pdf/2603.03463",
-      "local_match": "weak",
-      "local_authors": {
-        "Honghui Liu": "weak",
-        "Yuexin Zhang": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.03450",
@@ -6834,10 +6801,8 @@
       "submitted": "2026-03-03",
       "arxiv_url": "https://arxiv.org/abs/2603.02904",
       "pdf_url": "https://arxiv.org/pdf/2603.02904",
-      "local_match": "weak",
-      "local_authors": {
-        "Long Wang": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.02878",
@@ -6881,10 +6846,8 @@
       "submitted": "2026-03-03",
       "arxiv_url": "https://arxiv.org/abs/2603.02867",
       "pdf_url": "https://arxiv.org/pdf/2603.02867",
-      "local_match": "weak",
-      "local_authors": {
-        "Shashikant Gupta": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.02852",
@@ -7150,10 +7113,8 @@
       "submitted": "2026-03-03",
       "arxiv_url": "https://arxiv.org/abs/2603.03384",
       "pdf_url": "https://arxiv.org/pdf/2603.03384",
-      "local_match": "weak",
-      "local_authors": {
-        "Hongbang Liu": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.02670",
@@ -7329,10 +7290,8 @@
       "submitted": "2026-03-03",
       "arxiv_url": "https://arxiv.org/abs/2603.02585",
       "pdf_url": "https://arxiv.org/pdf/2603.02585",
-      "local_match": "weak",
-      "local_authors": {
-        "Yun Zhang": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.02570",
@@ -7390,10 +7349,8 @@
       "submitted": "2026-03-03",
       "arxiv_url": "https://arxiv.org/abs/2603.02564",
       "pdf_url": "https://arxiv.org/pdf/2603.02564",
-      "local_match": "weak",
-      "local_authors": {
-        "Jing Li": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.02550",
@@ -7441,7 +7398,6 @@
       "pdf_url": "https://arxiv.org/pdf/2603.02550",
       "local_match": "strong",
       "local_authors": {
-        "Hui-Gen Liu": "weak",
         "Joshua N. Winn": "strong"
       }
     },
@@ -7660,10 +7616,8 @@
       "submitted": "2026-03-02",
       "arxiv_url": "https://arxiv.org/abs/2603.02445",
       "pdf_url": "https://arxiv.org/pdf/2603.02445",
-      "local_match": "weak",
-      "local_authors": {
-        "Long Wang": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.02440",
@@ -8317,10 +8271,8 @@
       "submitted": "2026-03-02",
       "arxiv_url": "https://arxiv.org/abs/2603.02211",
       "pdf_url": "https://arxiv.org/pdf/2603.02211",
-      "local_match": "weak",
-      "local_authors": {
-        "Hauyu Baobab Liu": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.02302",
@@ -8664,10 +8616,8 @@
       "submitted": "2026-03-02",
       "arxiv_url": "https://arxiv.org/abs/2603.01955",
       "pdf_url": "https://arxiv.org/pdf/2603.01955",
-      "local_match": "weak",
-      "local_authors": {
-        "Jinzeng Li": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.01934",
@@ -8705,11 +8655,8 @@
       "submitted": "2026-03-02",
       "arxiv_url": "https://arxiv.org/abs/2603.01933",
       "pdf_url": "https://arxiv.org/pdf/2603.01933",
-      "local_match": "weak",
-      "local_authors": {
-        "Yao Ma": "weak",
-        "Yong-Liang Ma": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.01925",
@@ -9187,10 +9134,8 @@
       "submitted": "2026-03-02",
       "arxiv_url": "https://arxiv.org/abs/2603.01633",
       "pdf_url": "https://arxiv.org/pdf/2603.01633",
-      "local_match": "weak",
-      "local_authors": {
-        "Soumya Gupta": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.01618",
@@ -9265,10 +9210,8 @@
       "submitted": "2026-03-02",
       "arxiv_url": "https://arxiv.org/abs/2603.01534",
       "pdf_url": "https://arxiv.org/pdf/2603.01534",
-      "local_match": "weak",
-      "local_authors": {
-        "Jiayin Li": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.01533",
@@ -9314,10 +9257,8 @@
       "submitted": "2026-03-02",
       "arxiv_url": "https://arxiv.org/abs/2603.01529",
       "pdf_url": "https://arxiv.org/pdf/2603.01529",
-      "local_match": "weak",
-      "local_authors": {
-        "Yigong Zhang": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.01487",
@@ -9461,10 +9402,8 @@
       "submitted": "2026-03-02",
       "arxiv_url": "https://arxiv.org/abs/2603.01453",
       "pdf_url": "https://arxiv.org/pdf/2603.01453",
-      "local_match": "weak",
-      "local_authors": {
-        "Yongyun Chen": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.01428",
@@ -9619,7 +9558,6 @@
       "pdf_url": "https://arxiv.org/pdf/2603.01370",
       "local_match": "strong",
       "local_authors": {
-        "Yunchong Zhang": "weak",
         "David J. Setton": "strong",
         "Bingjie Wang": "strong",
         "Jenny E. Greene": "strong"
@@ -10097,10 +10035,8 @@
       "submitted": "2026-02-28",
       "arxiv_url": "https://arxiv.org/abs/2603.00833",
       "pdf_url": "https://arxiv.org/pdf/2603.00833",
-      "local_match": "weak",
-      "local_authors": {
-        "Honghui Liu": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.00832",
@@ -10468,10 +10404,8 @@
       "submitted": "2026-02-28",
       "arxiv_url": "https://arxiv.org/abs/2603.00473",
       "pdf_url": "https://arxiv.org/pdf/2603.00473",
-      "local_match": "weak",
-      "local_authors": {
-        "Jiadong Li": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.00449",
@@ -10755,7 +10689,6 @@
       "pdf_url": "https://arxiv.org/pdf/2603.00380",
       "local_match": "strong",
       "local_authors": {
-        "Yunchong Zhang": "weak",
         "David J. Setton": "strong",
         "Jenny E. Greene": "strong",
         "Andy D. Goulding": "strong",
@@ -11663,10 +11596,8 @@
       "submitted": "2026-02-27",
       "arxiv_url": "https://arxiv.org/abs/2602.24185",
       "pdf_url": "https://arxiv.org/pdf/2602.24185",
-      "local_match": "weak",
-      "local_authors": {
-        "Jeongwoo Lee": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.24162",
@@ -12341,10 +12272,8 @@
       "submitted": "2026-02-27",
       "arxiv_url": "https://arxiv.org/abs/2602.23776",
       "pdf_url": "https://arxiv.org/pdf/2602.23776",
-      "local_match": "weak",
-      "local_authors": {
-        "J. Lee": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.23767",
@@ -12488,10 +12417,8 @@
       "submitted": "2026-02-27",
       "arxiv_url": "https://arxiv.org/abs/2602.23724",
       "pdf_url": "https://arxiv.org/pdf/2602.23724",
-      "local_match": "weak",
-      "local_authors": {
-        "Juan Li": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.23723",
@@ -12535,10 +12462,8 @@
       "submitted": "2026-02-27",
       "arxiv_url": "https://arxiv.org/abs/2602.23693",
       "pdf_url": "https://arxiv.org/pdf/2602.23693",
-      "local_match": "weak",
-      "local_authors": {
-        "Yoo Jung Kim": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.23686",
@@ -12582,7 +12507,6 @@
       "pdf_url": "https://arxiv.org/pdf/2602.23683",
       "local_match": "strong",
       "local_authors": {
-        "Liang Wang": "weak",
         "Yang Zhang": "strong"
       }
     },
@@ -12721,8 +12645,7 @@
       "pdf_url": "https://arxiv.org/pdf/2602.23637",
       "local_match": "weak",
       "local_authors": {
-        "Hu Liu": "weak",
-        "L. Y. Wang": "weak"
+        "Hu Liu": "weak"
       }
     },
     {
@@ -13877,10 +13800,8 @@
       "submitted": "2026-02-26",
       "arxiv_url": "https://arxiv.org/abs/2602.23016",
       "pdf_url": "https://arxiv.org/pdf/2602.23016",
-      "local_match": "weak",
-      "local_authors": {
-        "Jialin Li": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.23015",
@@ -14662,10 +14583,8 @@
       "submitted": "2026-02-26",
       "arxiv_url": "https://arxiv.org/abs/2602.22572",
       "pdf_url": "https://arxiv.org/pdf/2602.22572",
-      "local_match": "weak",
-      "local_authors": {
-        "Liang Wang": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.22569",
@@ -14704,10 +14623,8 @@
       "submitted": "2026-02-26",
       "arxiv_url": "https://arxiv.org/abs/2602.22569",
       "pdf_url": "https://arxiv.org/pdf/2602.22569",
-      "local_match": "weak",
-      "local_authors": {
-        "Hao Liu": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.22516",
@@ -14926,10 +14843,8 @@
       "submitted": "2026-02-25",
       "arxiv_url": "https://arxiv.org/abs/2602.22476",
       "pdf_url": "https://arxiv.org/pdf/2602.22476",
-      "local_match": "weak",
-      "local_authors": {
-        "Adam Foster": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.22473",
@@ -15844,7 +15759,6 @@
       "pdf_url": "https://arxiv.org/pdf/2602.22151",
       "local_match": "strong",
       "local_authors": {
-        "Janice C. Lee": "weak",
         "Eve Ostriker": "strong"
       }
     },
@@ -16009,10 +15923,8 @@
       "submitted": "2026-02-25",
       "arxiv_url": "https://arxiv.org/abs/2602.22040",
       "pdf_url": "https://arxiv.org/pdf/2602.22040",
-      "local_match": "weak",
-      "local_authors": {
-        "Shao-Yu Fu": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.22035",
@@ -16102,10 +16014,8 @@
       "submitted": "2026-02-25",
       "arxiv_url": "https://arxiv.org/abs/2602.22004",
       "pdf_url": "https://arxiv.org/pdf/2602.22004",
-      "local_match": "weak",
-      "local_authors": {
-        "Jiang-Tao Li": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.21975",
@@ -16219,10 +16129,8 @@
       "submitted": "2026-02-25",
       "arxiv_url": "https://arxiv.org/abs/2602.21890",
       "pdf_url": "https://arxiv.org/pdf/2602.21890",
-      "local_match": "weak",
-      "local_authors": {
-        "Lingyu Wang": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.21882",
@@ -16509,10 +16417,8 @@
       "submitted": "2026-02-25",
       "arxiv_url": "https://arxiv.org/abs/2602.21739",
       "pdf_url": "https://arxiv.org/pdf/2602.21739",
-      "local_match": "weak",
-      "local_authors": {
-        "Yik Ki Ma": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.21733",
@@ -17067,10 +16973,8 @@
       "submitted": "2026-02-25",
       "arxiv_url": "https://arxiv.org/abs/2602.21500",
       "pdf_url": "https://arxiv.org/pdf/2602.21500",
-      "local_match": "weak",
-      "local_authors": {
-        "Huilan Liu": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.21493",
@@ -17679,7 +17583,6 @@
       "pdf_url": "https://arxiv.org/pdf/2602.21280",
       "local_match": "strong",
       "local_authors": {
-        "Shenming Fu": "weak",
         "Jiaxuan Li": "strong",
         "Jacob Nibauer": "strong",
         "Andrew K. Saydjari": "strong",
@@ -18051,10 +17954,8 @@
       "submitted": "2026-02-24",
       "arxiv_url": "https://arxiv.org/abs/2602.21177",
       "pdf_url": "https://arxiv.org/pdf/2602.21177",
-      "local_match": "weak",
-      "local_authors": {
-        "Y. D. Kim": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.21171",
@@ -19245,11 +19146,8 @@
       "submitted": "2026-02-24",
       "arxiv_url": "https://arxiv.org/abs/2602.20523",
       "pdf_url": "https://arxiv.org/pdf/2602.20523",
-      "local_match": "weak",
-      "local_authors": {
-        "Bao Wang": "weak",
-        "Lifan Wang": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.20522",
@@ -19457,14 +19355,8 @@
       "pdf_url": "https://arxiv.org/pdf/2602.20519",
       "local_match": "weak",
       "local_authors": {
-        "Y. Z. Jiang": "weak",
         "H. Liu": "weak",
-        "L. G. Wang": "weak",
-        "Y. Zhang": "weak",
-        "Y. P. Zhang": "weak",
-        "Y. J. Zhang": "weak",
-        "Y. Q. Zhang": "weak",
-        "Y. L. Zhang": "weak"
+        "Y. Zhang": "weak"
       }
     },
     {
@@ -21394,10 +21286,8 @@
       "submitted": "2026-02-23",
       "arxiv_url": "https://arxiv.org/abs/2602.19997",
       "pdf_url": "https://arxiv.org/pdf/2602.19997",
-      "local_match": "weak",
-      "local_authors": {
-        "L. Wang": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.19996",
@@ -21418,10 +21308,8 @@
       "submitted": "2026-02-23",
       "arxiv_url": "https://arxiv.org/abs/2602.19996",
       "pdf_url": "https://arxiv.org/pdf/2602.19996",
-      "local_match": "weak",
-      "local_authors": {
-        "Yang Chen": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.19995",
@@ -21439,10 +21327,8 @@
       "submitted": "2026-02-23",
       "arxiv_url": "https://arxiv.org/abs/2602.19995",
       "pdf_url": "https://arxiv.org/pdf/2602.19995",
-      "local_match": "weak",
-      "local_authors": {
-        "Juntai Shen": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.19986",
@@ -22560,10 +22446,8 @@
       "submitted": "2026-02-22",
       "arxiv_url": "https://arxiv.org/abs/2602.19200",
       "pdf_url": "https://arxiv.org/pdf/2602.19200",
-      "local_match": "weak",
-      "local_authors": {
-        "John Rankin": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.19135",
@@ -23057,10 +22941,8 @@
       "submitted": "2026-02-21",
       "arxiv_url": "https://arxiv.org/abs/2602.18753",
       "pdf_url": "https://arxiv.org/pdf/2602.18753",
-      "local_match": "weak",
-      "local_authors": {
-        "Ji-Wei Li": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.18743",
@@ -23228,15 +23110,8 @@
       "pdf_url": "https://arxiv.org/pdf/2602.18743",
       "local_match": "weak",
       "local_authors": {
-        "Y. Z. Jiang": "weak",
         "H. Liu": "weak",
-        "L. G. Wang": "weak",
-        "Yan Zhang": "weak",
-        "Yi Zhang": "weak",
-        "Y. J. Zhang": "weak",
-        "Y. L. Zhang": "weak",
-        "Y. P. Zhang": "weak",
-        "Y. Q. Zhang": "weak"
+        "Yi Zhang": "weak"
       }
     },
     {
@@ -23890,10 +23765,8 @@
       "submitted": "2026-02-20",
       "arxiv_url": "https://arxiv.org/abs/2602.18320",
       "pdf_url": "https://arxiv.org/pdf/2602.18320",
-      "local_match": "weak",
-      "local_authors": {
-        "Hauyu Baobab Liu": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.18311",
@@ -24375,11 +24248,8 @@
       "submitted": "2026-02-20",
       "arxiv_url": "https://arxiv.org/abs/2602.18127",
       "pdf_url": "https://arxiv.org/pdf/2602.18127",
-      "local_match": "weak",
-      "local_authors": {
-        "Liheng Wang": "weak",
-        "Meng Guo": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.18118",
@@ -24872,10 +24742,8 @@
       "submitted": "2026-02-19",
       "arxiv_url": "https://arxiv.org/abs/2602.17821",
       "pdf_url": "https://arxiv.org/pdf/2602.17821",
-      "local_match": "weak",
-      "local_authors": {
-        "Yue Zhang": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.17816",
@@ -25344,10 +25212,8 @@
       "submitted": "2026-02-19",
       "arxiv_url": "https://arxiv.org/abs/2602.17611",
       "pdf_url": "https://arxiv.org/pdf/2602.17611",
-      "local_match": "weak",
-      "local_authors": {
-        "Yuan-Zhuo Ma": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.17606",
@@ -25922,10 +25788,8 @@
       "submitted": "2026-02-19",
       "arxiv_url": "https://arxiv.org/abs/2602.17275",
       "pdf_url": "https://arxiv.org/pdf/2602.17275",
-      "local_match": "weak",
-      "local_authors": {
-        "Yu-Hao Zhang": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.17269",
@@ -26072,10 +25936,8 @@
       "submitted": "2026-02-19",
       "arxiv_url": "https://arxiv.org/abs/2602.17267",
       "pdf_url": "https://arxiv.org/pdf/2602.17267",
-      "local_match": "weak",
-      "local_authors": {
-        "Hao Liu": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.17205",
@@ -26106,10 +25968,8 @@
       "submitted": "2026-02-19",
       "arxiv_url": "https://arxiv.org/abs/2602.17205",
       "pdf_url": "https://arxiv.org/pdf/2602.17205",
-      "local_match": "weak",
-      "local_authors": {
-        "Fujiang Yu": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.17188",
@@ -26248,8 +26108,7 @@
       "local_match": "strong",
       "local_authors": {
         "Andy Goulding": "strong",
-        "Jenny Greene": "strong",
-        "Jennifer I-Hsiu Li": "weak"
+        "Jenny Greene": "strong"
       }
     },
     {
@@ -26294,10 +26153,8 @@
       "submitted": "2026-02-19",
       "arxiv_url": "https://arxiv.org/abs/2602.16995",
       "pdf_url": "https://arxiv.org/pdf/2602.16995",
-      "local_match": "weak",
-      "local_authors": {
-        "Yu-Ching Chen": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.18510",
@@ -26655,11 +26512,8 @@
       "submitted": "2026-02-18",
       "arxiv_url": "https://arxiv.org/abs/2602.16818",
       "pdf_url": "https://arxiv.org/pdf/2602.16818",
-      "local_match": "weak",
-      "local_authors": {
-        "J. A. Goodman": "weak",
-        "J. Lee": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.16816",
