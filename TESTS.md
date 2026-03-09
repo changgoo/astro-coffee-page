@@ -10,7 +10,7 @@ No network access is required — all HTTP calls are mocked.
 
 ---
 
-## `tests/test_scrape.py` — arXiv scraper (54 tests)
+## `tests/test_scrape.py` — arXiv scraper (60 tests)
 
 Tests for `scripts/scrape.py`. Uses a minimal Atom XML fixture that mirrors the
 structure returned by the arXiv API.
@@ -19,11 +19,12 @@ structure returned by the arXiv API.
 
 | Test | What it checks |
 |------|----------------|
-| `test_build_query_url_contains_start_date` | The start datetime string appears in the URL |
-| `test_build_query_url_contains_end_date` | The end datetime string appears in the URL |
 | `test_build_query_url_contains_category` | The query targets `cat:astro-ph.*` |
+| `test_build_query_url_sort_by_submitted_date` | The URL includes `sortBy=submittedDate` |
+| `test_build_query_url_descending` | The URL includes `sortOrder=descending` |
 | `test_build_query_url_pagination` | A non-zero `start` offset appears in the URL |
 | `test_build_query_url_max_results` | The `max_results` parameter is reflected in the URL |
+| `test_build_query_url_no_date_window` | The URL does not contain a `submittedDate:[` range filter (date filtering is done post-fetch) |
 
 ### `get_target_date`
 
@@ -77,15 +78,59 @@ two categories, extra whitespace in title and abstract).
 | `test_parse_name_parts_strips_title` | Honorific titles (Dr., Prof.) are removed |
 | `test_parse_name_parts_strips_suffix` | Name suffixes (Jr., III) are removed |
 
-### `has_strong_local_author`
+### `match_author`
+
+Returns `"strong"`, `"weak"`, or `None` for a single arXiv author string against
+the favorite-authors list. Tests are grouped by the fav-author name pattern being exercised.
+
+**Chang-Goo Kim** (hyphenated first name, no middle initial)
 
 | Test | What it checks |
 |------|----------------|
-| `test_has_strong_local_author_exact_first_name` | Last + exact first name is a strong match |
-| `test_has_strong_local_author_matching_middle_initial` | Last + first initial + agreeing middle initial is a strong match |
-| `test_has_strong_local_author_first_initial_only_is_not_strong` | Last + first initial alone is not a strong match (only weak) |
-| `test_has_strong_local_author_last_name_mismatch` | Last name mismatch returns no match |
-| `test_has_strong_local_author_no_authors` | Paper with empty author list returns no match |
+| `test_match_author_strong_exact_first_name` | Last + exact first name is a strong match |
+| `test_match_author_strong_middle_initial` | Last + first initial + agreeing middle initial is a strong match |
+| `test_match_author_hyphenated_exact_strong` | Exact hyphenated first name is a strong match |
+| `test_match_author_hyphenated_initials_strong` | Hyphenated initials (C.-G.) match a hyphenated first name → strong |
+| `test_match_author_concatenated_initials_weak` | Concatenated initials (C.G.) are not strong → weak |
+| `test_match_author_single_initial_hyphenated_fav_weak` | Single initial (C.) when fav has a hyphenated first name → weak |
+
+**Matthew W. Kunz** (non-hyphenated, has middle initial)
+
+| Test | What it checks |
+|------|----------------|
+| `test_match_author_first_and_middle_initial_strong` | First initial + matching middle initial → strong |
+| `test_match_author_exact_no_middle_strong` | Exact first name without middle initial → strong |
+| `test_match_author_single_initial_fav_has_middle_weak` | Single bare initial when fav has a middle initial → weak |
+
+**George Livadiotis** (non-hyphenated, no middle initial)
+
+| Test | What it checks |
+|------|----------------|
+| `test_match_author_single_initial_always_weak` | Single bare initial (G.) is always weak; also checks G. A. (extra unknown initial) → weak |
+
+**Generic cases**
+
+| Test | What it checks |
+|------|----------------|
+| `test_match_author_weak_first_letter_only` | Different full first name sharing only the first letter → weak |
+| `test_match_author_last_name_mismatch` | Last name mismatch returns `None` |
+| `test_match_author_no_match` | Completely unknown author returns `None` |
+
+### `annotate_papers`
+
+Calls `annotate_papers(papers, fav_authors)` and checks the `local_match` and
+`local_authors` fields written onto each paper dict.
+
+| Test | What it checks |
+|------|----------------|
+| `test_annotate_papers_strong_match` | A strong-match paper gets `local_match == "strong"` |
+| `test_annotate_papers_local_authors_dict` | The `local_authors` dict maps the matched author string to its match level |
+| `test_annotate_papers_no_match` | No fav author in paper → `local_match` is `None` and `local_authors` is `{}` |
+| `test_annotate_papers_weak_match` | Full first name differing from fav only by first letter → `local_match == "weak"` |
+| `test_annotate_papers_single_initial_always_weak` | Single initial (G.) against a full-name fav → `local_match == "weak"` |
+| `test_annotate_papers_manual_initial_name_strong` | Adding the abbreviated form (G. Livadiotis) to the fav list gives `local_match == "strong"` |
+| `test_annotate_papers_single_initial_fav_has_middle_weak` | Single initial when fav has a middle initial → `local_match == "weak"` |
+| `test_annotate_papers_multiple_papers` | Strong match and no-match papers in the same list are annotated correctly |
 
 ### `load_favorite_authors`
 
@@ -96,14 +141,13 @@ two categories, extra whitespace in title and abstract).
 | `test_load_favorite_authors_deduplicates` | Duplicate names across both files appear only once |
 | `test_load_favorite_authors_missing_files` | Missing config files return an empty list without error |
 
-### `archive_strong_papers`
+### `load_archive` / `save_archive`
 
 | Test | What it checks |
 |------|----------------|
-| `test_archive_strong_papers_creates_file` | `local-archive.json` is created with the matching papers keyed by date |
-| `test_archive_strong_papers_only_strong_matches` | Only strong-match papers are archived; others are excluded |
-| `test_archive_strong_papers_no_matches_skips` | No file is created when there are no strong matches |
-| `test_archive_strong_papers_appends_existing` | A second call for a different date adds to the existing archive |
+| `test_load_archive_missing` | Missing `archive.json` returns empty list and empty set without error |
+| `test_load_archive_returns_ids` | Existing archive returns all papers and their IDs as a set |
+| `test_save_archive_writes_file` | `save_archive` creates `archive.json` with correct structure (`total`, `papers`, `fetched_at`) |
 
 ### `update_index`
 
@@ -112,20 +156,15 @@ is touched.
 
 | Test | What it checks |
 |------|----------------|
-| `test_update_index_creates_index` | `index.json` is created and contains the new date |
-| `test_update_index_no_duplicates` | Calling with the same date twice leaves only one entry |
-| `test_update_index_sorted_descending` | Dates added out of order are sorted newest-first |
-| `test_update_index_max_days` | After 15 insertions with `max_days=10`, only 10 entries remain |
-| `test_update_index_removes_old_files` | A `.json` data file for a pruned date is deleted from disk |
-| `test_update_index_archives_strong_match_before_delete` | Strong local author matches are saved to `local-archive.json` before the day file is deleted |
-| `test_update_index_no_archive_when_no_strong_match` | Day files with no strong matches are deleted without creating an archive entry |
+| `test_update_index_writes_current` | `index.json` is created with the `current` field set to the supplied date |
+| `test_update_index_overwrites` | A second call with a newer date updates `current` in place |
 
 ### Skip-unchanged logic
 
 | Test | What it checks |
 |------|----------------|
-| `test_main_skips_when_count_unchanged` | When the fetched paper count does not exceed the existing count, the file is not rewritten |
-| `test_main_writes_when_count_increases` | When the fetched count exceeds the existing count, the file is updated |
+| `test_skips_when_count_unchanged` | When the fetched paper count does not exceed the existing count, the file is not rewritten |
+| `test_writes_when_count_increases` | When the fetched count exceeds the existing count, the file is updated |
 
 ---
 
