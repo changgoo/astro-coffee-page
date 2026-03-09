@@ -368,16 +368,10 @@ main {
 body[data-font="small"] { font-size: 13px; }
 body[data-font="large"]  { font-size: 17px; }
 
-.font-size-btns { display: flex; gap: 2px; }
 
 .btn-font {
   font-size: 11px;
   font-weight: 700;
-  padding: 3px 7px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  cursor: pointer;
-  background: var(--surface);
   color: var(--text-muted);
 }
 
@@ -399,17 +393,43 @@ body[data-font="large"]  { font-size: 17px; }
   text-decoration: underline;
 }
 
-/* ── Archive view ── */
-.btn-archive {
-  font-size: 13px;
-  margin-left: 4px;
+/* ── Sort / source button groups ── */
+.sort-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
-.btn-archive.active {
-  background: var(--highlight-strong-bg);
-  border-color: var(--highlight-strong-border);
-  font-weight: 600;
+.sort-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
 }
+
+.btn-group {
+  display: flex;
+}
+
+.btn-group button {
+  border-radius: 0;
+  margin: 0;
+  border-right-width: 0;
+  font-size: 13px;
+  padding: 4px 9px;
+}
+
+.btn-group button:first-child { border-radius: 4px 0 0 4px; }
+.btn-group button:last-child  { border-radius: 0 4px 4px 0; border-right-width: 1px; }
+
+.btn-group button.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  z-index: 1;
+}
+
+/* keep the border between an active and its neighbour tidy */
+.btn-group button.active + button { border-left-color: var(--primary-hover); }
 
 #search-container {
   margin-bottom: 12px;
