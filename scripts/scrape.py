@@ -8,6 +8,7 @@ archive snapshot are treated as new for today's listing. The archive is then upd
 Usage:
   python scripts/scrape.py [YYYY-MM-DD]
   python scripts/scrape.py --bootstrap N [YYYY-MM-DD]   # first-run seed
+  python scripts/scrape.py --reannotate                 # re-tag today.json in-place
 """
 
 import json
@@ -305,14 +306,45 @@ def update_index(data_dir):
     print(f"  Updated index.json: current={today_utc}")
 
 
+def reannotate(data_dir, repo_root):
+    """Re-run author tagging on today.json and archive.json in-place without re-scraping."""
+    fav_authors = load_favorite_authors(repo_root)
+    print(f"  {len(fav_authors)} favorites loaded.")
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    for filename in ("today.json", "archive.json"):
+        path = data_dir / filename
+        if not path.exists():
+            print(f"  {filename} not found, skipping.")
+            continue
+        with open(path) as f:
+            data = json.load(f)
+        papers = data.get("papers", [])
+        print(f"  Re-annotating {len(papers)} papers in {filename} ...")
+        annotate_papers(papers, fav_authors)
+        data["papers"] = papers
+        data["fetched_at"] = now
+        with open(path, "w") as f:
+            json.dump(data, f, indent=2)
+        print(f"  Saved {filename}.")
+
+
 def main():
     """Scrape latest papers, compute diff vs archive, save today's listing and update archive.
 
     --bootstrap N  First-run mode: use the top N fetched papers as today's listing
                    without requiring an existing archive.
     """
-    bootstrap_n = None
+    repo_root = Path(__file__).parent.parent
+    data_dir = repo_root / "data"
+    data_dir.mkdir(exist_ok=True)
+
     args = sys.argv[1:]
+    if "--reannotate" in args:
+        reannotate(data_dir, repo_root)
+        return
+
+    bootstrap_n = None
     if "--bootstrap" in args:
         idx = args.index("--bootstrap")
         bootstrap_n = int(args[idx + 1])
@@ -320,9 +352,6 @@ def main():
 
     arxiv_date = args[0] if args else get_target_date()
     print(f"arXiv date: {arxiv_date}")
-
-    data_dir = Path(__file__).parent.parent / "data"
-    data_dir.mkdir(exist_ok=True)
 
     print(f"Fetching latest {ARCHIVE_SIZE} arXiv astro-ph papers ...")
     fetched = fetch_latest_papers(n=ARCHIVE_SIZE)
@@ -332,7 +361,6 @@ def main():
 
     print(f"  Fetched {len(fetched)} papers.")
 
-    repo_root = Path(__file__).parent.parent
     fav_authors = load_favorite_authors(repo_root)
     print(f"  Annotating local author matches ({len(fav_authors)} favorites) ...")
     annotate_papers(fetched, fav_authors)
