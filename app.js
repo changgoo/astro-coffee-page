@@ -20,9 +20,12 @@ const CAT_COLORS = {
 
 let allPapers = [];
 let activeCats = new Set(ASTRO_CATS);
-let currentSort = "local";
+// ── Sorting state (three independent axes) ────────────────────────────────────
+let sortOrder  = localStorage.getItem("sort-order")   || "asc";       // "asc" | "desc"
+let localFirst = localStorage.getItem("local-first")  || "strong";    // "none" | "strong" | "strong+weak"
+let dataSource = "today";                                               // "today" | "archive"  (not persisted)
+// ─────────────────────────────────────────────────────────────────────────────
 let currentDate = null;
-let archiveMode = false;
 let archivePapers = [];
 let archiveDisplayCount = 100;
 let archiveSearchQuery = "";
@@ -40,9 +43,20 @@ function applyFontSize(size) {
   });
 }
 
+/** Sync active class on all three button groups from current state variables. */
+function syncSortUI() {
+  document.querySelectorAll(".sort-btn").forEach((b) =>
+    b.classList.toggle("active", b.dataset.sortOrder === sortOrder));
+  document.querySelectorAll(".local-btn").forEach((b) =>
+    b.classList.toggle("active", b.dataset.local === localFirst));
+  document.querySelectorAll(".source-btn").forEach((b) =>
+    b.classList.toggle("active", b.dataset.source === dataSource));
+}
+
 async function init() {
   applyFontSize(currentFontSize);
   document.getElementById("abstract-mode").value = abstractMode;
+  syncSortUI();
   await loadIndex();
   buildCatFilter();
 
@@ -154,7 +168,7 @@ function buildCatFilter() {
   all.addEventListener("click", () => {
     activeCats = new Set(ASTRO_CATS);
     document.querySelectorAll(".cat-toggle[data-cat]").forEach((b) => b.classList.add("active"));
-    if (archiveMode) renderArchive(); else render();
+    renderCurrent();
   });
 
   const none = document.createElement("button");
@@ -163,7 +177,7 @@ function buildCatFilter() {
   none.addEventListener("click", () => {
     activeCats.clear();
     document.querySelectorAll(".cat-toggle[data-cat]").forEach((b) => b.classList.remove("active"));
-    if (archiveMode) renderArchive(); else render();
+    renderCurrent();
   });
 
   container.appendChild(all);
@@ -178,10 +192,14 @@ function toggleCat(cat, btn) {
     activeCats.add(cat);
     btn.classList.add("active");
   }
-  if (archiveMode) renderArchive(); else render();
+  renderCurrent();
 }
 
 // ── Render ────────────────────────────────────────────────────────────────────
+
+function renderCurrent() {
+  if (dataSource === "archive") renderArchive(); else render();
+}
 
 function applyFilters(papers) {
   return papers.filter((p) => {
@@ -196,12 +214,96 @@ function isNewSubmission(paper) {
   return (paper.primary_category || "").startsWith("astro-ph");
 }
 
+/**
+ * Sort papers by the current sortOrder and localFirst axes.
+ *
+ * localFirst groupings (each group is internally sorted by arXiv ID):
+ *   "none"        → plain arXiv ID order (asc or desc)
+ *   "strong"      → strong-match papers first, then all others
+ *   "strong+weak" → strong first, then weak, then the rest
+ */
+function sortPapers(papers) {
+  const copy = [...papers];
+  const idCmp = sortOrder === "asc"
+    ? (a, b) => a.id.localeCompare(b.id)
+    : (a, b) => b.id.localeCompare(a.id);
+
+  if (localFirst === "none") {
+    copy.sort(idCmp);
+  } else if (localFirst === "strong") {
+    copy.sort((a, b) => {
+      const ra = a.local_match === "strong" ? 0 : 1;
+      const rb = b.local_match === "strong" ? 0 : 1;
+      return ra - rb || idCmp(a, b);
+    });
+  } else { // "strong+weak"
+    const rank = { strong: 0, weak: 1 };
+    copy.sort((a, b) => {
+      const ra = rank[a.local_match] ?? 2;
+      const rb = rank[b.local_match] ?? 2;
+      return ra - rb || idCmp(a, b);
+    });
+  }
+  return copy;
+}
+
+/**
+ * Append paper cards to list, grouped by local-match strength or by
+ * new-submission vs cross-listing, with section dividers.
+ *
+ * @param {HTMLElement} list    - container element
+ * @param {object[]}    papers  - already sorted slice to render
+ * @param {boolean}     partial - true when more papers remain (archive load-more)
+ */
+function appendPaperGroups(list, papers, partial = false) {
+  if (localFirst === "none") {
+    // Pure arXiv order: split new submissions and cross-listings
+    const newSubs   = papers.filter(isNewSubmission);
+    const crossList = papers.filter((p) => !isNewSubmission(p));
+    newSubs.forEach((p) => list.appendChild(buildCard(p)));
+    if (crossList.length > 0) {
+      list.appendChild(makeSectionHeader(
+        `Cross-listings (${crossList.length}${partial ? "+" : ""})`));
+      crossList.forEach((p) => list.appendChild(buildCard(p)));
+    }
+  } else if (localFirst === "strong") {
+    const strong = papers.filter((p) => p.local_match === "strong");
+    const others  = papers.filter((p) => p.local_match !== "strong");
+    if (strong.length) {
+      list.appendChild(makeSectionHeader(`Local authors – strong (${strong.length})`));
+      strong.forEach((p) => list.appendChild(buildCard(p)));
+    }
+    if (others.length) {
+      list.appendChild(makeSectionHeader(
+        `Other papers (${others.length}${partial ? "+" : ""})`));
+      others.forEach((p) => list.appendChild(buildCard(p)));
+    }
+  } else { // "strong+weak"
+    const strong = papers.filter((p) => p.local_match === "strong");
+    const weak   = papers.filter((p) => p.local_match === "weak");
+    const others = papers.filter((p) => !p.local_match);
+    if (strong.length) {
+      list.appendChild(makeSectionHeader(`Local authors – strong (${strong.length})`));
+      strong.forEach((p) => list.appendChild(buildCard(p)));
+    }
+    if (weak.length) {
+      list.appendChild(makeSectionHeader(`Local authors – weak (${weak.length})`));
+      weak.forEach((p) => list.appendChild(buildCard(p)));
+    }
+    if (others.length) {
+      list.appendChild(makeSectionHeader(
+        `Other papers (${others.length}${partial ? "+" : ""})`));
+      others.forEach((p) => list.appendChild(buildCard(p)));
+    }
+  }
+}
+
 function render() {
   const list = document.getElementById("paper-list");
   list.innerHTML = "";
 
   let papers = applyFilters(allPapers);
-  papers = sortPapers(papers, currentSort);
+  papers = sortPapers(papers);
 
   if (papers.length === 0) {
     document.getElementById("stats").textContent = `0 of ${allPapers.length} papers`;
@@ -209,23 +311,19 @@ function render() {
     return;
   }
 
-  const isArxivOrder = currentSort === "arxiv" || currentSort === "arxiv-rev";
-  if (isArxivOrder) {
-    const newSubs = papers.filter(isNewSubmission);
+  if (localFirst === "none") {
+    const newSubs   = papers.filter(isNewSubmission);
     const crossList = papers.filter((p) => !isNewSubmission(p));
     document.getElementById("stats").textContent =
       `${newSubs.length} new submission${newSubs.length !== 1 ? "s" : ""}` +
       (crossList.length ? `, ${crossList.length} cross-listing${crossList.length !== 1 ? "s" : ""}` : "") +
       ` (${papers.length} of ${allPapers.length} papers)`;
-    newSubs.forEach((paper) => list.appendChild(buildCard(paper)));
-    if (crossList.length > 0) {
-      list.appendChild(makeSectionHeader(`Cross-listings (${crossList.length})`));
-      crossList.forEach((paper) => list.appendChild(buildCard(paper)));
-    }
   } else {
-    document.getElementById("stats").textContent = `${papers.length} of ${allPapers.length} papers`;
-    papers.forEach((paper) => list.appendChild(buildCard(paper)));
+    document.getElementById("stats").textContent =
+      `${papers.length} of ${allPapers.length} papers`;
   }
+
+  appendPaperGroups(list, papers);
 }
 
 function renderArchive() {
@@ -244,10 +342,11 @@ function renderArchive() {
 
   // Apply category filter and sort
   papers = applyFilters(papers);
-  papers = sortPapers(papers, currentSort);
+  papers = sortPapers(papers);
 
   const total = papers.length;
   const shown = papers.slice(0, archiveDisplayCount);
+  const partial = shown.length < total;
 
   document.getElementById("stats").textContent =
     `Showing ${shown.length} of ${total} papers in archive`;
@@ -257,20 +356,9 @@ function renderArchive() {
     return;
   }
 
-  const isArxivOrder = currentSort === "arxiv" || currentSort === "arxiv-rev";
-  if (isArxivOrder) {
-    const newSubs = shown.filter(isNewSubmission);
-    const crossList = shown.filter((p) => !isNewSubmission(p));
-    newSubs.forEach((paper) => list.appendChild(buildCard(paper)));
-    if (crossList.length > 0) {
-      list.appendChild(makeSectionHeader(`Cross-listings (${crossList.length}${shown.length < total ? "+" : ""})`));
-      crossList.forEach((paper) => list.appendChild(buildCard(paper)));
-    }
-  } else {
-    shown.forEach((paper) => list.appendChild(buildCard(paper)));
-  }
+  appendPaperGroups(list, shown, partial);
 
-  if (shown.length < total) {
+  if (partial) {
     const btn = document.createElement("button");
     btn.className = "load-more-btn";
     btn.textContent = `Load ${Math.min(100, total - shown.length)} more  (${total - shown.length} remaining)`;
@@ -285,28 +373,6 @@ function renderArchive() {
 // ── Name matching ─────────────────────────────────────────────────────────────
 // Match strength is precomputed during scraping and stored in paper.local_match
 // and paper.local_authors — no client-side name matching needed.
-
-function sortPapers(papers, mode) {
-  const copy = [...papers];
-  if (mode === "arxiv") {
-    copy.sort((a, b) => a.id.localeCompare(b.id));
-  } else if (mode === "arxiv-rev") {
-    copy.sort((a, b) => b.id.localeCompare(a.id));
-  } else if (mode === "title") {
-    copy.sort((a, b) => a.title.localeCompare(b.title));
-  } else if (mode === "author") {
-    copy.sort((a, b) => (a.authors[0] || "").localeCompare(b.authors[0] || ""));
-  } else if (mode === "category") {
-    copy.sort((a, b) => (a.primary_category || "").localeCompare(b.primary_category || ""));
-  } else if (mode === "local") {
-    const rank = { "strong": 0, "weak": 1, null: 2 };
-    copy.sort((a, b) =>
-      rank[a.local_match] - rank[b.local_match] ||
-      a.id.localeCompare(b.id)
-    );
-  }
-  return copy;
-}
 
 function makeSectionHeader(text) {
   const div = document.createElement("div");
@@ -493,35 +559,51 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("abstract-mode").addEventListener("change", (e) => {
     abstractMode = e.target.value;
     localStorage.setItem("abstract-mode", abstractMode);
-    if (archiveMode) renderArchive(); else render();
+    renderCurrent();
   });
 
-  // ── Sort ──
-  document.getElementById("sort-select").addEventListener("change", (e) => {
-    currentSort = e.target.value;
-    if (archiveMode) renderArchive(); else render();
+  // ── Sort order (asc / desc) ──
+  document.querySelectorAll(".sort-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      sortOrder = btn.dataset.sortOrder;
+      localStorage.setItem("sort-order", sortOrder);
+      syncSortUI();
+      renderCurrent();
+    });
   });
 
-  // ── Archive toggle ──
-  document.getElementById("btn-archive").addEventListener("click", async () => {
-    archiveMode = !archiveMode;
-    const btn = document.getElementById("btn-archive");
-    const searchContainer = document.getElementById("search-container");
+  // ── Local-first axis (none / strong / strong+weak) ──
+  document.querySelectorAll(".local-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      localFirst = btn.dataset.local;
+      localStorage.setItem("local-first", localFirst);
+      syncSortUI();
+      renderCurrent();
+    });
+  });
 
-    if (archiveMode) {
-      btn.classList.add("active");
-      searchContainer.style.display = "";
-      updateDateLabel("archive");
-      await loadArchive();
-    } else {
-      btn.classList.remove("active");
-      searchContainer.style.display = "none";
-      archiveSearchQuery = "";
-      document.getElementById("search-input").value = "";
-      archiveDisplayCount = 100;
-      updateDateLabel(currentDate);
-      await loadDay(currentDate);
-    }
+  // ── Data source (today / archive) ──
+  document.querySelectorAll(".source-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const newSource = btn.dataset.source;
+      if (newSource === dataSource) return;
+      dataSource = newSource;
+      syncSortUI();
+
+      const searchContainer = document.getElementById("search-container");
+      if (dataSource === "archive") {
+        searchContainer.style.display = "";
+        updateDateLabel("archive");
+        await loadArchive();
+      } else {
+        searchContainer.style.display = "none";
+        archiveSearchQuery = "";
+        document.getElementById("search-input").value = "";
+        archiveDisplayCount = 100;
+        updateDateLabel(currentDate);
+        await loadDay(currentDate);
+      }
+    });
   });
 
   // ── Archive search ──

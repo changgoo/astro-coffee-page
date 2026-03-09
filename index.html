@@ -84,18 +84,27 @@
   </div>
 
   <div id="toolbar">
-    <label for="sort-select">Sort:</label>
-    <select id="sort-select">
-      <option value="local" selected>Local authors first</option>
-      <option value="arxiv">arXiv order (earliest first)</option>
-      <option value="arxiv-rev">Reverse arXiv order (latest first)</option>
-      <option value="author">First author A–Z</option>
-      <option value="title">Title A–Z</option>
-      <option value="category">Category</option>
-    </select>
-    <button id="btn-archive" class="btn-archive" title="Browse the 1000 most recent astro-ph papers">
-      Archive (1000 papers)
-    </button>
+    <div class="sort-group" title="arXiv listing order">
+      <span class="sort-label">Order:</span>
+      <div class="btn-group">
+        <button class="sort-btn" data-sort-order="asc"  title="Earliest arXiv ID first">↑ Asc</button>
+        <button class="sort-btn" data-sort-order="desc" title="Latest arXiv ID first">↓ Desc</button>
+      </div>
+    </div>
+    <div class="sort-group" title="Prioritize local authors">
+      <span class="sort-label">Local first:</span>
+      <div class="btn-group">
+        <button class="local-btn" data-local="none"       title="No local-author priority">None</button>
+        <button class="local-btn" data-local="strong"     title="Strong matches at top">Strong</button>
+        <button class="local-btn" data-local="strong+weak" title="Strong then weak matches at top">Strong+Weak</button>
+      </div>
+    </div>
+    <div class="sort-group" title="Data source">
+      <div class="btn-group">
+        <button class="source-btn" data-source="today"   title="Today's arXiv listing">Today</button>
+        <button class="source-btn" data-source="archive" title="Recent 1000 papers">Archive</button>
+      </div>
+    </div>
     <div class="font-size-btns" title="Font size">
       <button class="btn-font" data-size="small">S</button>
       <button class="btn-font" data-size="medium">M</button>
