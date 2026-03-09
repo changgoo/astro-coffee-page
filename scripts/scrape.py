@@ -345,16 +345,25 @@ def main():
         print("  No new papers. Skipping.")
         return
 
+    # Append to today.json if it already holds the same arXiv date; otherwise start fresh.
     out_path = data_dir / "today.json"
+    existing_papers = []
+    if bootstrap_n is None and out_path.exists():
+        with open(out_path) as f:
+            existing = json.load(f)
+        if existing.get("date") == arxiv_date:
+            existing_papers = existing.get("papers", [])
+            print(f"  Appending {new_count} papers to existing {len(existing_papers)}.")
+    all_papers = existing_papers + new_papers
     output = {
         "date": arxiv_date,
         "fetched_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "total": new_count,
-        "papers": new_papers,
+        "total": len(all_papers),
+        "papers": all_papers,
     }
     with open(out_path, "w") as f:
         json.dump(output, f, indent=2)
-    print(f"  Saved {new_count} papers to {out_path}")
+    print(f"  Saved {len(all_papers)} papers to {out_path} ({new_count} new).")
 
     save_archive(data_dir, fetched)
     update_index(data_dir)
