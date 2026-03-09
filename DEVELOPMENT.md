@@ -204,7 +204,7 @@ The selected mode is persisted in `localStorage` and applied on every render.
 | Single bare initial vs non-hyphenated fav (no fav middle initial) | `G. Livadiotis` | weak |
 | arXiv has middle initial, fav has none | `G. A. Livadiotis` vs `George Livadiotis` | none |
 | Conflicting middle initials | `M. A. Kunz` vs `Matthew W. Kunz` | none |
-| Conflicting full first names (both ≥ 3 chars) | `Yujie Chen` vs `Yixian Chen` | none |
+| Conflicting full first names (both ≥ 2 chars after dot removal) | `Yujie Chen` vs `Yixian Chen`, `C.G. Kim` vs `Chang-Goo Kim` | none |
 | First initial + matching middle initial | `M. W. Kunz` vs `Matthew W. Kunz` | strong |
 
 Single bare initials are always weak. To get a strong match for an author who publishes under an abbreviated name, add that form directly to `config/authors_manual.json` (e.g. `"G. Livadiotis"`).

@@ -228,9 +228,9 @@ def test_match_author_hyphenated_initials_strong():
     """C.-G. Kim → strong (hyphenated initials match hyphenated first name)."""
     assert scrape.match_author("Kim, C.-G.", FAV_AUTHORS_EXTENDED) == "strong"
 
-def test_match_author_concatenated_initials_weak():
-    """C.G. Kim → weak (concatenated initials are not strong)."""
-    assert scrape.match_author("Kim, C.G.", FAV_AUTHORS_EXTENDED) == "weak"
+def test_match_author_concatenated_initials_none():
+    """C.G. Kim → None (parsed as 'cg', len>=2, conflicts with 'chang-goo')."""
+    assert scrape.match_author("Kim, C.G.", FAV_AUTHORS_EXTENDED) is None
 
 def test_match_author_single_initial_hyphenated_fav_none():
     """C. Kim → None (single initial vs hyphenated fav name is too ambiguous)."""
