@@ -8,8 +8,8 @@ This document summarizes the features built for the astro coffee page, in the or
 
 **Branch:** `main` (initial commit)
 
-- `scripts/scrape.py` — queries the arXiv Atom XML API for all `astro-ph.*` papers on a given date, paginates with a 3 s rate-limit delay, and writes `data/YYYY-MM-DD.json`
-- `data/index.json` — manifest of available dates (max 10 days); older files are pruned automatically
+- `scripts/scrape.py` — queries the arXiv Atom XML API for all `astro-ph.*` papers on a given date, paginates with a 3 s rate-limit delay, and writes `data/today.json`
+- `data/index.json` — stores the current listing date; the data file is always named `today.json`
 - `index.html` + `app.js` + `style.css` — static frontend served by GitHub Pages
   - Date navigator (prev/next/dropdown)
   - Sort by arXiv order, first author, title, or category
@@ -151,7 +151,7 @@ Two new sort options replace the old ambiguous "Default (arXiv order)":
 
 1. **Fetch** the 1000 most recently submitted `astro-ph.*` papers from the arXiv API (no date filter, sorted by `submittedDate` descending).
 2. **Diff** against `data/archive.json` (the previous 1000-paper snapshot). Papers in the new fetch but not in the archive are the day's new listings.
-3. **Save** new papers to `data/YYYY-MM-DD.json` and update `data/archive.json`.
+3. **Save** new papers to `data/today.json` and update `data/archive.json`.
 4. **`data/index.json`** simplified to `{"current": "YYYY-MM-DD"}` — no more 10-date array.
 
 **Bootstrap mode** (`--bootstrap N`): for the first run, seeds today's listing with the top N papers sorted by arXiv ID descending (more stable than `submittedDate` for window alignment). Used when `archive.json` does not yet exist.
@@ -204,6 +204,26 @@ The selected mode is persisted in `localStorage` and applied on every render.
 | First initial + matching middle initial | `M. W. Kunz` vs `Matthew W. Kunz` | strong |
 
 Single bare initials are always weak. To get a strong match for an author who publishes under an abbreviated name, add that form directly to `config/authors_manual.json` (e.g. `"G. Livadiotis"`).
+
+---
+
+## 15. CI: deploy key for protected-branch push (PRs #15, #17)
+
+Two changes to `.github/workflows/daily-scrape.yml`:
+
+**Simplified `workflow_dispatch`** — removed the `date` input. The scraper auto-detects the correct arXiv listing date from the current ET time, so a manual override is never needed. Triggering via **Actions → Run workflow** now fires immediately with no prompt.
+
+**Deploy key auth** — the default `GITHUB_TOKEN` cannot push to a `main` branch protected by a ruleset requiring PRs. The workflow now checks out with `ssh-key: ${{ secrets.SCRAPER_DEPLOY_KEY }}` (a write-enabled SSH deploy key). With **Deploy keys** added as a bypass actor in the ruleset, the bot can commit data files directly to `main`.
+
+---
+
+## 16. Fixed listing filename: today.json (PR #18)
+
+The per-day listing file was previously named `data/YYYY-MM-DD.json` (e.g. `data/2026-03-06.json`), where the date is the arXiv announcement date — not the actual current date. This caused confusing mismatches (e.g. a file named `2026-03-06` appearing on `2026-03-09`).
+
+- `scripts/scrape.py` now always writes to `data/today.json`
+- `app.js` fetches `data/today.json` directly
+- `data/index.json` still stores the listing date for display in the UI header
 
 ---
 
