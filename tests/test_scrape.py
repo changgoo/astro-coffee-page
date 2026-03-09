@@ -266,9 +266,10 @@ def test_match_author_extra_middle_initial_none():
 
 
 # Generic weak/none
-def test_match_author_weak_first_letter_only():
-    """Different full first name with same initial → weak."""
-    assert scrape.match_author("Kim, Christopher", FAV_AUTHORS_EXTENDED) == "weak"
+def test_match_author_full_name_conflict_none():
+    """Different full first names with same initial → None (unambiguously different person)."""
+    assert scrape.match_author("Kim, Christopher", FAV_AUTHORS_EXTENDED) is None
+    assert scrape.match_author("Chen, Yujie", ["Yixian Chen"]) is None
 
 def test_match_author_last_name_mismatch():
     assert scrape.match_author("Lee, Chang-Goo", FAV_AUTHORS_EXTENDED) is None
@@ -302,12 +303,12 @@ def test_annotate_papers_no_match():
     assert papers[0]["local_authors"] == {}
 
 
-def test_annotate_papers_weak_match():
-    """Full first name with only first-initial overlap → weak."""
+def test_annotate_papers_full_name_conflict_none():
+    """Conflicting full first names → no match."""
     papers = [{"authors": ["Ostriker, Elaine"], "title": "Test"}]
     scrape.annotate_papers(papers, ["Eve C. Ostriker"])
-    assert papers[0]["local_match"] == "weak"
-    assert papers[0]["local_authors"] == {"Ostriker, Elaine": "weak"}
+    assert papers[0]["local_match"] is None
+    assert papers[0]["local_authors"] == {}
 
 
 def test_annotate_papers_single_initial_always_weak():

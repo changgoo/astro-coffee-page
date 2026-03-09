@@ -244,6 +244,8 @@ def match_author(arxiv_name, fav_authors):
                 continue  # conflicting middle initials → different person
             if arx_mid and not fav_mid:
                 continue  # arXiv has extra middle initial fav lacks → too ambiguous
+            if len(arx_first) >= 3 and len(fav_first) >= 3:
+                continue  # both full first names already failed equality → different person
             best = "weak"
     return best
 

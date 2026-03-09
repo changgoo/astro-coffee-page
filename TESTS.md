@@ -114,7 +114,7 @@ the favorite-authors list. Tests are grouped by the fav-author name pattern bein
 
 | Test | What it checks |
 |------|----------------|
-| `test_match_author_weak_first_letter_only` | Different full first name sharing only the first letter → weak |
+| `test_match_author_full_name_conflict_none` | Different full first names sharing only the first letter → None (e.g. Christopher Kim vs Chang-Goo Kim; Yujie Chen vs Yixian Chen) |
 | `test_match_author_last_name_mismatch` | Last name mismatch returns `None` |
 | `test_match_author_no_match` | Completely unknown author returns `None` |
 
@@ -128,7 +128,7 @@ Calls `annotate_papers(papers, fav_authors)` and checks the `local_match` and
 | `test_annotate_papers_strong_match` | A strong-match paper gets `local_match == "strong"` |
 | `test_annotate_papers_local_authors_dict` | The `local_authors` dict maps the matched author string to its match level |
 | `test_annotate_papers_no_match` | No fav author in paper → `local_match` is `None` and `local_authors` is `{}` |
-| `test_annotate_papers_weak_match` | Full first name differing from fav only by first letter → `local_match == "weak"` |
+| `test_annotate_papers_full_name_conflict_none` | Conflicting full first names (Elaine vs Eve) → `local_match` is `None` |
 | `test_annotate_papers_single_initial_always_weak` | Single initial (G.) against a full-name fav → `local_match == "weak"` |
 | `test_annotate_papers_manual_initial_name_strong` | Adding the abbreviated form (G. Livadiotis) to the fav list gives `local_match == "strong"` |
 | `test_annotate_papers_single_initial_fav_has_middle_weak` | Single initial when fav has a middle initial → `local_match == "weak"` |
