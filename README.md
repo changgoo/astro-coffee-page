@@ -94,7 +94,7 @@ python scripts/scrape_authors.py
 To adapt for a different institution, edit the `PAGES` list and CSS selectors in
 `scripts/scrape_authors.py`. Use `--dry-run` to preview without writing.
 
-Names are matched by last name (exact) then first name. **Strong** match (bold amber): exact first name, hyphenated initials matching a hyphenated first name (`C.-G.` == `Chang-Goo`), or first + middle initial both match (`M. W.` == `Matthew W.`). **Weak** match (italic grey): first initial only (including single bare initials). To get a strong match for someone who publishes under an abbreviated name, add that form to `config/authors_manual.json` (e.g. `"G. Livadiotis"`). Titles (Dr., Sir) and suffixes (Jr., III) are ignored.
+Names are matched by last name (exact) then first name. **Strong** match (bold amber): exact first name, hyphenated initials matching a hyphenated first name (`C.-G.` == `Chang-Goo`), or first + middle initial both match (`M. W.` == `Matthew W.`). **Weak** match (italic grey): first initial only against a non-hyphenated fav name. **No match**: single initial against a hyphenated fav name (`C. Kim` vs `Chang-Goo Kim`), arXiv provides a middle initial the fav lacks (`G. A. Livadiotis` vs `George Livadiotis`), conflicting middle initials (`M. A. Kunz` vs `Matthew W. Kunz`), or conflicting full first names (`Yujie Chen` vs `Yixian Chen`). To get a strong match for someone who publishes under an abbreviated name, add that form to `config/authors_manual.json` (e.g. `"G. Livadiotis"`). Titles (Dr., Sir) and suffixes (Jr., III) are ignored.
 
 ## Local development
 

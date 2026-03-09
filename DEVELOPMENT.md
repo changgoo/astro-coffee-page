@@ -200,7 +200,12 @@ The selected mode is persisted in `localStorage` and applied on every render.
 |------|---------|--------|
 | Hyphenated first name + hyphenated initials | `C.-G. Kim` vs `Chang-Goo Kim` | strong |
 | Hyphenated first name + concatenated initials | `C.G. Kim` vs `Chang-Goo Kim` | weak |
-| Single bare initial (any case) | `C. Kim`, `G. Livadiotis` | weak |
+| Single bare initial vs hyphenated fav | `C. Kim` vs `Chang-Goo Kim` | none |
+| Single bare initial, fav has no middle initial | `G. Livadiotis` | weak |
+| Single bare initial, fav has middle initial | `M. Kunz` vs `Matthew W. Kunz` | none |
+| arXiv has middle initial, fav has none | `G. A. Livadiotis` vs `George Livadiotis` | none |
+| Conflicting middle initials | `M. A. Kunz` vs `Matthew W. Kunz` | none |
+| Conflicting full first names (both ≥ 2 chars after dot removal) | `Yujie Chen` vs `Yixian Chen`, `C.G. Kim` vs `Chang-Goo Kim` | none |
 | First initial + matching middle initial | `M. W. Kunz` vs `Matthew W. Kunz` | strong |
 
 Single bare initials are always weak. To get a strong match for an author who publishes under an abbreviated name, add that form directly to `config/authors_manual.json` (e.g. `"G. Livadiotis"`).
@@ -223,7 +228,41 @@ The per-day listing file was previously named `data/YYYY-MM-DD.json` (e.g. `data
 
 - `scripts/scrape.py` now always writes to `data/today.json`
 - `app.js` fetches `data/today.json` directly
-- `data/index.json` still stores the listing date for display in the UI header
+- `data/index.json` now stores **today's UTC date** (when the scraper ran) for the header display; the arXiv batch date is stored in `today.json`'s `date` field
+
+---
+
+## 17. Scraper fixes: append updates, arxiv_date rename, correct sort (PRs #19, #20)
+
+**Append delayed arXiv updates (PR #19)** — arXiv sometimes adds papers to an announcement after the initial post. If `today.json` already exists for the same `arxiv_date`, new papers from a subsequent scrape run are appended rather than overwriting the file. A different `arxiv_date` always starts fresh.
+
+**Rename `listing_date` → `arxiv_date` (PR #19)** — clarifies that the date returned by `get_target_date()` is the arXiv batch/submission date, not the coffee listing date. The coffee listing date (when the scraper ran) is now stored separately in `index.json` as `current`.
+
+**Remove stale count-guard (PR #19)** — the old `new_count <= existing_count` skip guard was designed for date-named files. With `today.json` it always compared against the previous day's larger count, silently skipping legitimate new listings. Removed; the diff-based `new_count == 0` check is the correct gate.
+
+**arXiv sort by ID string (PR #20)** — arXiv order sorting now uses `id.localeCompare()` directly (ascending = earliest first, descending = latest first) instead of `_arxivIndex` (array-position proxy). Fixes incorrect ordering when papers are not stored in perfectly descending ID order (e.g. after an append). Removes the unused `_arxivIndex` field. Local-authors sort also uses ascending ID as the tiebreaker.
+
+---
+
+## 18. Refined author matching rules (PR #20)
+
+All changes are in `match_author()` in `scripts/scrape.py`. The complete rule table:
+
+| arXiv name | Fav name | Result |
+|---|---|---|
+| Exact first name | any | **strong** |
+| Hyphenated initials (`C.-G.`) | hyphenated fav (`Chang-Goo`) | **strong** |
+| First + matching middle initial (`M. W.`) | `Matthew W. Kunz` | **strong** |
+| Single bare initial, fav has **no** middle initial | `G. Livadiotis` | weak |
+| Single bare initial vs hyphenated fav | `C. Kim` vs `Chang-Goo Kim` | none |
+| Single bare initial, fav has middle initial | `M. Kunz` vs `Matthew W. Kunz` | none |
+| arXiv has middle initial, fav has none | `G. A. Livadiotis` vs `George` | none |
+| Conflicting middle initials | `M. A. Kunz` vs `Matthew W. Kunz` | none |
+| Conflicting full first names (both ≥ 2 chars after dot removal) | `Yujie Chen` vs `Yixian Chen` | none |
+
+**`--reannotate` flag** — `python scripts/scrape.py --reannotate` re-runs `annotate_papers` on `today.json` and `archive.json` in-place without any API calls. Useful after updating matching rules or the authors list.
+
+**`config/authors_manual.json`** — added `"Eve Ostriker"` (no middle initial) so that `E. Ostriker` produces a strong match. The auto-scraped entry `"Eve C. Ostriker"` handles `E. C. Ostriker`.
 
 ---
 
