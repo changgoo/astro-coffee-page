@@ -232,9 +232,9 @@ def test_match_author_concatenated_initials_weak():
     """C.G. Kim → weak (concatenated initials are not strong)."""
     assert scrape.match_author("Kim, C.G.", FAV_AUTHORS_EXTENDED) == "weak"
 
-def test_match_author_single_initial_hyphenated_fav_weak():
-    """C. Kim → weak (single initial, fav first name is hyphenated)."""
-    assert scrape.match_author("Kim, C.", FAV_AUTHORS_EXTENDED) == "weak"
+def test_match_author_single_initial_hyphenated_fav_none():
+    """C. Kim → None (single initial vs hyphenated fav name is too ambiguous)."""
+    assert scrape.match_author("Kim, C.", FAV_AUTHORS_EXTENDED) is None
 
 
 # Matthew W. Kunz (non-hyphenated, has middle initial)

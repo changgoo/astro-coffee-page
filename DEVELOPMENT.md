@@ -200,7 +200,8 @@ The selected mode is persisted in `localStorage` and applied on every render.
 |------|---------|--------|
 | Hyphenated first name + hyphenated initials | `C.-G. Kim` vs `Chang-Goo Kim` | strong |
 | Hyphenated first name + concatenated initials | `C.G. Kim` vs `Chang-Goo Kim` | weak |
-| Single bare initial (any case) | `C. Kim`, `G. Livadiotis` | weak |
+| Single bare initial vs hyphenated fav | `C. Kim` vs `Chang-Goo Kim` | none |
+| Single bare initial vs non-hyphenated fav | `G. Livadiotis` | weak |
 | First initial + matching middle initial | `M. W. Kunz` vs `Matthew W. Kunz` | strong |
 
 Single bare initials are always weak. To get a strong match for an author who publishes under an abbreviated name, add that form directly to `config/authors_manual.json` (e.g. `"G. Livadiotis"`).

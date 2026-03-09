@@ -209,8 +209,9 @@ def match_author(arxiv_name, fav_authors):
       - Hyphenated first name matched by hyphenated initials only:
         "C.-G." == "Chang-Goo Kim" → strong; "C.G." is NOT strong
       - First initial + matching middle initial: "M. W." == "Matthew W." → strong
-    A single bare first initial is always weak; add the abbreviated form to
-    authors_manual.json to get a strong match (e.g. "G. Livadiotis").
+    A single bare initial against a hyphenated fav name returns None (no match).
+    A single bare initial against a non-hyphenated fav name is weak.
+    Add the abbreviated form to authors_manual.json to get a strong match (e.g. "G. Livadiotis").
     """
     arx_first, arx_last, arx_mid = parse_name_parts(arxiv_name)
     best = None
@@ -232,6 +233,9 @@ def match_author(arxiv_name, fav_authors):
                         for ap, fp in zip(arx_parts, fav_parts))):
                 return "strong"
 
+        # Single initial vs hyphenated fav name → no match (too ambiguous)
+        if "-" in fav_first and len(arx_first) == 1:
+            continue
         # First initial match with optional middle initial agreement
         if fav_first[0] == arx_first[0]:
             if fav_mid and arx_mid and fav_mid == arx_mid:

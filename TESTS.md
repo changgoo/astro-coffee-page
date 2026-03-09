@@ -92,7 +92,7 @@ the favorite-authors list. Tests are grouped by the fav-author name pattern bein
 | `test_match_author_hyphenated_exact_strong` | Exact hyphenated first name is a strong match |
 | `test_match_author_hyphenated_initials_strong` | Hyphenated initials (C.-G.) match a hyphenated first name → strong |
 | `test_match_author_concatenated_initials_weak` | Concatenated initials (C.G.) are not strong → weak |
-| `test_match_author_single_initial_hyphenated_fav_weak` | Single initial (C.) when fav has a hyphenated first name → weak |
+| `test_match_author_single_initial_hyphenated_fav_none` | Single initial (C.) when fav has a hyphenated first name → None (no match) |
 
 **Matthew W. Kunz** (non-hyphenated, has middle initial)
 
@@ -106,7 +106,7 @@ the favorite-authors list. Tests are grouped by the fav-author name pattern bein
 
 | Test | What it checks |
 |------|----------------|
-| `test_match_author_single_initial_always_weak` | Single bare initial (G.) is always weak; also checks G. A. (extra unknown initial) → weak |
+| `test_match_author_single_initial_always_weak` | Single bare initial against a non-hyphenated fav (G. Livadiotis) → weak; G. A. also → weak |
 
 **Generic cases**
 
