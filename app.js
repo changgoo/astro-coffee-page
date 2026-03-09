@@ -304,7 +304,7 @@ function sortPapers(papers, mode) {
     const rank = { "strong": 0, "weak": 1, null: 2 };
     copy.sort((a, b) =>
       rank[a.local_match] - rank[b.local_match] ||
-      (a._arxivIndex || 0) - (b._arxivIndex || 0)
+      b.id.localeCompare(a.id)
     );
   }
   return copy;
