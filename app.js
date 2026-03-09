@@ -302,7 +302,7 @@ function sortPapers(papers, mode) {
     const rank = { "strong": 0, "weak": 1, null: 2 };
     copy.sort((a, b) =>
       rank[a.local_match] - rank[b.local_match] ||
-      b.id.localeCompare(a.id)
+      a.id.localeCompare(b.id)
     );
   }
   return copy;
