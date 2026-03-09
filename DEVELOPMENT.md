@@ -223,7 +223,19 @@ The per-day listing file was previously named `data/YYYY-MM-DD.json` (e.g. `data
 
 - `scripts/scrape.py` now always writes to `data/today.json`
 - `app.js` fetches `data/today.json` directly
-- `data/index.json` still stores the listing date for display in the UI header
+- `data/index.json` now stores **today's UTC date** (when the scraper ran) for the header display; the arXiv batch date is stored in `today.json`'s `date` field
+
+---
+
+## 17. Scraper fixes: append updates, arxiv_date rename, correct sort (PRs #19, #20)
+
+**Append delayed arXiv updates (PR #19)** — arXiv sometimes adds papers to an announcement after the initial post. If `today.json` already exists for the same `arxiv_date`, new papers from a subsequent scrape run are appended rather than overwriting the file. A different `arxiv_date` always starts fresh.
+
+**Rename `listing_date` → `arxiv_date` (PR #19)** — clarifies that the date returned by `get_target_date()` is the arXiv batch/submission date, not the coffee listing date. The coffee listing date (when the scraper ran) is now stored separately in `index.json` as `current`.
+
+**Remove stale count-guard (PR #19)** — the old `new_count <= existing_count` skip guard was designed for date-named files. With `today.json` it always compared against the previous day's larger count, silently skipping legitimate new listings. Removed; the diff-based `new_count == 0` check is the correct gate.
+
+**arXiv sort by ID string (PR #20)** — arXiv order sorting now uses `id.localeCompare()` directly (ascending = earliest first, descending = latest first) instead of `_arxivIndex` (array-position proxy). Fixes incorrect ordering when papers are not stored in perfectly descending ID order (e.g. after an append). Removes the unused `_arxivIndex` field.
 
 ---
 

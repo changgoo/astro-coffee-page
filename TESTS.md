@@ -10,7 +10,7 @@ No network access is required — all HTTP calls are mocked.
 
 ---
 
-## `tests/test_scrape.py` — arXiv scraper (60 tests)
+## `tests/test_scrape.py` — arXiv scraper (61 tests)
 
 Tests for `scripts/scrape.py`. Uses a minimal Atom XML fixture that mirrors the
 structure returned by the arXiv API.
@@ -156,15 +156,15 @@ is touched.
 
 | Test | What it checks |
 |------|----------------|
-| `test_update_index_writes_current` | `index.json` is created with the `current` field set to the supplied date |
-| `test_update_index_overwrites` | A second call with a newer date updates `current` in place |
+| `test_update_index_writes_current` | `index.json` is created with a valid `YYYY-MM-DD` string in `current` (today's UTC date) |
+| `test_update_index_overwrites` | A second call overwrites `index.json` and `current` is still present |
 
-### Skip-unchanged logic
+### `today.json` write logic
 
 | Test | What it checks |
 |------|----------------|
-| `test_skips_when_count_unchanged` | When the fetched paper count does not exceed the existing count, the file is not rewritten |
-| `test_writes_when_count_increases` | When the fetched count exceeds the existing count, the file is updated |
+| `test_appends_when_same_arxiv_date` | A second scrape for the same `arxiv_date` appends new papers to the existing 82, yielding 85 total |
+| `test_replaces_when_new_arxiv_date` | A scrape for a different `arxiv_date` starts fresh, discarding the previous day's papers |
 
 ---
 
