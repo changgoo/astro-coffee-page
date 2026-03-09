@@ -368,16 +368,16 @@ main {
 body[data-font="small"] { font-size: 13px; }
 body[data-font="large"]  { font-size: 17px; }
 
-.font-size-btns { display: flex; gap: 2px; }
+#font-size-bar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 14px;
+}
 
 .btn-font {
   font-size: 11px;
   font-weight: 700;
-  padding: 3px 7px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  cursor: pointer;
-  background: var(--surface);
   color: var(--text-muted);
 }
 
