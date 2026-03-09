@@ -70,7 +70,7 @@ async function loadDay(dateStr) {
   document.getElementById("stats").textContent = "";
 
   try {
-    const res = await fetch(`data/${dateStr}.json`);
+    const res = await fetch("data/today.json");
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const raw = data.papers || [];

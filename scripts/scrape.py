@@ -345,7 +345,7 @@ def main():
         return
 
     # Skip redundant writes for non-bootstrap runs
-    out_path = data_dir / f"{listing_date}.json"
+    out_path = data_dir / "today.json"
     if bootstrap_n is None and out_path.exists():
         with open(out_path) as f:
             existing = json.load(f)
