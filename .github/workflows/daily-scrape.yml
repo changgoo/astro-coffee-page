@@ -14,11 +14,6 @@ on:
     # 6 AM ET Mon–Fri = 11:00 UTC Mon–Fri
     - cron: "0 11 * * 1-5"
   workflow_dispatch:
-    inputs:
-      date:
-        description: "Date to scrape (YYYY-MM-DD). Leave empty for default (yesterday ET)."
-        required: false
-        default: ""
 
 permissions:
   contents: write
@@ -36,13 +31,7 @@ jobs:
           python-version: "3.11"
 
       - name: Run scraper
-        run: |
-          DATE_ARG="${{ github.event.inputs.date }}"
-          if [ -n "$DATE_ARG" ]; then
-            python scripts/scrape.py "$DATE_ARG"
-          else
-            python scripts/scrape.py
-          fi
+        run: python scripts/scrape.py
 
       - name: Commit and push data
         run: |
