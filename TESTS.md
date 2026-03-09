@@ -10,7 +10,7 @@ No network access is required — all HTTP calls are mocked.
 
 ---
 
-## `tests/test_scrape.py` — arXiv scraper (61 tests)
+## `tests/test_scrape.py` — arXiv scraper (62 tests)
 
 Tests for `scripts/scrape.py`. Uses a minimal Atom XML fixture that mirrors the
 structure returned by the arXiv API.
@@ -100,13 +100,15 @@ the favorite-authors list. Tests are grouped by the fav-author name pattern bein
 |------|----------------|
 | `test_match_author_first_and_middle_initial_strong` | First initial + matching middle initial → strong |
 | `test_match_author_exact_no_middle_strong` | Exact first name without middle initial → strong |
-| `test_match_author_single_initial_fav_has_middle_weak` | Single bare initial when fav has a middle initial → weak |
+| `test_match_author_single_initial_fav_has_middle_weak` | M. Kunz → weak (arXiv omits middle initial, fav has one — can't rule out) |
+| `test_match_author_conflicting_middle_initial_none` | M. A. Kunz vs Matthew W. Kunz → None (middle initials disagree) |
 
 **George Livadiotis** (non-hyphenated, no middle initial)
 
 | Test | What it checks |
 |------|----------------|
-| `test_match_author_single_initial_always_weak` | Single bare initial against a non-hyphenated fav (G. Livadiotis) → weak; G. A. also → weak |
+| `test_match_author_single_initial_weak` | G. Livadiotis → weak (bare initial, fav has no middle initial) |
+| `test_match_author_extra_middle_initial_none` | G. A. Livadiotis → None (arXiv has middle initial the fav lacks — too ambiguous) |
 
 **Generic cases**
 

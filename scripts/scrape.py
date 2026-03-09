@@ -240,6 +240,10 @@ def match_author(arxiv_name, fav_authors):
         if fav_first[0] == arx_first[0]:
             if fav_mid and arx_mid and fav_mid == arx_mid:
                 return "strong"
+            if fav_mid and arx_mid and fav_mid != arx_mid:
+                continue  # conflicting middle initials → different person
+            if arx_mid and not fav_mid:
+                continue  # arXiv has extra middle initial fav lacks → too ambiguous
             best = "weak"
     return best
 

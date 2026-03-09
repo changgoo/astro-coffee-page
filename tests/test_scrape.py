@@ -247,15 +247,22 @@ def test_match_author_exact_no_middle_strong():
     assert scrape.match_author("Kunz, Matthew", FAV_AUTHORS_EXTENDED) == "strong"
 
 def test_match_author_single_initial_fav_has_middle_weak():
-    """M. Kunz → weak (single initial, fav has middle initial)."""
+    """M. Kunz → weak (arXiv omits middle initial, fav has one — could still be them)."""
     assert scrape.match_author("Kunz, M.", FAV_AUTHORS_EXTENDED) == "weak"
+
+def test_match_author_conflicting_middle_initial_none():
+    """M. A. Kunz vs Matthew W. Kunz → None (middle initials disagree)."""
+    assert scrape.match_author("Kunz, M. A.", FAV_AUTHORS_EXTENDED) is None
 
 
 # George Livadiotis (non-hyphenated, no middle initial)
-def test_match_author_single_initial_always_weak():
-    """Single bare initial is always weak; use authors_manual.json for exact match."""
+def test_match_author_single_initial_weak():
+    """Single bare initial against fav with no middle initial → weak."""
     assert scrape.match_author("Livadiotis, G.", FAV_AUTHORS_EXTENDED) == "weak"
-    assert scrape.match_author("Livadiotis, G. A.", FAV_AUTHORS_EXTENDED) == "weak"
+
+def test_match_author_extra_middle_initial_none():
+    """arXiv provides a middle initial the fav lacks → None (too ambiguous)."""
+    assert scrape.match_author("Livadiotis, G. A.", FAV_AUTHORS_EXTENDED) is None
 
 
 # Generic weak/none
