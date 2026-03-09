@@ -266,6 +266,33 @@ All changes are in `match_author()` in `scripts/scrape.py`. The complete rule ta
 
 ---
 
+## 19. Sorting overhaul and search everywhere (PR #22)
+
+Three independent sorting axes replace the old single sort dropdown + archive toggle:
+
+| Control | Options | Persisted |
+|---|---|---|
+| **Sort** | ↑ (ascending arXiv ID) / ↓ (descending) | yes |
+| **Local first** | None / Strong / Strong+Weak | yes |
+| **Listing** | Today / Archive | no |
+
+All three axes are combinable (e.g. ↓ + Strong+Weak + Archive).
+
+**Section headers** in the paper list now reflect the active grouping:
+- *None*: "Cross-listings (N)" divider (arXiv new-submissions / cross-listings split)
+- *Strong*: "Local authors – strong" / "Other papers"
+- *Strong+Weak*: "Local authors – strong" / "Local authors – weak" / "Other papers"
+
+**Search bar** is now always visible and works in both Today and Archive modes. Switching sources clears the query.
+
+**Abstract mode** converted from a `<select>` dropdown to a button group (Off / Local / All), matching the rest of the toolbar.
+
+**Font size** (S / M / L) moved from the toolbar into the Filter row, appended after the category buttons.
+
+**Toolbar cleanup**: all controls use the same `btn-group` segmented-button style; labels use `.sort-label` class.
+
+---
+
 ## Planned / open issues
 
 | # | Title |

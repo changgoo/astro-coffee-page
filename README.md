@@ -6,13 +6,18 @@ A daily arXiv astro-ph paper browser hosted on GitHub Pages.
 
 - Daily arXiv astro-ph listings (all subcategories: GA, CO, EP, HE, IM, SR)
 - Sequential arXiv listing numbers [1]…[N] matching `arxiv.org/list/astro-ph/new`, with cross-listings labelled and numbered continuously
-- Sort by local authors first, arXiv order, first author, title, or category
-- Filter by sub-category
+- Three independent sorting axes, freely combinable:
+  - **Sort**: ↑ ascending / ↓ descending arXiv ID (persisted)
+  - **Local first**: None / Strong / Strong+Weak — prioritises Princeton author papers (persisted)
+  - **Listing**: Today / Archive — switches between today's listing and the 1000-paper archive
+- **Search** — always-visible title + author search, works in both Today and Archive modes
+- Filter by sub-category (GA, CO, EP, HE, IM, SR)
+- Section dividers in the paper list reflect the active grouping (local-strong / local-weak / other, or new submissions / cross-listings)
 - Highlight Princeton authors (strong: bold amber; weak: italic pale yellow)
-- **Archive view** — browse the 1000 most recent astro-ph papers with full-text search (title + author) and 100-paper paginated loading
+- Archive view — 1000-paper rolling snapshot with 100-paper paginated loading
 - Author match strength (`local_match`, `local_authors`) precomputed during scraping — no client-side name matching
-- **Font size control** — S / M / L buttons scale all paper content; persisted across sessions
-- **Abstract expand mode** — collapsed (default), local strong authors open, or all open; persisted across sessions
+- **Font size control** — S / M / L in the filter row; persisted across sessions
+- **Abstract expand mode** — Off / Local / All button group; persisted across sessions
 - **Author truncation** — long author lists collapsed to 5 with expand toggle; strong-match papers always show full list
 
 ## Setup
