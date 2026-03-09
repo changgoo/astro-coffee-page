@@ -83,10 +83,8 @@ async function loadDay(dateStr) {
     const newNums  = new Map(newSubs.map((p, i)  => [p.id, i + 1]));
     const crossNums = new Map(crossList.map((p, i) => [p.id, newSubs.length + i + 1]));
 
-    // _arxivIndex: position in descending-ID order (used for sort); _arxivNum: display number
-    allPapers = raw.map((p, i) => ({
+    allPapers = raw.map((p) => ({
       ...p,
-      _arxivIndex: raw.length - i,
       _arxivNum: newNums.get(p.id) ?? crossNums.get(p.id),
       _isCrossListing: !(p.primary_category || "").startsWith("astro-ph"),
     }));
@@ -291,9 +289,9 @@ function renderArchive() {
 function sortPapers(papers, mode) {
   const copy = [...papers];
   if (mode === "arxiv") {
-    copy.sort((a, b) => (a._arxivIndex || 0) - (b._arxivIndex || 0));
+    copy.sort((a, b) => a.id.localeCompare(b.id));
   } else if (mode === "arxiv-rev") {
-    copy.sort((a, b) => (b._arxivIndex || 0) - (a._arxivIndex || 0));
+    copy.sort((a, b) => b.id.localeCompare(a.id));
   } else if (mode === "title") {
     copy.sort((a, b) => a.title.localeCompare(b.title));
   } else if (mode === "author") {
