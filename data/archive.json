@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-03-09T03:23:02Z",
+  "fetched_at": "2026-03-09T03:29:31Z",
   "total": 1000,
   "papers": [
     {
@@ -8475,10 +8475,8 @@
       "submitted": "2026-03-02",
       "arxiv_url": "https://arxiv.org/abs/2603.02046",
       "pdf_url": "https://arxiv.org/pdf/2603.02046",
-      "local_match": "weak",
-      "local_authors": {
-        "Yu Zhang": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.02033",
@@ -12643,10 +12641,8 @@
       "submitted": "2026-02-27",
       "arxiv_url": "https://arxiv.org/abs/2602.23637",
       "pdf_url": "https://arxiv.org/pdf/2602.23637",
-      "local_match": "weak",
-      "local_authors": {
-        "Hu Liu": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.23606",
@@ -13454,10 +13450,8 @@
       "submitted": "2026-02-26",
       "arxiv_url": "https://arxiv.org/abs/2602.23251",
       "pdf_url": "https://arxiv.org/pdf/2602.23251",
-      "local_match": "weak",
-      "local_authors": {
-        "Li Wang": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.23250",
@@ -23110,8 +23104,7 @@
       "pdf_url": "https://arxiv.org/pdf/2602.18743",
       "local_match": "weak",
       "local_authors": {
-        "H. Liu": "weak",
-        "Yi Zhang": "weak"
+        "H. Liu": "weak"
       }
     },
     {
