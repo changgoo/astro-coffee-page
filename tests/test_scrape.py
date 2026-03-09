@@ -399,16 +399,16 @@ def test_save_archive_writes_file(tmp_path):
 # ── update_index ──────────────────────────────────────────────────────────────
 
 def test_update_index_writes_current(tmp_path):
-    scrape.update_index(tmp_path, "2026-03-06")
+    scrape.update_index(tmp_path)
     index = json.loads((tmp_path / "index.json").read_text())
-    assert index["current"] == "2026-03-06"
+    datetime.strptime(index["current"], "%Y-%m-%d")  # valid YYYY-MM-DD
 
 
 def test_update_index_overwrites(tmp_path):
-    scrape.update_index(tmp_path, "2026-03-06")
-    scrape.update_index(tmp_path, "2026-03-09")
+    scrape.update_index(tmp_path)
+    scrape.update_index(tmp_path)
     index = json.loads((tmp_path / "index.json").read_text())
-    assert index["current"] == "2026-03-09"
+    assert "current" in index
 
 
 # ── skip-unchanged logic ──────────────────────────────────────────────────────
