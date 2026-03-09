@@ -201,7 +201,8 @@ The selected mode is persisted in `localStorage` and applied on every render.
 | Hyphenated first name + hyphenated initials | `C.-G. Kim` vs `Chang-Goo Kim` | strong |
 | Hyphenated first name + concatenated initials | `C.G. Kim` vs `Chang-Goo Kim` | weak |
 | Single bare initial vs hyphenated fav | `C. Kim` vs `Chang-Goo Kim` | none |
-| Single bare initial vs non-hyphenated fav (no fav middle initial) | `G. Livadiotis` | weak |
+| Single bare initial, fav has no middle initial | `G. Livadiotis` | weak |
+| Single bare initial, fav has middle initial | `M. Kunz` vs `Matthew W. Kunz` | none |
 | arXiv has middle initial, fav has none | `G. A. Livadiotis` vs `George Livadiotis` | none |
 | Conflicting middle initials | `M. A. Kunz` vs `Matthew W. Kunz` | none |
 | Conflicting full first names (both ≥ 2 chars after dot removal) | `Yujie Chen` vs `Yixian Chen`, `C.G. Kim` vs `Chang-Goo Kim` | none |

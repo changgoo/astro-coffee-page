@@ -246,9 +246,9 @@ def test_match_author_exact_no_middle_strong():
     """Matthew Kunz → strong (exact first name, middle initial not required)."""
     assert scrape.match_author("Kunz, Matthew", FAV_AUTHORS_EXTENDED) == "strong"
 
-def test_match_author_single_initial_fav_has_middle_weak():
-    """M. Kunz → weak (arXiv omits middle initial, fav has one — could still be them)."""
-    assert scrape.match_author("Kunz, M.", FAV_AUTHORS_EXTENDED) == "weak"
+def test_match_author_single_initial_fav_has_middle_none():
+    """M. Kunz → None (fav has middle initial W. but arXiv omits it — can't confirm)."""
+    assert scrape.match_author("Kunz, M.", FAV_AUTHORS_EXTENDED) is None
 
 def test_match_author_conflicting_middle_initial_none():
     """M. A. Kunz vs Matthew W. Kunz → None (middle initials disagree)."""
@@ -327,12 +327,12 @@ def test_annotate_papers_manual_initial_name_strong():
     assert papers[0]["local_authors"] == {"Livadiotis, G.": "strong"}
 
 
-def test_annotate_papers_single_initial_fav_has_middle_weak():
-    """Single initial, fav has middle initial → weak."""
+def test_annotate_papers_single_initial_fav_has_middle_none():
+    """Single initial, fav has middle initial → None (can't confirm without middle)."""
     papers = [{"authors": ["Ostriker, E."], "title": "Test"}]
     scrape.annotate_papers(papers, ["Eve C. Ostriker"])
-    assert papers[0]["local_match"] == "weak"
-    assert papers[0]["local_authors"] == {"Ostriker, E.": "weak"}
+    assert papers[0]["local_match"] is None
+    assert papers[0]["local_authors"] == {}
 
 
 def test_annotate_papers_multiple_papers():

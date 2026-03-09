@@ -100,7 +100,7 @@ the favorite-authors list. Tests are grouped by the fav-author name pattern bein
 |------|----------------|
 | `test_match_author_first_and_middle_initial_strong` | First initial + matching middle initial → strong |
 | `test_match_author_exact_no_middle_strong` | Exact first name without middle initial → strong |
-| `test_match_author_single_initial_fav_has_middle_weak` | M. Kunz → weak (arXiv omits middle initial, fav has one — can't rule out) |
+| `test_match_author_single_initial_fav_has_middle_none` | M. Kunz → None (fav has middle initial W. but arXiv omits it — can't confirm) |
 | `test_match_author_conflicting_middle_initial_none` | M. A. Kunz vs Matthew W. Kunz → None (middle initials disagree) |
 
 **George Livadiotis** (non-hyphenated, no middle initial)
@@ -131,7 +131,7 @@ Calls `annotate_papers(papers, fav_authors)` and checks the `local_match` and
 | `test_annotate_papers_full_name_conflict_none` | Conflicting full first names (Elaine vs Eve) → `local_match` is `None` |
 | `test_annotate_papers_single_initial_always_weak` | Single initial (G.) against a full-name fav → `local_match == "weak"` |
 | `test_annotate_papers_manual_initial_name_strong` | Adding the abbreviated form (G. Livadiotis) to the fav list gives `local_match == "strong"` |
-| `test_annotate_papers_single_initial_fav_has_middle_weak` | Single initial when fav has a middle initial → `local_match == "weak"` |
+| `test_annotate_papers_single_initial_fav_has_middle_none` | Single initial when fav has a middle initial → `local_match` is `None` |
 | `test_annotate_papers_multiple_papers` | Strong match and no-match papers in the same list are annotated correctly |
 
 ### `load_favorite_authors`
