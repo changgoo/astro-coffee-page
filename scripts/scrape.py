@@ -286,12 +286,18 @@ def save_archive(data_dir, papers):
     print(f"  Saved archive.json with {len(papers)} papers.")
 
 
-def update_index(data_dir, date_str):
-    """Write data/index.json with the current listing date."""
+def update_index(data_dir, listing_date):
+    """Write data/index.json.
+
+    ``current`` is today's UTC date (when the scraper ran — used for the
+    header display).  ``listing_date`` is the arXiv batch date stored inside
+    today.json for reference.
+    """
+    today_utc = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     index_path = data_dir / "index.json"
     with open(index_path, "w") as f:
-        json.dump({"current": date_str}, f, indent=2)
-    print(f"  Updated index.json: current={date_str}")
+        json.dump({"current": today_utc, "listing_date": listing_date}, f, indent=2)
+    print(f"  Updated index.json: current={today_utc}, listing_date={listing_date}")
 
 
 def main():
