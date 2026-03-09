@@ -1,7 +1,81 @@
 {
-  "fetched_at": "2026-03-09T01:49:39Z",
+  "fetched_at": "2026-03-09T02:21:51Z",
   "total": 1000,
   "papers": [
+    {
+      "id": "2603.06568",
+      "title": "The Prevalence of Turbulence-Regulated Multiphase Galactic Winds in Star-Forming Galaxies",
+      "authors": [
+        "Zhihui Li",
+        "Timothy Heckman",
+        "Max Gronke",
+        "Xinfeng Xu",
+        "Alaina Henry",
+        "Evan Schneider",
+        "Matthew Abruzzo",
+        "Danielle Berg",
+        "Bethan James",
+        "Crystal Martin",
+        "John Chisholm"
+      ],
+      "abstract": "We build upon our previously developed multi-ion radiative transfer (RT) framework, PEACOCK, to investigate the kinematic and energetic structure of cool-to-warm galactic winds in a sample of 50 nearby star-forming galaxies. Using self-consistent constraints derived from joint modeling of Ly-alpha and multiple ultraviolet metal lines, we analyze how bulk outflows and turbulent motions contribute to the dynamics and energy budget of galactic winds in the circumgalactic medium (CGM). We find that macroscopic turbulent velocities are often comparable to, and sometimes exceed, the coherent bulk outflow velocity. The associated turbulent pressure frequently dominates over both microscopic pressure and ram pressure, indicating that turbulence is a major contributor to the kinetic energy budget of the CGM wind. Wind kinematics, ionic column densities, and metal mass outflow rates all scale systematically with stellar mass and star formation rate, demonstrating a strong coupling between stellar feedback and CGM structure. Including turbulent motions strengthens these CGM-galaxy scaling relations and favors an energy-driven feedback regime. The total kinetic energy flux of the cool-to-warm CGM correlates tightly with the mechanical energy injection rate from star formation, implying that stellar feedback provides sufficient power to sustain both coherent outflows and turbulence. Comparisons with phenomenological line-profile fitting methods further show that simplified treatments can introduce systematic biases in inferred wind properties. Together these results support a turbulence-regulated picture of galactic winds in which a substantial fraction of feedback energy is stored in turbulent motions within a multiphase CGM.",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-03-06",
+      "arxiv_url": "https://arxiv.org/abs/2603.06568",
+      "pdf_url": "https://arxiv.org/pdf/2603.06568",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2603.06566",
+      "title": "Data-Driven Trends and Subpopulations in the Gravitational Wave Binary Black Hole Merger Population with UMAP",
+      "authors": [
+        "A. J. Amsellem",
+        "I. Maga\u00f1a Hernandez",
+        "A. Palmese",
+        "J. Gassert"
+      ],
+      "abstract": "The rapidly expanding Gravitational-Wave Transient Catalog (GWTC) necessitates the development of model-independent techniques to uncover trends and subpopulations within the binary black hole (BBH) population. We present the first usage of the Uniform Manifold Approximation and Projection (UMAP) algorithm, a novel dimensionality-reduction technique, for the purpose of analyzing BBH mergers in GWTC-3. We show that UMAP, paired with a clustering algorithm, effectively partitions the population into four well-segregated subgroups principally via their primary and secondary mass components along with an outlier event, GW$190521\\_030229$. UMAP clearly identifies objects in the ${\\sim}10~M_\\odot$ buildup in the BBH mass spectrum as their own group with aligned spins and mass ratios of ${\\sim}0.2{-}0.7$ while objects in or above the ${\\sim}35~M_\\odot$ overdensity are all in the same, largest group and display typically lower effective spins as well as larger mass ratios (${\\sim}0.5{-}0.9$) on average. With the aid of hierarchical population inference, we interpret these as subpopulations from different formation pathways, consistent with previous findings. We also find a transitional group of a handful of objects with masses in between the aforementioned buildups and broad support for anti-aligned spins. We examine the low-mass UMAP subgroup, which exhibits anti-correlation between the mass ratio and effective spin, and show that it drives such anti-correlation for the entire GWTC-3 sample. Overall, we demonstrate that UMAP is an interpretable, non-parametric framework that can not only be used for visualization but also for probing the astrophysics of the BBH population.",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-03-06",
+      "arxiv_url": "https://arxiv.org/abs/2603.06566",
+      "pdf_url": "https://arxiv.org/pdf/2603.06566",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2603.06546",
+      "title": "Kinematically Coherent Multiphase Galactic Winds in Star-Forming Galaxies Revealed by Unified Radiative Transfer Modeling of UV Emission and Absorption Lines",
+      "authors": [
+        "Zhihui Li",
+        "Timothy Heckman",
+        "Max Gronke",
+        "Xinfeng Xu",
+        "Alaina Henry",
+        "Evan Schneider",
+        "Matthew Abruzzo",
+        "Danielle Berg",
+        "Bethan James",
+        "Crystal Martin",
+        "John Chisholm"
+      ],
+      "abstract": "We present PEACOCK, a three-dimensional Monte Carlo radiative transfer (RT) framework designed to self-consistently model rest-frame ultraviolet emission and absorption lines arising from multiphase, clumpy galactic winds. Applied to deep HST/COS spectra of 50 nearby star-forming galaxies, PEACOCK reproduces 220 observed profiles of Ly-alpha, Si II, C II, Si III, Si IV, and C IV spanning absorption, emission, and P-Cygni-like morphologies within a single CGM model. By combining Monte Carlo RT with deep-learning acceleration and nested sampling, the framework enables fully converged multi-line inference at a small fraction of the cost of traditional RT grids. Systematic experiments show that ion column densities, bulk outflow velocities, and turbulent motions leave distinct imprints on line profiles, allowing the underlying gas properties to be constrained with minimal degeneracy. Purely radial accelerating flows often fail to reproduce the observed absorption morphologies, whereas macroscopic velocity dispersion naturally produces the broad asymmetric troughs seen in the data, indicating that turbulent motions are a key component of outflow kinematics. The inferred kinematics reveal strong coherence among low- and high-ionization metal lines in both bulk and turbulent velocities, consistent with a dynamically coupled multiphase wind. In contrast, neutral hydrogen shows weaker correspondence with metals, suggesting incomplete mixing and a distinct kinematic structure. By unifying emission and absorption diagnostics across multiple ions, PEACOCK provides a physically grounded bridge between UV observations and theoretical models of galactic winds.",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-03-06",
+      "arxiv_url": "https://arxiv.org/abs/2603.06546",
+      "pdf_url": "https://arxiv.org/pdf/2603.06546",
+      "local_match": null,
+      "local_authors": {}
+    },
     {
       "id": "2603.06521",
       "title": "Comment on: \"Third-order corrections to the slow-roll expansion: Calculation and constraints with Planck, ACT, SPT, and BICEP/Keck [2025 PDU 47 101813]\"",
@@ -26660,91 +26734,6 @@
       "submitted": "2026-02-18",
       "arxiv_url": "https://arxiv.org/abs/2602.16795",
       "pdf_url": "https://arxiv.org/pdf/2602.16795",
-      "local_match": null,
-      "local_authors": {}
-    },
-    {
-      "id": "2602.16792",
-      "title": "Fast pre-merger detection of massive black-hole binaries in LISA based on time-frequency excess power",
-      "authors": [
-        "Francesco Nobili",
-        "Malvina Bellotti",
-        "Riccardo Buscicchio",
-        "Massimo Dotti",
-        "Alessandro Lupi"
-      ],
-      "abstract": "The Laser Interferometer Space Antenna is expected to observe gravitational waves from massive black hole binaries across cosmic time. Many are anticipated to be detectable hours to weeks before coalescence. We present a fast algorithm for the pre-merger detection and preliminary characterization of such binaries. The method performs a search for excess power with a chirping time-frequency morphology in short-time Fourier transform spectrograms. By tiling the time-frequency plane with slices defined by the quadrupole frequency evolution, we define a signal significance relative to a fitted background distribution of instrumental noise and Galactic foreground. Individual search triggers are followed by a coherence tracker, which groups over time triggers consistent with the same physical signal . Doing so, our analysis provides progressively refined estimates of the chirp mass and coalescence time. We validate our algorithm on the Sangria LISA Data Challenge dataset, successfully detecting all 15 injected MBHBs: 14 of them hours-to-weeks before merger, while one is only detected after the binary coalescence. The algorithm yields chirp mass relative errors below $3\\%$ for high-SNR sources and coalescence time uncertainties of up to a few hours. With a computational cost of less than a second to process a 10-day data segment on single core, our approach is suitable for generating real-time alerts, trigger protected observational periods, and provide informative priors for Bayesian parameter estimation.",
-      "primary_category": "astro-ph.IM",
-      "categories": [
-        "astro-ph.IM",
-        "astro-ph.HE",
-        "gr-qc"
-      ],
-      "submitted": "2026-02-18",
-      "arxiv_url": "https://arxiv.org/abs/2602.16792",
-      "pdf_url": "https://arxiv.org/pdf/2602.16792",
-      "local_match": null,
-      "local_authors": {}
-    },
-    {
-      "id": "2602.16791",
-      "title": "Gaia24ccy: An outburst followed the footsteps of its predecessor",
-      "authors": [
-        "Koshvendra Singh",
-        "Joe P. Ninan",
-        "Zhen Guo",
-        "Valentin D. Ivanov",
-        "David A. H. Buckley",
-        "Devendra K. Ojha",
-        "Andrew Monson",
-        "Tarak Chand",
-        "Saurabh Sharma",
-        "Ram Kesh Yadav",
-        "Devendra K. Sahu",
-        "Pramod Kumar",
-        "Vardan Elbakyan",
-        "Sergei Nayakshin",
-        "Vitor Fermiano",
-        "Min Fang",
-        "Jura Borissova",
-        "Wen Ping Chen",
-        "Franz-Josef Hambsch",
-        "Radostin Kurtev",
-        "Calum Morris",
-        "Javier Osses",
-        "Vania Rodriguez",
-        "Tanvi Sharma",
-        "Bandari Srikanth",
-        "Thanawuth Thanathibodee",
-        "Wei-Hao Wang",
-        "Yuting Zhou"
-      ],
-      "abstract": "Accretion-driven outbursts in young stellar objects remain poorly understood, largely limited by a statistically small sample of closely followed-up events. This underscores the importance of a thorough exploration of each outbursting object. We studied a peculiar outbursting system, Gaia24ccy, which exhibited two $\u0394g \\sim$ 3.8 mag outbursts in 2019 and 2024. The system consists of two unresolved, nearly identical, and rapidly rotating young stars: Gaia24ccy A (1.1419 days) and Gaia24ccy B (1.7898 days). Periodogram analyses just before the onset of the outbursts suggest Gaia24ccy B to be the outbursting component. Unlike any previously known EXor sources, the two outburst profiles show a very similar evolution: both rose at the same rate for the first 15 days, followed by many 'sub-bursts' on the timescale of 10-20 days. The 2019 outburst lasted 145-255 days, while the 2024 outburst persisted for 367 days. We infer the unstable region to lie at $r_{\\rm trigger} \\simeq 0.019-0.047$ au ($\\sim5-12.3 R_\\star$). The accreted mass per event $M_{\\rm acc}\\sim10^{-5} M_\\odot$ can be provided by a compact inner-disk reservoir. The photometric rise/decay timescales and the mid-infrared color evolution favor a thermal-viscous trigger in a hot inner disk, while the appearance of rich emission-line spectra indicates concurrent magnetospheric compression - together best described by a hybrid picture. Finally, we explain the reddening of the mid-infrared color observed during the outburst as a consequence of the competing emission from the viscous disk and the photosphere.",
-      "primary_category": "astro-ph.SR",
-      "categories": [
-        "astro-ph.SR"
-      ],
-      "submitted": "2026-02-18",
-      "arxiv_url": "https://arxiv.org/abs/2602.16791",
-      "pdf_url": "https://arxiv.org/pdf/2602.16791",
-      "local_match": null,
-      "local_authors": {}
-    },
-    {
-      "id": "2602.16786",
-      "title": "From $\u03c7$EFT to Multi-Region Modeling: Neutron star structure with a polytropic extension of $\u03c7$EFT and MUSES Calculation Engine multi-layer modeling",
-      "authors": [
-        "Federico Nola"
-      ],
-      "abstract": "Neutron stars provide a unique environment to probe the properties of dense nuclear matter. In this work, we present a comparative study between two approaches to modeling the neutron star structure: a Chiral Effective Field Theory based approach and the MUSES Calculation Engine framework, which uses three different approaches for the three density regions. We analyze the resulting mass-radius relations, discussing the respective advantages and limitations of the two methods.",
-      "primary_category": "nucl-th",
-      "categories": [
-        "nucl-th",
-        "astro-ph.HE"
-      ],
-      "submitted": "2026-02-18",
-      "arxiv_url": "https://arxiv.org/abs/2602.16786",
-      "pdf_url": "https://arxiv.org/pdf/2602.16786",
       "local_match": null,
       "local_authors": {}
     }
