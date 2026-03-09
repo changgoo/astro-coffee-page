@@ -368,12 +368,6 @@ main {
 body[data-font="small"] { font-size: 13px; }
 body[data-font="large"]  { font-size: 17px; }
 
-#font-size-bar {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-bottom: 14px;
-}
 
 .btn-font {
   font-size: 11px;
