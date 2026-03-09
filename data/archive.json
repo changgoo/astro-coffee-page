@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-03-09T03:29:31Z",
+  "fetched_at": "2026-03-09T03:41:19Z",
   "total": 1000,
   "papers": [
     {
@@ -3083,10 +3083,8 @@
       "submitted": "2026-03-05",
       "arxiv_url": "https://arxiv.org/abs/2603.04960",
       "pdf_url": "https://arxiv.org/pdf/2603.04960",
-      "local_match": "weak",
-      "local_authors": {
-        "M. Kunz": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2603.04928",
@@ -24170,10 +24168,8 @@
       "submitted": "2026-02-20",
       "arxiv_url": "https://arxiv.org/abs/2602.18173",
       "pdf_url": "https://arxiv.org/pdf/2602.18173",
-      "local_match": "weak",
-      "local_authors": {
-        "M. Kunz": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2602.18133",
