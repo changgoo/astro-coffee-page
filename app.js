@@ -28,7 +28,7 @@ let dataSource = "today";                                               // "toda
 let currentDate = null;
 let archivePapers = [];
 let archiveDisplayCount = 100;
-let archiveSearchQuery = "";
+let searchQuery = "";
 let currentFontSize = localStorage.getItem("font-size") || "medium";
 let abstractMode = localStorage.getItem("abstract-mode") || "none";
 
@@ -323,7 +323,15 @@ function render() {
   const list = document.getElementById("paper-list");
   list.innerHTML = "";
 
-  let papers = applyFilters(allPapers);
+  let papers = allPapers;
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    papers = papers.filter((p) =>
+      p.title.toLowerCase().includes(q) ||
+      p.authors.some((a) => a.toLowerCase().includes(q))
+    );
+  }
+  papers = applyFilters(papers);
   papers = sortPapers(papers);
 
   if (papers.length === 0) {
@@ -353,8 +361,8 @@ function renderArchive() {
 
   // Apply text search
   let papers = archivePapers;
-  if (archiveSearchQuery) {
-    const q = archiveSearchQuery.toLowerCase();
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
     papers = papers.filter((p) =>
       p.title.toLowerCase().includes(q) ||
       p.authors.some((a) => a.toLowerCase().includes(q))
@@ -609,27 +617,24 @@ document.addEventListener("DOMContentLoaded", () => {
       dataSource = newSource;
       syncSortUI();
 
-      const searchContainer = document.getElementById("search-container");
+      searchQuery = "";
+      document.getElementById("search-input").value = "";
+      archiveDisplayCount = 100;
       if (dataSource === "archive") {
-        searchContainer.style.display = "";
         updateDateLabel("archive");
         await loadArchive();
       } else {
-        searchContainer.style.display = "none";
-        archiveSearchQuery = "";
-        document.getElementById("search-input").value = "";
-        archiveDisplayCount = 100;
         updateDateLabel(currentDate);
         await loadDay(currentDate);
       }
     });
   });
 
-  // ── Archive search ──
+  // ── Search ──
   document.getElementById("search-input").addEventListener("input", (e) => {
-    archiveSearchQuery = e.target.value.trim();
+    searchQuery = e.target.value.trim();
     archiveDisplayCount = 100;
-    renderArchive();
+    renderCurrent();
   });
 
   init();
