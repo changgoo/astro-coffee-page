@@ -249,20 +249,24 @@ function sortPapers(papers) {
     ? (a, b) => a.id.localeCompare(b.id)
     : (a, b) => b.id.localeCompare(a.id);
 
+  // Cross-listings sort after new submissions within each group
+  const crossCmp = (a, b) =>
+    (isNewSubmission(a) ? 0 : 1) - (isNewSubmission(b) ? 0 : 1);
+
   if (localFirst === "none") {
-    copy.sort(idCmp);
+    copy.sort((a, b) => crossCmp(a, b) || idCmp(a, b));
   } else if (localFirst === "strong") {
     copy.sort((a, b) => {
       const ra = a.local_match === "strong" ? 0 : 1;
       const rb = b.local_match === "strong" ? 0 : 1;
-      return ra - rb || idCmp(a, b);
+      return ra - rb || crossCmp(a, b) || idCmp(a, b);
     });
   } else { // "strong+weak"
     const rank = { strong: 0, weak: 1 };
     copy.sort((a, b) => {
       const ra = rank[a.local_match] ?? 2;
       const rb = rank[b.local_match] ?? 2;
-      return ra - rb || idCmp(a, b);
+      return ra - rb || crossCmp(a, b) || idCmp(a, b);
     });
   }
   return copy;
@@ -276,6 +280,20 @@ function sortPapers(papers) {
  * @param {object[]}    papers  - already sorted slice to render
  * @param {boolean}     partial - true when more papers remain (archive load-more)
  */
+/**
+ * Render the "others" group, splitting new submissions from cross-listings.
+ */
+function appendOthersWithCrossListSplit(list, others, partial) {
+  const newSubs   = others.filter(isNewSubmission);
+  const crossList = others.filter((p) => !isNewSubmission(p));
+  newSubs.forEach((p) => list.appendChild(buildCard(p)));
+  if (crossList.length) {
+    list.appendChild(makeSectionHeader(
+      `Cross-listings (${crossList.length}${partial ? "+" : ""})`));
+    crossList.forEach((p) => list.appendChild(buildCard(p)));
+  }
+}
+
 function appendPaperGroups(list, papers, partial = false) {
   if (localFirst === "none") {
     // Pure arXiv order: split new submissions and cross-listings
@@ -294,11 +312,7 @@ function appendPaperGroups(list, papers, partial = false) {
       list.appendChild(makeSectionHeader(`Local authors – strong (${strong.length})`));
       strong.forEach((p) => list.appendChild(buildCard(p)));
     }
-    if (others.length) {
-      list.appendChild(makeSectionHeader(
-        `Other papers (${others.length}${partial ? "+" : ""})`));
-      others.forEach((p) => list.appendChild(buildCard(p)));
-    }
+    appendOthersWithCrossListSplit(list, others, partial);
   } else { // "strong+weak"
     const strong = papers.filter((p) => p.local_match === "strong");
     const weak   = papers.filter((p) => p.local_match === "weak");
@@ -311,11 +325,7 @@ function appendPaperGroups(list, papers, partial = false) {
       list.appendChild(makeSectionHeader(`Local authors – weak (${weak.length})`));
       weak.forEach((p) => list.appendChild(buildCard(p)));
     }
-    if (others.length) {
-      list.appendChild(makeSectionHeader(
-        `Other papers (${others.length}${partial ? "+" : ""})`));
-      others.forEach((p) => list.appendChild(buildCard(p)));
-    }
+    appendOthersWithCrossListSplit(list, others, partial);
   }
 }
 
@@ -340,17 +350,18 @@ function render() {
     return;
   }
 
-  if (localFirst === "none") {
-    const newSubs   = papers.filter(isNewSubmission);
-    const crossList = papers.filter((p) => !isNewSubmission(p));
-    document.getElementById("stats").textContent =
-      `${newSubs.length} new submission${newSubs.length !== 1 ? "s" : ""}` +
-      (crossList.length ? `, ${crossList.length} cross-listing${crossList.length !== 1 ? "s" : ""}` : "") +
-      ` (${papers.length} of ${allPapers.length} papers)`;
-  } else {
-    document.getElementById("stats").textContent =
-      `${papers.length} of ${allPapers.length} papers`;
+  const newSubs   = papers.filter(isNewSubmission);
+  const crossList = papers.filter((p) => !isNewSubmission(p));
+  let statsText = "";
+  if (localFirst !== "none") {
+    const localCount = papers.filter((p) => p.local_match).length;
+    statsText += `${localCount} local author paper${localCount !== 1 ? "s" : ""}, `;
   }
+  statsText +=
+    `${newSubs.length} new submission${newSubs.length !== 1 ? "s" : ""}` +
+    (crossList.length ? `, ${crossList.length} cross-listing${crossList.length !== 1 ? "s" : ""}` : "") +
+    ` (${papers.length} of ${allPapers.length} papers)`;
+  document.getElementById("stats").textContent = statsText;
 
   appendPaperGroups(list, papers);
 }
