@@ -280,8 +280,8 @@ All three axes are combinable (e.g. ↓ + Strong+Weak + Archive).
 
 **Section headers** in the paper list now reflect the active grouping:
 - *None*: "Cross-listings (N)" divider (arXiv new-submissions / cross-listings split)
-- *Strong*: "Local authors – strong" / "Other papers"
-- *Strong+Weak*: "Local authors – strong" / "Local authors – weak" / "Other papers"
+- *Strong*: "Local authors – strong" / remaining new submissions / "Cross-listings"
+- *Strong+Weak*: "Local authors – strong" / "Local authors – weak" / remaining new submissions / "Cross-listings"
 
 **Search bar** is now always visible and works in both Today and Archive modes. Switching sources clears the query.
 
