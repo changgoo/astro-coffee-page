@@ -262,7 +262,7 @@ All changes are in `match_author()` in `scripts/scrape.py`. The complete rule ta
 
 **`--reannotate` flag** — `python scripts/scrape.py --reannotate` re-runs `annotate_papers` on `today.json` and `archive.json` in-place without any API calls. Useful after updating matching rules or the authors list.
 
-**`config/authors_manual.json`** — added `"Eve Ostriker"` (no middle initial) so that `E. Ostriker` produces a strong match. The auto-scraped entry `"Eve C. Ostriker"` handles `E. C. Ostriker`.
+**`config/authors_manual.json`** — added `"Eve Ostriker"` (no middle initial) so that `E. Ostriker` produces a strong match. The auto-scraped entry `"Eve C. Ostriker"` handles `E. C. Ostriker`. Later additions: `"Jake Nibauer"` (2026-03-12).
 
 ---
 
@@ -290,6 +290,19 @@ All three axes are combinable (e.g. ↓ + Strong+Weak + Archive).
 **Font size** (S / M / L) moved from the toolbar into the Filter row, appended after the category buttons.
 
 **Toolbar cleanup**: all controls use the same `btn-group` segmented-button style; labels use `.sort-label` class.
+
+---
+
+## 20. GitHub Actions: upgrade to Node.js 24-compatible action versions (2026-03-12)
+
+Updated all three workflow files to silence the Node.js 20 deprecation warning ahead of GitHub's forced June 2026 upgrade:
+
+| Action | Old | New |
+|---|---|---|
+| `actions/checkout` | `v4` | `v6` |
+| `actions/setup-python` | `v5` | `v6` |
+
+Affects `.github/workflows/daily-scrape.yml`, `monthly-authors.yml`, and `tests.yml`.
 
 ---
 
