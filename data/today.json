@@ -1,6 +1,6 @@
 {
   "date": "2026-03-10",
-  "fetched_at": "2026-03-11T04:05:02Z",
+  "fetched_at": "2026-03-12T03:57:46Z",
   "total": 105,
   "papers": [
     {
@@ -2732,8 +2732,10 @@
       "submitted": "2026-03-09",
       "arxiv_url": "https://arxiv.org/abs/2603.08770",
       "pdf_url": "https://arxiv.org/pdf/2603.08770",
-      "local_match": null,
-      "local_authors": {}
+      "local_match": "strong",
+      "local_authors": {
+        "Jake Nibauer": "strong"
+      }
     },
     {
       "id": "2603.07714",
