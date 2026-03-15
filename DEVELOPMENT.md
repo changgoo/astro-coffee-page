@@ -57,7 +57,7 @@ The nightly runs catch arXiv's ~8 PM ET announcement; the morning run picks up a
 ## 5. Header navigation
 
 - Princeton shield linking to `web.astro.princeton.edu`
-- AstroCoffee calendar link (`changgoo.github.io/AstroCoffee/intro.html`)
+- Host Calendar link (`changgoo.github.io/AstroCoffee/`)
 - arXiv favicon linking to `/list/astro-ph/new`
 - GitHub icon linking to the repository
 - Date navigator: Older / dropdown / **Today** / Newer
