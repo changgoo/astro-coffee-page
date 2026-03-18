@@ -189,7 +189,8 @@ def parse_name_parts(name):
         last = name[:comma].strip().lower()
         rest = name[comma + 1:].strip().split()
         first = rest[0].replace(".", "").lower() if rest else ""
-        middle_initial = rest[1].replace(".", "").lower()[0] if len(rest) > 1 else None
+        mid_str = rest[1].replace(".", "").lower() if len(rest) > 1 else ""
+        middle_initial = mid_str[0] if mid_str else None
         return first, last, middle_initial
 
     tokens = name.strip().split()
@@ -199,7 +200,8 @@ def parse_name_parts(name):
         tokens = tokens[:-1]
     last = tokens[-1].lower() if tokens else ""
     first = tokens[0].replace(".", "").lower() if tokens else ""
-    middle_initial = tokens[1].replace(".", "").lower()[0] if len(tokens) > 2 else None
+    mid_str = tokens[1].replace(".", "").lower() if len(tokens) > 2 else ""
+    middle_initial = mid_str[0] if mid_str else None
     return first, last, middle_initial
 
 
