@@ -506,12 +506,9 @@ function buildCard(paper) {
 
   const titleDiv = document.createElement("div");
   titleDiv.className = "paper-title";
-  const titleLink = document.createElement("a");
-  titleLink.href = paper.arxiv_url;
-  titleLink.target = "_blank";
-  titleLink.rel = "noopener";
-  titleLink.textContent = paper.title;
-  titleDiv.appendChild(titleLink);
+  const titleSpan = document.createElement("span");
+  titleSpan.textContent = paper.title;
+  titleDiv.appendChild(titleSpan);
 
   const authorsDiv = buildAuthorsDiv(paper);
 
@@ -520,11 +517,15 @@ function buildCard(paper) {
   const startOpen = abstractMode === "all" ||
     (abstractMode === "strong" && paper.local_match === "strong");
   toggleBtn.textContent = startOpen ? "Hide abstract" : "Show abstract";
-  toggleBtn.addEventListener("click", () => {
+
+  function toggleAbstract() {
     const abs = card.querySelector(".paper-abstract");
     const open = abs.classList.toggle("open");
     toggleBtn.textContent = open ? "Hide abstract" : "Show abstract";
-  });
+  }
+
+  titleSpan.addEventListener("click", toggleAbstract);
+  toggleBtn.addEventListener("click", toggleAbstract);
 
   const abstractDiv = document.createElement("div");
   abstractDiv.className = "paper-abstract" + (startOpen ? " open" : "");
