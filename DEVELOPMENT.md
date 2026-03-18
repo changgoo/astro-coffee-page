@@ -315,6 +315,16 @@ A daily scrape failure was caused by an arXiv author name with a middle-name tok
 
 ---
 
+## 22. Title click toggles abstract (PR #26)
+
+Changed paper title from a link to a clickable span that toggles the abstract open/closed:
+
+- `app.js`: title is now a `<span>` sharing the same `toggleAbstract()` function as the "Show/Hide abstract" button
+- `style.css`: `.paper-title span` styled with `cursor: pointer` and hover underline
+- arXiv link remains accessible via the `[arXiv-ID]` badge in the meta row
+
+---
+
 ## Planned / open issues
 
 | # | Title |
