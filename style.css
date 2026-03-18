@@ -315,8 +315,8 @@ main {
   line-height: 1.4;
 }
 
-.paper-title a { color: var(--text); text-decoration: none; }
-.paper-title a:hover { color: var(--primary); text-decoration: underline; }
+.paper-title span { cursor: pointer; }
+.paper-title span:hover { color: var(--primary); text-decoration: underline; }
 
 .paper-authors {
   font-size: 0.93em;
