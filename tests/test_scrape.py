@@ -203,6 +203,21 @@ def test_parse_name_parts_strips_suffix():
     assert first == "john"
 
 
+def test_parse_name_parts_dot_only_middle_token():
+    """Middle token that is only '.' must not raise IndexError."""
+    # arXiv format: last, first .  (dot as middle token)
+    first, last, mid = scrape.parse_name_parts("Smith, Jane .")
+    assert last == "smith"
+    assert first == "jane"
+    assert mid is None
+
+    # Princeton format: first . Last
+    first, last, mid = scrape.parse_name_parts("Jane . Smith")
+    assert last == "smith"
+    assert first == "jane"
+    assert mid is None
+
+
 # ── match_author ──────────────────────────────────────────────────────────────
 
 FAV_AUTHORS = ["Chang-Goo Kim", "Eve C. Ostriker"]
