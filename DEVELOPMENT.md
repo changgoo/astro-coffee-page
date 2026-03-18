@@ -306,6 +306,15 @@ Affects `.github/workflows/daily-scrape.yml`, `monthly-authors.yml`, and `tests.
 
 ---
 
+## 21. Fix IndexError in parse_name_parts for dot-only middle token (PR #25)
+
+A daily scrape failure was caused by an arXiv author name with a middle-name token that was just `"."`. After `.replace(".", "")` it became an empty string, and `""[0]` raised `IndexError`.
+
+- `scripts/scrape.py`: extract the stripped middle token into a variable; only index `[0]` if the string is non-empty (both arXiv `"Last, First ."` and Princeton `"First . Last"` formats fixed)
+- `tests/test_scrape.py`: added `test_parse_name_parts_dot_only_middle_token` regression test
+
+---
+
 ## Planned / open issues
 
 | # | Title |
