@@ -37,6 +37,8 @@ PAGES = [
      f"{BASE_URL}/people/postdocs-researchers"),
     ("Graduate Students",
      f"{BASE_URL}/people/graduate-students"),
+    ("Undergraduate Students",
+     f"{BASE_URL}/people/undergraduate-students"),
     ("Associated Faculty & Affiliates",
      f"{BASE_URL}/people/associated-faculty-department-affiliates"),
 ]
