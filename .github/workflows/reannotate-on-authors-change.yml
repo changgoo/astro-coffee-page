@@ -1,0 +1,41 @@
+name: Re-annotate papers on author list change
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "config/authors.json"
+      - "config/authors_manual.json"
+
+permissions:
+  contents: write
+
+jobs:
+  reannotate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ssh-key: ${{ secrets.SCRAPER_DEPLOY_KEY }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Re-annotate existing data with updated author list
+        run: python scripts/scrape.py --reannotate
+
+      - name: Commit and push data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No annotation changes."
+          else
+            git commit -m "chore: re-annotate papers after author list update $(date -u +%Y-%m-%d)"
+            git push
+          fi
