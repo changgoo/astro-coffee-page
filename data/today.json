@@ -1,6 +1,6 @@
 {
   "date": "2026-04-08",
-  "fetched_at": "2026-04-09T04:29:50Z",
+  "fetched_at": "2026-04-09T22:03:50Z",
   "total": 83,
   "papers": [
     {
@@ -1909,8 +1909,10 @@
       "submitted": "2026-04-07",
       "arxiv_url": "https://arxiv.org/abs/2604.06354",
       "pdf_url": "https://arxiv.org/pdf/2604.06354",
-      "local_match": null,
-      "local_authors": {}
+      "local_match": "strong",
+      "local_authors": {
+        "Liam M. Wang": "strong"
+      }
     },
     {
       "id": "2604.06348",
@@ -1971,6 +1973,7 @@
       "pdf_url": "https://arxiv.org/pdf/2604.06318",
       "local_match": "strong",
       "local_authors": {
+        "Christopher Carr": "strong",
         "Christian Kragh Jespersen": "strong",
         "Lucia A. Perez": "strong"
       }
