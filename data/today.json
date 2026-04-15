@@ -1,6 +1,6 @@
 {
   "date": "2026-04-14",
-  "fetched_at": "2026-04-15T04:42:31Z",
+  "fetched_at": "2026-04-15T16:01:20Z",
   "total": 100,
   "papers": [
     {
@@ -22,6 +22,7 @@
       "pdf_url": "https://arxiv.org/pdf/2604.13031",
       "local_match": "strong",
       "local_authors": {
+        "Miguel A. Montalvo Hernandez": "strong",
         "Andy D. Goulding": "strong",
         "Jenny E. Greene": "strong"
       }
