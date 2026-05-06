@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-06T05:24:35Z",
+  "fetched_at": "2026-05-06T16:42:34Z",
   "total": 1000,
   "papers": [
     {
@@ -2291,6 +2291,7 @@
       "pdf_url": "https://arxiv.org/pdf/2605.02996",
       "local_match": "strong",
       "local_authors": {
+        "Uddipan Banik": "strong",
         "Amitava Bhattacharjee": "strong",
         "James M. Stone": "strong"
       }
