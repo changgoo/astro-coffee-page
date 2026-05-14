@@ -79,7 +79,7 @@ def build_query_url(start=0, max_results=MAX_PER_REQUEST):
 def fetch_xml(url):
     """Fetch a URL and return raw bytes, sending a descriptive User-Agent."""
     req = urllib.request.Request(url, headers={"User-Agent": "coffee-page/1.0 (arxiv paper browser)"})
-    with urllib.request.urlopen(req, timeout=30) as resp:
+    with urllib.request.urlopen(req, timeout=60) as resp:
         return resp.read()
 
 
