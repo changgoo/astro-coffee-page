@@ -10,7 +10,7 @@ No network access is required — all HTTP calls are mocked.
 
 ---
 
-## `tests/test_scrape.py` — arXiv scraper (62 tests)
+## `tests/test_scrape.py` — arXiv scraper (69 tests)
 
 Tests for `scripts/scrape.py`. Uses a minimal Atom XML fixture that mirrors the
 structure returned by the arXiv API.
@@ -167,6 +167,22 @@ is touched.
 |------|----------------|
 | `test_appends_when_same_arxiv_date` | A second scrape for the same `arxiv_date` appends new papers to the existing 82, yielding 85 total |
 | `test_replaces_when_new_arxiv_date` | A scrape for a different `arxiv_date` starts fresh, discarding the previous day's papers |
+
+### `fetch_xml` retry logic
+
+Uses `monkeypatch` to replace `urllib.request.urlopen` with a fake that yields a
+controlled sequence of exceptions or bytes. `time.sleep` is patched to a no-op so
+tests run instantly.
+
+| Test | What it checks |
+|------|----------------|
+| `test_fetch_xml_succeeds_immediately` | Returns bytes when the first attempt succeeds |
+| `test_fetch_xml_retries_on_503` | Retries after `HTTP 503` and returns bytes on the second attempt |
+| `test_fetch_xml_retries_on_429` | Retries after `HTTP 429` and returns bytes on the second attempt |
+| `test_fetch_xml_retries_on_timeout` | Retries after `TimeoutError` and returns bytes on the second attempt |
+| `test_fetch_xml_raises_after_max_retries` | Raises `HTTPError` after exhausting all 5 retries |
+| `test_fetch_xml_raises_immediately_on_404` | Raises `HTTPError` without retrying for non-transient errors (404) |
+| `test_fetch_xml_respects_retry_after_header` | Uses the `Retry-After: 30` header value as the sleep delay on 429 |
 
 ---
 

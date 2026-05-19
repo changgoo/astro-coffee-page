@@ -325,6 +325,27 @@ Changed paper title from a link to a clickable span that toggles the abstract op
 
 ---
 
+## 23. Retry logic for transient arXiv API errors (PR #35)
+
+`fetch_xml` in `scripts/scrape.py` had no retry logic. The arXiv API intermittently returns transient errors that crashed the entire scraper run on the very first request:
+
+| Date | Error |
+|------|-------|
+| 2026-05-19 | `HTTP 503 Service Unavailable` |
+| 2026-05-14 PM | `TimeoutError: The read operation timed out` |
+| 2026-05-14 AM | `HTTP 429 Too Many Requests` |
+| 2026-05-13 | `TimeoutError` |
+
+`fetch_xml` now retries up to 5 times with exponential backoff (10 s base, doubling each attempt: 10 s, 20 s, 40 s, 80 s, 160 s):
+
+- **Retries on**: `HTTP 503`, `HTTP 429`, `TimeoutError`, `urllib.error.URLError`
+- **Raises immediately on**: all other HTTP errors (e.g. 404)
+- **Retry-After header**: if the server returns a `Retry-After` value on 429, that delay is used instead of the default backoff
+
+Added `import urllib.error` to the module imports.
+
+---
+
 ## Planned / open issues
 
 | # | Title |
