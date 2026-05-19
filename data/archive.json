@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-19T13:29:40Z",
+  "fetched_at": "2026-05-19T15:11:09Z",
   "total": 1000,
   "papers": [
     {
@@ -48,8 +48,10 @@
       "submitted": "2026-05-18",
       "arxiv_url": "https://arxiv.org/abs/2605.18742",
       "pdf_url": "https://arxiv.org/pdf/2605.18742",
-      "local_match": null,
-      "local_authors": {}
+      "local_match": "strong",
+      "local_authors": {
+        "Teagan A. Clarke": "strong"
+      }
     },
     {
       "id": "2605.18731",
@@ -11731,11 +11733,12 @@
       "submitted": "2026-05-12",
       "arxiv_url": "https://arxiv.org/abs/2605.11703",
       "pdf_url": "https://arxiv.org/pdf/2605.11703",
-      "local_match": "weak",
+      "local_match": "strong",
       "local_authors": {
         "A. Bhattacharjee": "weak",
         "S. Biscoveanu": "weak",
-        "Y. Chen": "weak"
+        "Y. Chen": "weak",
+        "T. A. Clarke": "strong"
       }
     },
     {
@@ -20914,11 +20917,12 @@
       "submitted": "2026-05-06",
       "arxiv_url": "https://arxiv.org/abs/2605.05444",
       "pdf_url": "https://arxiv.org/pdf/2605.05444",
-      "local_match": "weak",
+      "local_match": "strong",
       "local_authors": {
         "A. Bhattacharjee": "weak",
         "S. Biscoveanu": "weak",
-        "Y. Chen": "weak"
+        "Y. Chen": "weak",
+        "T. A. Clarke": "strong"
       }
     },
     {
