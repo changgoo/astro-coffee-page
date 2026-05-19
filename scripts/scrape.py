@@ -14,6 +14,7 @@ Usage:
 import json
 import sys
 import time
+import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
@@ -76,11 +77,31 @@ def build_query_url(start=0, max_results=MAX_PER_REQUEST):
     return f"{BASE_URL}?{params}"
 
 
-def fetch_xml(url):
-    """Fetch a URL and return raw bytes, sending a descriptive User-Agent."""
+def fetch_xml(url, max_retries=5, base_delay=10):
+    """Fetch a URL and return raw bytes, retrying on transient errors with exponential backoff.
+
+    Retries on HTTP 429/503 and network timeouts; raises immediately on other errors.
+    """
     req = urllib.request.Request(url, headers={"User-Agent": "coffee-page/1.0 (arxiv paper browser)"})
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        return resp.read()
+    for attempt in range(max_retries + 1):
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                return resp.read()
+        except urllib.error.HTTPError as e:
+            if e.code in (429, 503) and attempt < max_retries:
+                retry_after = e.headers.get("Retry-After", "")
+                delay = int(retry_after) if retry_after.isdigit() else base_delay * (2 ** attempt)
+                print(f"  HTTP {e.code}, retrying in {delay}s (attempt {attempt + 1}/{max_retries}) ...", flush=True)
+                time.sleep(delay)
+            else:
+                raise
+        except (TimeoutError, urllib.error.URLError) as e:
+            if attempt < max_retries:
+                delay = base_delay * (2 ** attempt)
+                print(f"  {type(e).__name__}: {e}, retrying in {delay}s (attempt {attempt + 1}/{max_retries}) ...", flush=True)
+                time.sleep(delay)
+            else:
+                raise
 
 
 def parse_entry(entry):
