@@ -1,6 +1,9 @@
 """Unit tests for scripts/scrape.py."""
 
+import io
 import json
+import urllib.error
+import urllib.request
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
@@ -467,3 +470,80 @@ def test_replaces_when_new_arxiv_date(tmp_path):
     else:
         all_papers = new_papers
     assert len(all_papers) == 1
+
+
+# ── fetch_xml retry logic ─────────────────────────────────────────────────────
+
+def _make_urlopen(responses):
+    """Build a fake urlopen that yields responses in order (HTTPError or bytes)."""
+    call_count = [0]
+
+    def fake_urlopen(req, timeout=None):
+        idx = call_count[0]
+        call_count[0] += 1
+        resp = responses[idx]
+        if isinstance(resp, Exception):
+            raise resp
+        return io.BytesIO(resp)
+
+    return fake_urlopen
+
+
+def test_fetch_xml_succeeds_immediately(monkeypatch):
+    """fetch_xml returns bytes when the first attempt succeeds."""
+    monkeypatch.setattr(urllib.request, "urlopen", _make_urlopen([b"<xml/>"]))
+    assert scrape.fetch_xml("http://example.com") == b"<xml/>"
+
+
+def test_fetch_xml_retries_on_503(monkeypatch):
+    """fetch_xml retries on HTTP 503 and succeeds on the second attempt."""
+    err503 = urllib.error.HTTPError("", 503, "Service Unavailable", {}, None)
+    monkeypatch.setattr(urllib.request, "urlopen", _make_urlopen([err503, b"<xml/>"]))
+    monkeypatch.setattr(scrape.time, "sleep", lambda s: None)
+    assert scrape.fetch_xml("http://example.com") == b"<xml/>"
+
+
+def test_fetch_xml_retries_on_429(monkeypatch):
+    """fetch_xml retries on HTTP 429 and succeeds on the second attempt."""
+    err429 = urllib.error.HTTPError("", 429, "Too Many Requests", {}, None)
+    monkeypatch.setattr(urllib.request, "urlopen", _make_urlopen([err429, b"<xml/>"]))
+    monkeypatch.setattr(scrape.time, "sleep", lambda s: None)
+    assert scrape.fetch_xml("http://example.com") == b"<xml/>"
+
+
+def test_fetch_xml_retries_on_timeout(monkeypatch):
+    """fetch_xml retries on TimeoutError and succeeds on the second attempt."""
+    monkeypatch.setattr(urllib.request, "urlopen", _make_urlopen([TimeoutError("timed out"), b"<xml/>"]))
+    monkeypatch.setattr(scrape.time, "sleep", lambda s: None)
+    assert scrape.fetch_xml("http://example.com") == b"<xml/>"
+
+
+def test_fetch_xml_raises_after_max_retries(monkeypatch):
+    """fetch_xml raises after exhausting all retries."""
+    err503 = urllib.error.HTTPError("", 503, "Service Unavailable", {}, None)
+    responses = [err503] * 6  # more than max_retries=5
+    monkeypatch.setattr(urllib.request, "urlopen", _make_urlopen(responses))
+    monkeypatch.setattr(scrape.time, "sleep", lambda s: None)
+    with pytest.raises(urllib.error.HTTPError) as exc_info:
+        scrape.fetch_xml("http://example.com")
+    assert exc_info.value.code == 503
+
+
+def test_fetch_xml_raises_immediately_on_404(monkeypatch):
+    """fetch_xml does not retry on non-transient HTTP errors like 404."""
+    err404 = urllib.error.HTTPError("", 404, "Not Found", {}, None)
+    monkeypatch.setattr(urllib.request, "urlopen", _make_urlopen([err404]))
+    with pytest.raises(urllib.error.HTTPError) as exc_info:
+        scrape.fetch_xml("http://example.com")
+    assert exc_info.value.code == 404
+
+
+def test_fetch_xml_respects_retry_after_header(monkeypatch):
+    """fetch_xml uses Retry-After header value as delay on 429."""
+    slept = []
+    headers = {"Retry-After": "30"}
+    err429 = urllib.error.HTTPError("", 429, "Too Many Requests", headers, None)
+    monkeypatch.setattr(urllib.request, "urlopen", _make_urlopen([err429, b"<xml/>"]))
+    monkeypatch.setattr(scrape.time, "sleep", lambda s: slept.append(s))
+    scrape.fetch_xml("http://example.com")
+    assert slept == [30]
