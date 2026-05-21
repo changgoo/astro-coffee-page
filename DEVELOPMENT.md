@@ -346,6 +346,14 @@ Added `import urllib.error` to the module imports.
 
 ---
 
+## 24. Fix arXiv API URL to use HTTPS (PR #37)
+
+The scraper was using `http://export.arxiv.org/api/query`. arXiv now permanently redirects HTTP to HTTPS (301 Moved Permanently), and Python's `urllib` cannot follow a cross-protocol redirect, causing an infinite redirect loop error. After the retry logic from PR #35 exhausted all 429 retries, the final attempt hit this 301 and crashed.
+
+Changed `BASE_URL` in `scripts/scrape.py` from `http://` to `https://`.
+
+---
+
 ## Planned / open issues
 
 | # | Title |
