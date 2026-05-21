@@ -26,7 +26,7 @@ NS = {
     "opensearch": "http://a9.com/-/spec/opensearch/1.1/",
 }
 
-BASE_URL = "http://export.arxiv.org/api/query"
+BASE_URL = "https://export.arxiv.org/api/query"
 MAX_PER_REQUEST = 500
 RATE_LIMIT_SECONDS = 3
 ARCHIVE_SIZE = 1000
