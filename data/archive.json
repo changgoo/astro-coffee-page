@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-22T22:44:28Z",
+  "fetched_at": "2026-05-24T01:00:19Z",
   "total": 1000,
   "papers": [
     {
@@ -1873,6 +1873,7 @@
       "local_match": "strong",
       "local_authors": {
         "Shaunak Modak": "strong",
+        "Chris Hamilton": "strong",
         "Eve C. Ostriker": "strong",
         "Scott Tremaine": "strong"
       }
