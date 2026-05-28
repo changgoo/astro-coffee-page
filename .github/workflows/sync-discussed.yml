@@ -1,0 +1,119 @@
+name: Sync discussed papers
+
+on:
+  schedule:
+    # Run after the morning coffee window in UTC.
+    - cron: "30 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Sync discussed issues into data/discussed.json
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require("fs");
+            const path = require("path");
+
+            const repo = context.repo;
+            const dataPath = path.join(process.env.GITHUB_WORKSPACE, "data", "discussed.json");
+
+            function parseIssueBody(body) {
+              const result = {};
+              for (const rawLine of body.split(/\r?\n/)) {
+                const line = rawLine.trim();
+                if (!line) continue;
+                const match = line.match(/^([a-z_]+):\s*(.*)$/i);
+                if (!match) continue;
+                result[match[1].toLowerCase()] = match[2].trim();
+              }
+
+              if (!result.paper_id || !result.title || !result.arxiv_url || !result.authors) {
+                return null;
+              }
+
+              return {
+                paper_id: result.paper_id,
+                title: result.title,
+                arxiv_url: result.arxiv_url,
+                authors: result.authors.split(/\s*;\s*/).filter(Boolean),
+              };
+            }
+
+            const openIssues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: repo.owner,
+              repo: repo.repo,
+              state: "open",
+              per_page: 100,
+            });
+
+            openIssues.sort((a, b) => a.created_at.localeCompare(b.created_at));
+
+            const existing = fs.existsSync(dataPath)
+              ? JSON.parse(fs.readFileSync(dataPath, "utf8"))
+              : { generated_at: null, papers: [] };
+            const byPaperId = new Map((existing.papers || []).map((paper) => [paper.paper_id, paper]));
+
+            const processedIssues = [];
+
+            for (const issue of openIssues) {
+              if (issue.pull_request) continue;
+              if (!issue.title.startsWith("Discussed paper: ")) continue;
+              const parsed = parseIssueBody(issue.body || "");
+              if (!parsed) {
+                core.warning(`Skipping issue #${issue.number}: missing discussed paper fields.`);
+                continue;
+              }
+
+              byPaperId.set(parsed.paper_id, {
+                ...parsed,
+                discussed_at: issue.created_at,
+                issue_number: issue.number,
+              });
+              processedIssues.push(issue.number);
+            }
+
+            if (processedIssues.length === 0) {
+              core.info("No discussed issues to process.");
+              return;
+            }
+
+            const payload = {
+              generated_at: new Date().toISOString(),
+              papers: Array.from(byPaperId.values()).sort((a, b) =>
+                (b.discussed_at || "").localeCompare(a.discussed_at || "")
+              ),
+            };
+
+            fs.mkdirSync(path.dirname(dataPath), { recursive: true });
+            fs.writeFileSync(dataPath, `${JSON.stringify(payload, null, 2)}\n`);
+
+            for (const number of processedIssues) {
+              await github.rest.issues.update({
+                owner: repo.owner,
+                repo: repo.repo,
+                issue_number: number,
+                state: "closed",
+              });
+            }
+
+      - name: Commit and push data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/discussed.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: sync discussed papers"
+            git push
+          fi
