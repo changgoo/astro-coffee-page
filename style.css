@@ -10,12 +10,12 @@
   --highlight-strong-border: #ffc107;
   --highlight-weak-bg: #f8f9fa;
   --highlight-weak-border: #ced4da;
-  --cat-ga: #6610f2;
-  --cat-co: #0dcaf0;
-  --cat-ep: #198754;
-  --cat-he: #dc3545;
-  --cat-im: #fd7e14;
-  --cat-sr: #e83e8c;
+  --cat-ga: #7b6ea8;
+  --cat-co: #6aa9b9;
+  --cat-ep: #6e9f7a;
+  --cat-he: #b86a6a;
+  --cat-im: #c08a5c;
+  --cat-sr: #bf7697;
   --cat-other: #6c757d;
 }
 
@@ -258,6 +258,11 @@ main {
   background: var(--highlight-weak-bg);
 }
 
+.paper-card.discussed-paper {
+  border-left: 3px solid #c92a2a;
+  background: #fff5f5;
+}
+
 .paper-meta {
   display: flex;
   align-items: center;
@@ -316,6 +321,21 @@ main {
   white-space: nowrap;
 }
 
+.discussed-badge {
+  font-size: 0.73em;
+  padding: 1px 7px;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 700;
+  white-space: nowrap;
+  background: #c92a2a;
+}
+
+.discussed-control {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
 .cat-badge {
   font-size: 0.73em;
   padding: 1px 6px;
@@ -337,10 +357,6 @@ main {
   font-weight: 600;
   margin-bottom: 5px;
   line-height: 1.4;
-}
-
-.paper-action-row {
-  margin-bottom: 6px;
 }
 
 .paper-title span { cursor: pointer; }

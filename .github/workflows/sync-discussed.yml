@@ -2,8 +2,8 @@ name: Sync discussed papers
 
 on:
   schedule:
-    # Run after the morning coffee window in UTC.
-    - cron: "30 5 * * *"
+    # Run before the first daily scrape so the next build can pick up discussed papers.
+    - cron: "0 1 * * *"
   workflow_dispatch:
 
 permissions:
@@ -76,7 +76,7 @@ jobs:
 
               byPaperId.set(parsed.paper_id, {
                 ...parsed,
-                discussed_at: issue.created_at,
+                discussed_at: issue.created_at.slice(0, 10),
                 issue_number: issue.number,
               });
               processedIssues.push(issue.number);

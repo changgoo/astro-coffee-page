@@ -11,7 +11,7 @@ const CAT_LABELS = {
 };
 const CAT_COLORS = {
   "astro-ph.GA": { bg: "var(--cat-ga)", color: "#fff" },
-  "astro-ph.CO": { bg: "var(--cat-co)", color: "#000" },
+  "astro-ph.CO": { bg: "var(--cat-co)", color: "#fff" },
   "astro-ph.EP": { bg: "var(--cat-ep)", color: "#fff" },
   "astro-ph.HE": { bg: "var(--cat-he)", color: "#fff" },
   "astro-ph.IM": { bg: "var(--cat-im)", color: "#fff" },
@@ -88,7 +88,6 @@ async function loadIndex() {
   currentDate = data.current || null;
 }
 
-
 async function loadDay(dateStr) {
   document.getElementById("loading").style.display = "block";
   document.getElementById("paper-list").innerHTML = "";
@@ -137,7 +136,10 @@ async function loadArchive() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const raw = data.papers || [];
-    archivePapers = raw.map((p, i) => ({ ...p, _arxivIndex: raw.length - i }));
+    archivePapers = raw.map((p, i) => ({
+      ...p,
+      _arxivIndex: raw.length - i,
+    }));
     document.getElementById("fetched-at").textContent =
       data.fetched_at ? `archive fetched ${data.fetched_at.slice(0, 16).replace("T", " ")} UTC` : "";
   } catch (e) {
@@ -521,6 +523,7 @@ function buildCard(paper) {
 
   if (paper.local_match === "strong") card.classList.add("highlighted-strong");
   else if (paper.local_match === "weak") card.classList.add("highlighted-weak");
+  if (paper.discussed_at) card.classList.add("discussed-paper");
 
   const meta = document.createElement("div");
   meta.className = "paper-meta";
@@ -550,25 +553,15 @@ function buildCard(paper) {
   secSpan.className = "secondary-cats";
   if (secondaryCats.length) secSpan.textContent = "+ " + secondaryCats.join(", ");
 
-  meta.append(idSpan, pdfLink, primaryBadge, secSpan);
+  const discussedControl = buildDiscussedControl(paper);
+
+  meta.append(idSpan, pdfLink, primaryBadge, secSpan, discussedControl);
 
   const titleDiv = document.createElement("div");
   titleDiv.className = "paper-title";
   const titleSpan = document.createElement("span");
   titleSpan.textContent = paper.title;
   titleDiv.appendChild(titleSpan);
-
-  const discussedBtn = document.createElement("button");
-  discussedBtn.className = "discussed-btn";
-  discussedBtn.type = "button";
-  discussedBtn.textContent = "Mark as discussed";
-  discussedBtn.title = "Open a prefilled GitHub issue for this paper";
-  discussedBtn.addEventListener("click", () => {
-    window.open(buildDiscussedIssueUrl(paper), "_blank", "noopener");
-  });
-  const discussedRow = document.createElement("div");
-  discussedRow.className = "paper-action-row";
-  discussedRow.appendChild(discussedBtn);
 
   const authorsDiv = buildAuthorsDiv(paper);
 
@@ -591,7 +584,7 @@ function buildCard(paper) {
   abstractDiv.className = "paper-abstract" + (startOpen ? " open" : "");
   abstractDiv.textContent = paper.abstract;
 
-  card.append(meta, titleDiv, discussedRow, authorsDiv, toggleBtn, abstractDiv);
+  card.append(meta, titleDiv, authorsDiv, toggleBtn, abstractDiv);
   return card;
 }
 
@@ -614,6 +607,26 @@ function buildDiscussedIssueUrl(paper) {
   return `https://github.com/changgoo/astro-coffee-page/issues/new?${params.toString()}`;
 }
 
+function buildDiscussedControl(paper) {
+  if (paper.discussed_at) {
+    const badge = document.createElement("span");
+    badge.className = "discussed-badge discussed-control";
+    badge.textContent = "Discussed";
+    badge.title = `Discussed on ${formatDate(paper.discussed_at)}`;
+    return badge;
+  }
+
+  const button = document.createElement("button");
+  button.className = "discussed-btn discussed-control";
+  button.type = "button";
+  button.textContent = "Mark as discussed";
+  button.title = "Open a prefilled GitHub issue for this paper";
+  button.addEventListener("click", () => {
+    window.open(buildDiscussedIssueUrl(paper), "_blank", "noopener");
+  });
+  return button;
+}
+
 function buildDiscussedCard(paper) {
   const card = document.createElement("div");
   card.className = "paper-card";
@@ -634,7 +647,7 @@ function buildDiscussedCard(paper) {
 
   const discussed = document.createElement("span");
   discussed.className = "discussed-date";
-  discussed.textContent = paper.discussed_at ? `Discussed ${formatUtcDateTime(paper.discussed_at)}` : "Discussed";
+  discussed.textContent = paper.discussed_at ? `Discussed ${formatUtcDate(paper.discussed_at)}` : "Discussed";
 
   meta.append(idSpan, pdfLink, discussed);
 
@@ -653,17 +666,14 @@ function buildDiscussedCard(paper) {
   return card;
 }
 
-function formatUtcDateTime(ts) {
+function formatUtcDate(ts) {
   const d = new Date(ts);
   if (Number.isNaN(d.getTime())) return ts;
   return d.toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
     timeZone: "UTC",
-    timeZoneName: "short",
   });
 }
 
@@ -672,7 +682,8 @@ function renderDiscussed() {
   list.innerHTML = "";
 
   const papers = [...discussedPapers].sort((a, b) => {
-    return (b.discussed_at || "").localeCompare(a.discussed_at || "");
+    const dateCmp = (b.discussed_at || "").localeCompare(a.discussed_at || "");
+    return dateCmp || (b.issue_number || 0) - (a.issue_number || 0);
   });
 
   document.getElementById("stats").textContent =
@@ -683,7 +694,14 @@ function renderDiscussed() {
     return;
   }
 
-  papers.forEach((p) => list.appendChild(buildDiscussedCard(p)));
+  let currentDate = null;
+  for (const paper of papers) {
+    if (paper.discussed_at !== currentDate) {
+      currentDate = paper.discussed_at;
+      list.appendChild(makeSectionHeader(formatUtcDate(currentDate)));
+    }
+    list.appendChild(buildDiscussedCard(paper));
+  }
 }
 
 function buildCatBadge(cat) {

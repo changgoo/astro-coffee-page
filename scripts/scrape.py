@@ -196,6 +196,22 @@ def load_favorite_authors(repo_root):
     return names
 
 
+def load_discussed_papers(data_dir):
+    """Load discussed paper IDs from data/discussed.json into a paper_id -> date map."""
+    discussed_path = data_dir / "discussed.json"
+    if not discussed_path.exists():
+        return {}
+    with open(discussed_path) as f:
+        data = json.load(f)
+    discussed = {}
+    for paper in data.get("papers", []):
+        paper_id = paper.get("paper_id")
+        discussed_at = paper.get("discussed_at")
+        if paper_id and discussed_at:
+            discussed[paper_id] = discussed_at
+    return discussed
+
+
 def parse_name_parts(name):
     """Parse a name into (first, last, middle_initial) components.
 
@@ -297,6 +313,14 @@ def annotate_papers(papers, fav_authors):
         paper["local_authors"] = local_authors
 
 
+def annotate_discussed_papers(papers, discussed_papers):
+    """Add discussed_at to papers whose IDs appear in discussed_papers."""
+    for paper in papers:
+        discussed_at = discussed_papers.get(paper.get("id"))
+        if discussed_at:
+            paper["discussed_at"] = discussed_at
+
+
 def load_archive(data_dir):
     """Load data/archive.json; return (papers_list, ids_set) or ([], set())."""
     archive_path = data_dir / "archive.json"
@@ -334,6 +358,7 @@ def update_index(data_dir):
 def reannotate(data_dir, repo_root):
     """Re-run author tagging on today.json and archive.json in-place without re-scraping."""
     fav_authors = load_favorite_authors(repo_root)
+    discussed_papers = load_discussed_papers(data_dir)
     print(f"  {len(fav_authors)} favorites loaded.")
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -347,6 +372,7 @@ def reannotate(data_dir, repo_root):
         papers = data.get("papers", [])
         print(f"  Re-annotating {len(papers)} papers in {filename} ...")
         annotate_papers(papers, fav_authors)
+        annotate_discussed_papers(papers, discussed_papers)
         data["papers"] = papers
         data["fetched_at"] = now
         with open(path, "w") as f:
@@ -387,8 +413,10 @@ def main():
     print(f"  Fetched {len(fetched)} papers.")
 
     fav_authors = load_favorite_authors(repo_root)
+    discussed_papers = load_discussed_papers(data_dir)
     print(f"  Annotating local author matches ({len(fav_authors)} favorites) ...")
     annotate_papers(fetched, fav_authors)
+    annotate_discussed_papers(fetched, discussed_papers)
 
     _, archive_ids = load_archive(data_dir)
 
@@ -424,6 +452,7 @@ def main():
         "total": len(all_papers),
         "papers": all_papers,
     }
+    annotate_discussed_papers(all_papers, discussed_papers)
     with open(out_path, "w") as f:
         json.dump(output, f, indent=2)
     print(f"  Saved {len(all_papers)} papers to {out_path} ({new_count} new).")

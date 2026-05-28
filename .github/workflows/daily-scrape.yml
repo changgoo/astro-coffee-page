@@ -4,6 +4,9 @@ on:
   schedule:
     # arXiv announces new papers at ~8 PM ET on weekdays.
     # All times below are UTC; ET = UTC-5 (EST) / UTC-4 (EDT).
+    # The discussed sync runs earlier in the morning so this scrape can annotate
+    # papers directly from data/discussed.json, the same way local authors are
+    # annotated during scraping.
     #
     # Hourly 9 PM–midnight ET, Sun–Thu nights:
     #   9 PM ET  = 02:00 UTC next day
