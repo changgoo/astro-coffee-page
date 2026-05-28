@@ -13,6 +13,7 @@ A daily arXiv astro-ph paper browser hosted on GitHub Pages.
 - **Search** — always-visible title + author search, works in both Today and Archive modes
 - Filter by sub-category (GA, CO, EP, HE, IM, SR)
 - Section dividers in the paper list reflect the active grouping (local-strong / local-weak / other, or new submissions / cross-listings)
+- **Discussed papers** — per-paper GitHub issue flow plus a separate discussed page synced nightly into `data/discussed.json`
 - Highlight Princeton authors (strong: bold amber; weak: italic pale yellow)
 - Archive view — 1000-paper rolling snapshot with 100-paper paginated loading
 - Author match strength (`local_match`, `local_authors`) precomputed during scraping — no client-side name matching

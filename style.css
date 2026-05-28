@@ -292,6 +292,30 @@ main {
 
 .pdf-link { font-size: 0.8em; }
 
+.discussed-btn {
+  font-size: 0.75em;
+  padding: 4px 10px;
+  color: #fff;
+  background: #c92a2a;
+  border-color: #c92a2a;
+  font-weight: 700;
+  white-space: nowrap;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.discussed-btn:hover {
+  background: #a61e1e;
+  border-color: #a61e1e;
+}
+
+.discussed-date {
+  font-size: 0.8em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
 .cat-badge {
   font-size: 0.73em;
   padding: 1px 6px;
@@ -313,6 +337,10 @@ main {
   font-weight: 600;
   margin-bottom: 5px;
   line-height: 1.4;
+}
+
+.paper-action-row {
+  margin-bottom: 6px;
 }
 
 .paper-title span { cursor: pointer; }
@@ -496,6 +524,12 @@ footer {
 }
 
 footer a { color: var(--primary); }
+
+.page-intro {
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
 
 /* ── Loading ── */
 #loading {

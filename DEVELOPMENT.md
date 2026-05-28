@@ -360,5 +360,5 @@ Changed `BASE_URL` in `scripts/scrape.py` from `http://` to `https://`.
 |---|-------|
 | [#7](https://github.com/changgoo/astro-coffee-page/issues/7) | Globally persistent discussed papers list |
 
-Ideas under consideration:
-- **Discussed papers** — per-session marking via `localStorage` as a first step; global persistence (shared across all users) requires a write mechanism (options: manual `data/discussed.json` in the repo, GitHub Actions `workflow_dispatch`, or an external free-tier backend such as Supabase)
+Implemented in `feat/issue-7-discussed-papers`:
+- **Discussed papers** — paper cards now open a prefilled GitHub issue, a nightly workflow syncs open discussed-paper issues into `data/discussed.json`, closes the processed issues, and the separate `discussed.html` page renders the shared list.
