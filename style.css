@@ -10,12 +10,12 @@
   --highlight-strong-border: #ffc107;
   --highlight-weak-bg: #f8f9fa;
   --highlight-weak-border: #ced4da;
-  --cat-ga: #6610f2;
-  --cat-co: #0dcaf0;
-  --cat-ep: #198754;
-  --cat-he: #dc3545;
-  --cat-im: #fd7e14;
-  --cat-sr: #e83e8c;
+  --cat-ga: #7b6ea8;
+  --cat-co: #6aa9b9;
+  --cat-ep: #6e9f7a;
+  --cat-he: #b86a6a;
+  --cat-im: #c08a5c;
+  --cat-sr: #bf7697;
   --cat-other: #6c757d;
 }
 
@@ -258,6 +258,11 @@ main {
   background: var(--highlight-weak-bg);
 }
 
+.paper-card.discussed-paper {
+  border-left: 3px solid #c92a2a;
+  background: #fff5f5;
+}
+
 .paper-meta {
   display: flex;
   align-items: center;
@@ -291,6 +296,45 @@ main {
 .paper-id a:hover, .pdf-link:hover { text-decoration: underline; }
 
 .pdf-link { font-size: 0.8em; }
+
+.discussed-btn {
+  font-size: 0.75em;
+  padding: 4px 10px;
+  color: #fff;
+  background: #c92a2a;
+  border-color: #c92a2a;
+  font-weight: 700;
+  white-space: nowrap;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.discussed-btn:hover {
+  background: #a61e1e;
+  border-color: #a61e1e;
+}
+
+.discussed-date {
+  font-size: 0.8em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.discussed-badge {
+  font-size: 0.73em;
+  padding: 1px 7px;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 700;
+  white-space: nowrap;
+  background: #c92a2a;
+}
+
+.discussed-control {
+  margin-left: auto;
+  flex-shrink: 0;
+}
 
 .cat-badge {
   font-size: 0.73em;
@@ -496,6 +540,12 @@ footer {
 }
 
 footer a { color: var(--primary); }
+
+.page-intro {
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
 
 /* ── Loading ── */
 #loading {

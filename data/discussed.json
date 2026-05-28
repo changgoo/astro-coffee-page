@@ -1,0 +1,47 @@
+{
+  "generated_at": "2026-05-28T20:00:00Z",
+  "papers": [
+    {
+      "paper_id": "2605.25980",
+      "title": "Reversible-jump MCMC reveals binary black hole subpopulations with distinct redshift evolution",
+      "arxiv_url": "https://arxiv.org/abs/2605.25980",
+      "authors": [
+        "April Qiu Cheng",
+        "Alexandre Toubiana",
+        "Sylvia Biscoveanu",
+        "Jonathan Gair"
+      ],
+      "discussed_at": "2026-05-28",
+      "issue_number": 42
+    },
+    {
+      "paper_id": "2605.24083",
+      "title": "Hadronic Processes, Plasma Evolution and Neutrino Emission in Magnetic Towers of Neutron-Star Merger Remnants",
+      "arxiv_url": "https://arxiv.org/abs/2605.24083",
+      "authors": [
+        "Rostom Mbarek",
+        "Jiaxi Wu",
+        "Elias R. Most"
+      ],
+      "discussed_at": "2026-05-28",
+      "issue_number": 41
+    },
+    {
+      "paper_id": "2605.26238",
+      "title": "Cosmic Ray Feedback in Galactic Disks: Star Formation, Cosmic Ray Transport, and Multiphase Outflows in \\tigresspp\\ Simulations",
+      "arxiv_url": "https://arxiv.org/abs/2605.26238",
+      "authors": [
+        "Chang-Goo Kim",
+        "Lucia Armillotta",
+        "Eve C. Ostriker",
+        "Sanghyuk Moon",
+        "Lachlan Lancaster",
+        "Jeong-Gyu Kim",
+        "Nora B. Linzer",
+        "Ronan N. Hix"
+      ],
+      "discussed_at": "2026-05-28",
+      "issue_number": 39
+    }
+  ]
+}

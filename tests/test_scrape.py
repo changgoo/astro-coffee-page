@@ -360,6 +360,14 @@ def test_annotate_papers_multiple_papers():
     assert papers[1]["local_match"] is None
 
 
+def test_annotate_discussed_papers_marks_matching_ids():
+    papers = [{"id": "2503.00001"}, {"id": "2503.00002"}]
+    discussed = {"2503.00002": "2026-05-28"}
+    scrape.annotate_discussed_papers(papers, discussed)
+    assert papers[0].get("discussed_at") is None
+    assert papers[1]["discussed_at"] == "2026-05-28"
+
+
 # ── load_favorite_authors ─────────────────────────────────────────────────────
 
 def test_load_favorite_authors_merges_both_files(tmp_path):
@@ -395,6 +403,61 @@ def test_load_favorite_authors_missing_files(tmp_path):
     (tmp_path / "config").mkdir()
     authors = scrape.load_favorite_authors(tmp_path)
     assert authors == []
+
+
+def test_load_discussed_papers_missing(tmp_path):
+    discussed = scrape.load_discussed_papers(tmp_path)
+    assert discussed == {}
+
+
+def test_load_discussed_papers_reads_file(tmp_path):
+    data = {
+        "papers": [
+            {"paper_id": "2503.00001", "discussed_at": "2026-05-28"},
+            {"paper_id": "2503.00002", "discussed_at": "2026-05-27"},
+        ]
+    }
+    (tmp_path / "discussed.json").write_text(json.dumps(data))
+    discussed = scrape.load_discussed_papers(tmp_path)
+    assert discussed == {
+        "2503.00001": "2026-05-28",
+        "2503.00002": "2026-05-27",
+    }
+
+
+def test_reannotate_applies_discussed_tags(tmp_path):
+    data_dir = tmp_path
+    repo_root = tmp_path
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config" / "authors.json").write_text(json.dumps({"authors": []}))
+    today = {
+        "date": "2026-05-28",
+        "papers": [
+            {"id": "2503.00001", "authors": [], "title": "A"},
+            {"id": "2503.00002", "authors": [], "title": "B"},
+        ],
+    }
+    archive = {
+        "papers": [
+            {"id": "2503.00001", "authors": [], "title": "A"},
+        ]
+    }
+    discussed = {
+        "papers": [
+            {"paper_id": "2503.00002", "discussed_at": "2026-05-28"},
+        ]
+    }
+    (tmp_path / "today.json").write_text(json.dumps(today))
+    (tmp_path / "archive.json").write_text(json.dumps(archive))
+    (tmp_path / "discussed.json").write_text(json.dumps(discussed))
+
+    scrape.reannotate(data_dir, repo_root)
+
+    updated_today = json.loads((tmp_path / "today.json").read_text())
+    updated_archive = json.loads((tmp_path / "archive.json").read_text())
+    assert updated_today["papers"][1]["discussed_at"] == "2026-05-28"
+    assert "discussed_at" not in updated_today["papers"][0]
+    assert "discussed_at" not in updated_archive["papers"][0]
 
 
 # ── load_archive / save_archive ───────────────────────────────────────────────

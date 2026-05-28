@@ -1,0 +1,40 @@
+name: Sync discussed papers
+
+on:
+  schedule:
+    # Run before the first daily scrape so the next build can pick up discussed papers.
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Sync discussed issues into data/discussed.json
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/sync_discussed.py
+
+      - name: Commit and push data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/discussed.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: sync discussed papers"
+            git push
+          fi

@@ -11,7 +11,7 @@ const CAT_LABELS = {
 };
 const CAT_COLORS = {
   "astro-ph.GA": { bg: "var(--cat-ga)", color: "#fff" },
-  "astro-ph.CO": { bg: "var(--cat-co)", color: "#000" },
+  "astro-ph.CO": { bg: "var(--cat-co)", color: "#fff" },
   "astro-ph.EP": { bg: "var(--cat-ep)", color: "#fff" },
   "astro-ph.HE": { bg: "var(--cat-he)", color: "#fff" },
   "astro-ph.IM": { bg: "var(--cat-im)", color: "#fff" },
@@ -20,6 +20,9 @@ const CAT_COLORS = {
 
 let allPapers = [];
 let activeCats = new Set(ASTRO_CATS);
+const PAGE_MODE = document.body.dataset.page ||
+  (location.pathname.endsWith("discussed.html") ? "discussed" : "today");
+const DISCUSSED_ISSUE_LABEL = "discussed-paper";
 // ── Sorting state (three independent axes) ────────────────────────────────────
 let sortOrder  = localStorage.getItem("sort-order")   || "asc";       // "asc" | "desc"
 let localFirst = localStorage.getItem("local-first")  || "strong";    // "none" | "strong" | "strong+weak"
@@ -27,6 +30,7 @@ let dataSource = "today";                                               // "toda
 // ─────────────────────────────────────────────────────────────────────────────
 let currentDate = null;
 let archivePapers = [];
+let discussedPapers = [];
 let archiveDisplayCount = 100;
 let searchQuery = "";
 let currentFontSize = localStorage.getItem("font-size") || "medium";
@@ -58,6 +62,12 @@ function syncSortUI() {
 async function init() {
   applyFontSize(currentFontSize);
   syncSortUI();
+
+  if (PAGE_MODE === "discussed") {
+    await loadDiscussed();
+    return;
+  }
+
   await loadIndex();
   buildCatFilter();
 
@@ -77,7 +87,6 @@ async function loadIndex() {
   const data = await res.json();
   currentDate = data.current || null;
 }
-
 
 async function loadDay(dateStr) {
   document.getElementById("loading").style.display = "block";
@@ -127,7 +136,10 @@ async function loadArchive() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const raw = data.papers || [];
-    archivePapers = raw.map((p, i) => ({ ...p, _arxivIndex: raw.length - i }));
+    archivePapers = raw.map((p, i) => ({
+      ...p,
+      _arxivIndex: raw.length - i,
+    }));
     document.getElementById("fetched-at").textContent =
       data.fetched_at ? `archive fetched ${data.fetched_at.slice(0, 16).replace("T", " ")} UTC` : "";
   } catch (e) {
@@ -147,7 +159,45 @@ async function loadArchive() {
 function updateDateLabel(dateStr) {
   const label = document.getElementById("current-date-label");
   if (!label) return;
-  label.textContent = dateStr === "archive" ? "Archive (1000 papers)" : formatDate(dateStr);
+  if (dateStr === "archive") {
+    label.textContent = "Archive (1000 papers)";
+  } else if (dateStr === "discussed") {
+    label.textContent = "Discussed papers";
+  } else {
+    label.textContent = formatDate(dateStr);
+  }
+}
+
+async function loadDiscussed() {
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("loading").textContent = "Loading discussed papers…";
+  document.getElementById("paper-list").innerHTML = "";
+  document.getElementById("stats").textContent = "";
+
+  let loaded = false;
+  try {
+    const res = await fetch("data/discussed.json");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    discussedPapers = (data.papers || []).map((p) => ({
+      ...p,
+      id: p.paper_id,
+    }));
+    document.getElementById("fetched-at").textContent =
+      data.generated_at ? `updated ${data.generated_at.slice(0, 16).replace("T", " ")} UTC` : "";
+    updateDateLabel("discussed");
+    loaded = true;
+  } catch (e) {
+    discussedPapers = [];
+    showEmptyState("Could not load discussed papers.");
+  } finally {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("loading").textContent = "Loading…";
+  }
+
+  if (loaded) {
+    renderDiscussed();
+  }
 }
 
 function buildCatFilter() {
@@ -473,6 +523,7 @@ function buildCard(paper) {
 
   if (paper.local_match === "strong") card.classList.add("highlighted-strong");
   else if (paper.local_match === "weak") card.classList.add("highlighted-weak");
+  if (paper.discussed_at) card.classList.add("discussed-paper");
 
   const meta = document.createElement("div");
   meta.className = "paper-meta";
@@ -502,7 +553,9 @@ function buildCard(paper) {
   secSpan.className = "secondary-cats";
   if (secondaryCats.length) secSpan.textContent = "+ " + secondaryCats.join(", ");
 
-  meta.append(idSpan, pdfLink, primaryBadge, secSpan);
+  const discussedControl = buildDiscussedControl(paper);
+
+  meta.append(idSpan, pdfLink, primaryBadge, secSpan, discussedControl);
 
   const titleDiv = document.createElement("div");
   titleDiv.className = "paper-title";
@@ -533,6 +586,122 @@ function buildCard(paper) {
 
   card.append(meta, titleDiv, authorsDiv, toggleBtn, abstractDiv);
   return card;
+}
+
+function buildDiscussedIssueUrl(paper) {
+  const paperId = paper.id || paper.paper_id || "";
+  const authors = Array.isArray(paper.authors) ? paper.authors.join("; ") : "";
+  const title = `Discussed paper: ${paperId}`;
+  const body = [
+    `paper_id: ${paperId}`,
+    `title: ${paper.title || ""}`,
+    `arxiv_url: ${paper.arxiv_url || ""}`,
+    `authors: ${authors}`,
+  ].join("\n");
+
+  const params = new URLSearchParams({
+    title,
+    body,
+    labels: DISCUSSED_ISSUE_LABEL,
+  });
+  return `https://github.com/changgoo/astro-coffee-page/issues/new?${params.toString()}`;
+}
+
+function buildDiscussedControl(paper) {
+  if (paper.discussed_at) {
+    const badge = document.createElement("span");
+    badge.className = "discussed-badge discussed-control";
+    badge.textContent = "Discussed";
+    badge.title = `Discussed on ${formatDate(paper.discussed_at)}`;
+    return badge;
+  }
+
+  const button = document.createElement("button");
+  button.className = "discussed-btn discussed-control";
+  button.type = "button";
+  button.textContent = "Mark as discussed";
+  button.title = "Open a prefilled GitHub issue for this paper";
+  button.addEventListener("click", () => {
+    window.open(buildDiscussedIssueUrl(paper), "_blank", "noopener");
+  });
+  return button;
+}
+
+function buildDiscussedCard(paper) {
+  const card = document.createElement("div");
+  card.className = "paper-card";
+
+  const meta = document.createElement("div");
+  meta.className = "paper-meta";
+
+  const idSpan = document.createElement("span");
+  idSpan.className = "paper-id";
+  idSpan.innerHTML = `[<a href="${paper.arxiv_url}" target="_blank" rel="noopener">${paper.paper_id}</a>]`;
+
+  const pdfLink = document.createElement("a");
+  pdfLink.className = "pdf-link";
+  pdfLink.href = paper.arxiv_url ? paper.arxiv_url.replace("/abs/", "/pdf/") : "#";
+  pdfLink.target = "_blank";
+  pdfLink.rel = "noopener";
+  pdfLink.textContent = "[PDF]";
+
+  const discussed = document.createElement("span");
+  discussed.className = "discussed-date";
+  discussed.textContent = paper.discussed_at ? `Discussed ${formatUtcDate(paper.discussed_at)}` : "Discussed";
+
+  meta.append(idSpan, pdfLink, discussed);
+
+  const titleDiv = document.createElement("div");
+  titleDiv.className = "paper-title";
+  const titleSpan = document.createElement("span");
+  titleSpan.textContent = paper.title || "";
+  titleSpan.addEventListener("click", () => window.open(paper.arxiv_url, "_blank", "noopener"));
+  titleDiv.appendChild(titleSpan);
+
+  const authorsDiv = document.createElement("div");
+  authorsDiv.className = "paper-authors";
+  authorsDiv.textContent = Array.isArray(paper.authors) ? paper.authors.join(", ") : "";
+
+  card.append(meta, titleDiv, authorsDiv);
+  return card;
+}
+
+function formatUtcDate(ts) {
+  const d = new Date(ts);
+  if (Number.isNaN(d.getTime())) return ts;
+  return d.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+function renderDiscussed() {
+  const list = document.getElementById("paper-list");
+  list.innerHTML = "";
+
+  const papers = [...discussedPapers].sort((a, b) => {
+    const dateCmp = (b.discussed_at || "").localeCompare(a.discussed_at || "");
+    return dateCmp || (b.issue_number || 0) - (a.issue_number || 0);
+  });
+
+  document.getElementById("stats").textContent =
+    `${papers.length} discussed paper${papers.length !== 1 ? "s" : ""}`;
+
+  if (papers.length === 0) {
+    list.innerHTML = `<div id="empty-state">No discussed papers yet.</div>`;
+    return;
+  }
+
+  let currentDate = null;
+  for (const paper of papers) {
+    if (paper.discussed_at !== currentDate) {
+      currentDate = paper.discussed_at;
+      list.appendChild(makeSectionHeader(formatUtcDate(currentDate)));
+    }
+    list.appendChild(buildDiscussedCard(paper));
+  }
 }
 
 function buildCatBadge(cat) {
@@ -591,63 +760,68 @@ document.addEventListener("DOMContentLoaded", () => {
   setAnnouncement(localStorage.getItem(ANN_KEY) === "1");
   annToggle.addEventListener("click", () => setAnnouncement(annBody.hidden));
 
-  // ── Abstract mode ──
-  document.querySelectorAll(".abstract-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      abstractMode = btn.dataset.abstract;
-      localStorage.setItem("abstract-mode", abstractMode);
-      syncSortUI();
-      renderCurrent();
+  if (PAGE_MODE !== "discussed") {
+    // ── Abstract mode ──
+    document.querySelectorAll(".abstract-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        abstractMode = btn.dataset.abstract;
+        localStorage.setItem("abstract-mode", abstractMode);
+        syncSortUI();
+        renderCurrent();
+      });
     });
-  });
 
-  // ── Sort order (asc / desc) ──
-  document.querySelectorAll(".sort-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      sortOrder = btn.dataset.sortOrder;
-      localStorage.setItem("sort-order", sortOrder);
-      syncSortUI();
-      renderCurrent();
+    // ── Sort order (asc / desc) ──
+    document.querySelectorAll(".sort-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        sortOrder = btn.dataset.sortOrder;
+        localStorage.setItem("sort-order", sortOrder);
+        syncSortUI();
+        renderCurrent();
+      });
     });
-  });
 
-  // ── Local-first axis (none / strong / strong+weak) ──
-  document.querySelectorAll(".local-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      localFirst = btn.dataset.local;
-      localStorage.setItem("local-first", localFirst);
-      syncSortUI();
-      renderCurrent();
+    // ── Local-first axis (none / strong / strong+weak) ──
+    document.querySelectorAll(".local-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        localFirst = btn.dataset.local;
+        localStorage.setItem("local-first", localFirst);
+        syncSortUI();
+        renderCurrent();
+      });
     });
-  });
 
-  // ── Data source (today / archive) ──
-  document.querySelectorAll(".source-btn").forEach((btn) => {
-    btn.addEventListener("click", async () => {
-      const newSource = btn.dataset.source;
-      if (newSource === dataSource) return;
-      dataSource = newSource;
-      syncSortUI();
+    // ── Data source (today / archive) ──
+    document.querySelectorAll(".source-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const newSource = btn.dataset.source;
+        if (newSource === dataSource) return;
+        dataSource = newSource;
+        syncSortUI();
 
-      searchQuery = "";
-      document.getElementById("search-input").value = "";
-      archiveDisplayCount = 100;
-      if (dataSource === "archive") {
-        updateDateLabel("archive");
-        await loadArchive();
-      } else {
-        updateDateLabel(currentDate);
-        await loadDay(currentDate);
-      }
+        searchQuery = "";
+        document.getElementById("search-input").value = "";
+        archiveDisplayCount = 100;
+        if (dataSource === "archive") {
+          updateDateLabel("archive");
+          await loadArchive();
+        } else {
+          updateDateLabel(currentDate);
+          await loadDay(currentDate);
+        }
+      });
     });
-  });
 
-  // ── Search ──
-  document.getElementById("search-input").addEventListener("input", (e) => {
-    searchQuery = e.target.value.trim();
-    archiveDisplayCount = 100;
-    renderCurrent();
-  });
+    // ── Search ──
+    const searchInput = document.getElementById("search-input");
+    if (searchInput) {
+      searchInput.addEventListener("input", (e) => {
+        searchQuery = e.target.value.trim();
+        archiveDisplayCount = 100;
+        renderCurrent();
+      });
+    }
+  }
 
   init();
 });
