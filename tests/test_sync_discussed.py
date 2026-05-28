@@ -78,10 +78,10 @@ def test_sync_discussed_writes_file_and_closes_issues(tmp_path, monkeypatch):
     assert closed == [10, 11]
 
     payload = json.loads(data_path.read_text())
+    assert len(payload["papers"]) == 1
     assert payload["papers"][0]["issue_number"] == 11
     assert payload["papers"][0]["discussed_at"] == "2026-05-28"
     assert payload["papers"][0]["title"] == "First Paper Updated"
-    assert payload["papers"][1]["issue_number"] == 10
 
 
 def test_sync_discussed_no_matches_does_not_write(tmp_path, monkeypatch):
