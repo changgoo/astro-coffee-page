@@ -1,6 +1,29 @@
 {
-  "generated_at": "2026-05-28T20:00:00Z",
+  "generated_at": "2026-05-29T19:43:17Z",
   "papers": [
+    {
+      "paper_id": "2605.20317",
+      "title": "Simulation-Based Prediction of Black Hole Fe K$\u03b1$ Line Profiles",
+      "arxiv_url": "https://arxiv.org/abs/2605.20317",
+      "authors": [
+        "Chris Nagele",
+        "Julian H. Krolik",
+        "Brooks E. Kinch",
+        "Jeremy D. Schnittman"
+      ],
+      "discussed_at": "2026-05-29",
+      "issue_number": 46
+    },
+    {
+      "paper_id": "2605.13968",
+      "title": "Particle Acceleration, Coronal Neutrino Production, and the Diffuse Extragalactic Neutrino Background from Supermassive Black Holes",
+      "arxiv_url": "https://arxiv.org/abs/2605.13968",
+      "authors": [
+        "Rostom Mbarek"
+      ],
+      "discussed_at": "2026-05-29",
+      "issue_number": 44
+    },
     {
       "paper_id": "2605.25980",
       "title": "Reversible-jump MCMC reveals binary black hole subpopulations with distinct redshift evolution",
