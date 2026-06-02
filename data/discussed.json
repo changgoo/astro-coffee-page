@@ -1,6 +1,105 @@
 {
-  "generated_at": "2026-05-29T19:43:17Z",
+  "generated_at": "2026-06-02T20:07:27Z",
   "papers": [
+    {
+      "paper_id": "2605.30424",
+      "title": "High-ionization coronal lines trace quasar-like activity in recently quenched galaxies at high redshift",
+      "arxiv_url": "https://arxiv.org/abs/2605.30424",
+      "authors": [
+        "F. Valentino",
+        "K. Ito",
+        "M. Farcy",
+        "F. Fontanot",
+        "C. Lagos",
+        "G. De Lucia",
+        "M. Hirschmann",
+        "G. Brammer",
+        "V. Kokorev",
+        "M. Hamadouche",
+        "P. Zhu",
+        "G. Scarpe",
+        "A. Pensabene",
+        "K. E. Whitaker",
+        "W. M. Baker",
+        "P. Araya-Araya",
+        "J. Antwi-Danso",
+        "D. Ceverino",
+        "A. L. Faisst",
+        "S. Fujimoto",
+        "S. Gillman",
+        "O. Ilbert",
+        "C. K. Jespersen",
+        "T. Kakimoto",
+        "M. Kubo",
+        "A. W. S. Man",
+        "G. Magdis",
+        "M. Onodera",
+        "R. Shimakawa",
+        "M. Tanaka",
+        "S. Toft",
+        "L. Xie",
+        "J. R. Weaver",
+        "P. -F. Wu"
+      ],
+      "discussed_at": "2026-06-02",
+      "issue_number": 51
+    },
+    {
+      "paper_id": "2605.30414",
+      "title": "A Rapid Evolution in the Observed Mbh/M* Relation at z > 3 Revealed via Spectro-photometric SED-Modeling",
+      "arxiv_url": "https://arxiv.org/abs/2605.30414",
+      "authors": [
+        "Ansh R. Gupta",
+        "Anthony Taylor",
+        "Emma Curtis-Lake",
+        "Maddie Silcock",
+        "\u00d3scar A. Ch\u00e1vez Ortiz",
+        "Steven L. Finkelstein",
+        "Hollis B. Akins",
+        "Bren E. Backhaus",
+        "Guillermo Barro",
+        "Laura Bisigello",
+        "Madisyn Brooks",
+        "Caitlin M. Casey",
+        "Stephane Charlot",
+        "Jacopo Chevallard",
+        "Anna Feltre",
+        "Giovanni Gandolfi",
+        "Mauro Giavalisco",
+        "Norman A. Grogin",
+        "Michaela Hirschmann",
+        "Tiger Yu-Yang Hsiao",
+        "Junehyoung Jeon",
+        "Shardha Jogee",
+        "Jeyhan S. Kartaltepe",
+        "Dale D. Kocevski",
+        "Anton M. Koekemoer",
+        "Vasily Kokorev",
+        "Gene C. K. Leung",
+        "Ray A. Lucas",
+        "Fabio Pacucci",
+        "Nor Pirzkal",
+        "Adele Plat",
+        "Rachel S. Somerville",
+        "Jonathan R. Trump",
+        "Alba Vidal-Garc\u00eda",
+        "Xin Wang",
+        "L. Y. Aaron Yung"
+      ],
+      "discussed_at": "2026-06-02",
+      "issue_number": 50
+    },
+    {
+      "paper_id": "2606.00612",
+      "title": "The Mass, Orbit and Location of Planet Nine Derived from Classical Astrophysics",
+      "arxiv_url": "https://arxiv.org/abs/2606.00612",
+      "authors": [
+        "Mattia Galiazzo",
+        "Robert Finch"
+      ],
+      "discussed_at": "2026-06-02",
+      "issue_number": 49
+    },
     {
       "paper_id": "2605.20317",
       "title": "Simulation-Based Prediction of Black Hole Fe K$\u03b1$ Line Profiles",
@@ -13,16 +112,6 @@
       ],
       "discussed_at": "2026-05-29",
       "issue_number": 46
-    },
-    {
-      "paper_id": "2605.13968",
-      "title": "Particle Acceleration, Coronal Neutrino Production, and the Diffuse Extragalactic Neutrino Background from Supermassive Black Holes",
-      "arxiv_url": "https://arxiv.org/abs/2605.13968",
-      "authors": [
-        "Rostom Mbarek"
-      ],
-      "discussed_at": "2026-05-15",
-      "issue_number": 44
     },
     {
       "paper_id": "2605.25980",
@@ -65,6 +154,16 @@
       ],
       "discussed_at": "2026-05-28",
       "issue_number": 39
+    },
+    {
+      "paper_id": "2605.13968",
+      "title": "Particle Acceleration, Coronal Neutrino Production, and the Diffuse Extragalactic Neutrino Background from Supermassive Black Holes",
+      "arxiv_url": "https://arxiv.org/abs/2605.13968",
+      "authors": [
+        "Rostom Mbarek"
+      ],
+      "discussed_at": "2026-05-15",
+      "issue_number": 44
     }
   ]
 }
