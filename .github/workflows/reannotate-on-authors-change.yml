@@ -7,6 +7,7 @@ on:
     paths:
       - "config/authors.json"
       - "config/authors_manual.json"
+      - "data/discussed.json"
 
 permissions:
   contents: write
