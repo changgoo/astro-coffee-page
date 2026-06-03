@@ -366,6 +366,11 @@ Replaced the 1000-paper archive workflow with explicit day-history files:
 
 `data/archive.json` is no longer maintained or loaded by the frontend.
 
+Follow-up: the Today header displays the coffee-page date from `data/index.json`,
+while the status text shows the arXiv listing date from `today.json`. This avoids
+showing Tuesday as the primary page date for a Wednesday scrape whose latest
+arXiv batch is Tuesday's listing.
+
 ---
 
 ## Planned / open issues

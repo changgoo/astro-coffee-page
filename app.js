@@ -143,9 +143,13 @@ async function loadDay(offset) {
       _isCrossListing: !(p.primary_category || "").startsWith("astro-ph"),
     }));
 
+    const fetchedText = data.fetched_at
+      ? `fetched ${data.fetched_at.slice(0, 16).replace("T", " ")} UTC`
+      : "";
+    const listingText = data.date ? `arXiv listing: ${formatDate(data.date)}` : "";
     document.getElementById("fetched-at").textContent =
-      data.fetched_at ? `fetched ${data.fetched_at.slice(0, 16).replace("T", " ")} UTC` : "";
-    updateDateLabel(data.date || currentDate);
+      [listingText, fetchedText].filter(Boolean).join(" · ");
+    updateDateLabel(offset === 0 ? currentDate : data.date || currentDate);
   } catch (e) {
     allPapers = [];
     showEmptyState(`Could not load data for ${historyFilename(offset)}.`);
