@@ -10,11 +10,14 @@ on:
     #
     # Hourly 9 PM–midnight ET, Sun–Thu nights:
     #   9 PM ET  = 02:00 UTC next day
-    - cron: "0 2 * * 1-5"
+    - cron: "5 9 * * 0-4"
+      timezone: 'America/New_York'
     #   midnight = 05:00 UTC next day
-    - cron: "0 5 * * 1-5"
+    - cron: "10 0 * * 1-5"
+      timezone: 'America/New_York'
     # 6 AM ET Mon–Fri = 11:00 UTC Mon–Fri
-    - cron: "0 11 * * 1-5"
+    - cron: "13 6 * * 1-5"
+      timezone: 'America/New_York'
   workflow_dispatch:
 
 permissions:
