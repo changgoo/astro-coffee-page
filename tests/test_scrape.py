@@ -2,6 +2,7 @@
 
 import io
 import json
+import sqlite3
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -119,6 +120,21 @@ def test_get_target_date_saturday_morning():
     assert scrape.get_target_date(_et_now=et(2026, 3, 7, 10)) == "2026-03-06"
 
 
+def test_listing_date_for_published_weekday_before_cutoff():
+    """Tuesday before 14:00 ET belongs to Tuesday's listing."""
+    assert scrape.listing_date_for_published("2026-03-10T17:59:00Z") == "2026-03-10"
+
+
+def test_listing_date_for_published_weekday_after_cutoff():
+    """Tuesday after 14:00 ET belongs to Wednesday's listing."""
+    assert scrape.listing_date_for_published("2026-03-10T18:01:00Z") == "2026-03-11"
+
+
+def test_listing_date_for_published_friday_after_cutoff():
+    """Friday after 14:00 ET belongs to Monday's listing."""
+    assert scrape.listing_date_for_published("2026-03-06T19:01:00Z") == "2026-03-09"
+
+
 # ── parse_entry ───────────────────────────────────────────────────────────────
 
 def test_parse_entry_id(sample_entry):
@@ -162,6 +178,11 @@ def test_parse_entry_urls(sample_entry):
 def test_parse_entry_submitted_date(sample_entry):
     paper = scrape.parse_entry(sample_entry)
     assert paper["submitted"] == "2025-03-05"
+
+
+def test_parse_entry_can_include_listing_date(sample_entry):
+    paper = scrape.parse_entry(sample_entry, include_listing_date=True)
+    assert paper["_listing_date"] == "2025-03-05"
 
 
 # ── parse_name_parts ──────────────────────────────────────────────────────────
@@ -437,7 +458,8 @@ def test_reannotate_applies_discussed_tags(tmp_path):
             {"id": "2503.00002", "authors": [], "title": "B"},
         ],
     }
-    archive = {
+    previous = {
+        "date": "2026-05-27",
         "papers": [
             {"id": "2503.00001", "authors": [], "title": "A"},
         ]
@@ -448,41 +470,135 @@ def test_reannotate_applies_discussed_tags(tmp_path):
         ]
     }
     (tmp_path / "today.json").write_text(json.dumps(today))
-    (tmp_path / "archive.json").write_text(json.dumps(archive))
+    (tmp_path / "today-1.json").write_text(json.dumps(previous))
     (tmp_path / "discussed.json").write_text(json.dumps(discussed))
 
     scrape.reannotate(data_dir, repo_root)
 
     updated_today = json.loads((tmp_path / "today.json").read_text())
-    updated_archive = json.loads((tmp_path / "archive.json").read_text())
+    updated_previous = json.loads((tmp_path / "today-1.json").read_text())
     assert updated_today["papers"][1]["discussed_at"] == "2026-05-28"
     assert "discussed_at" not in updated_today["papers"][0]
-    assert "discussed_at" not in updated_archive["papers"][0]
+    assert "discussed_at" not in updated_previous["papers"][0]
 
 
-# ── load_archive / save_archive ───────────────────────────────────────────────
+# ── rolling history helpers ───────────────────────────────────────────────────
 
-def test_load_archive_missing(tmp_path):
-    papers, ids = scrape.load_archive(tmp_path)
-    assert papers == []
-    assert ids == set()
+def make_paper(paper_id, listing_date="2026-03-09"):
+    """Build a minimal paper dict for history tests."""
+    return {
+        "id": paper_id,
+        "authors": [],
+        "title": paper_id,
+        "abstract": "",
+        "primary_category": "astro-ph.GA",
+        "categories": ["astro-ph.GA"],
+        "arxiv_url": "",
+        "pdf_url": "",
+        "submitted": listing_date,
+        "_listing_date": listing_date,
+    }
 
 
-def test_load_archive_returns_ids(tmp_path):
-    data = {"papers": [{"id": "2503.00001"}, {"id": "2503.00002"}]}
-    (tmp_path / "archive.json").write_text(json.dumps(data))
-    papers, ids = scrape.load_archive(tmp_path)
-    assert ids == {"2503.00001", "2503.00002"}
-    assert len(papers) == 2
+def test_history_filename():
+    assert scrape.history_filename(0) == "today.json"
+    assert scrape.history_filename(3) == "today-3.json"
 
 
-def test_save_archive_writes_file(tmp_path):
-    papers = [{"id": "2503.00001", "title": "Test"}]
-    scrape.save_archive(tmp_path, papers)
-    data = json.loads((tmp_path / "archive.json").read_text())
+def test_save_listing_writes_file_and_strips_internal_fields(tmp_path):
+    papers = [make_paper("2503.00001")]
+    scrape.save_listing(tmp_path / "today.json", "2026-03-09", papers)
+    data = json.loads((tmp_path / "today.json").read_text())
     assert data["total"] == 1
+    assert data["date"] == "2026-03-09"
     assert data["papers"][0]["id"] == "2503.00001"
+    assert "_listing_date" not in data["papers"][0]
     assert "fetched_at" in data
+
+
+def test_load_history_reads_existing_files(tmp_path):
+    scrape.save_listing(tmp_path / "today.json", "2026-03-10", [make_paper("A")])
+    scrape.save_listing(tmp_path / "today-2.json", "2026-03-06", [make_paper("B")])
+    history = scrape.load_history(tmp_path)
+    assert set(history) == {0, 2}
+    assert scrape.collect_history_ids(history) == {"A", "B"}
+
+
+def test_rotate_history_drops_oldest(tmp_path):
+    for offset in range(6):
+        scrape.save_listing(
+            tmp_path / scrape.history_filename(offset),
+            f"2026-03-0{offset + 1}",
+            [make_paper(f"P{offset}")],
+        )
+
+    scrape.rotate_history(tmp_path)
+
+    assert not (tmp_path / "today.json").exists()
+    assert json.loads((tmp_path / "today-1.json").read_text())["papers"][0]["id"] == "P0"
+    assert json.loads((tmp_path / "today-5.json").read_text())["papers"][0]["id"] == "P4"
+    archive_db = tmp_path / "archive" / "2026.sqlite"
+    with sqlite3.connect(archive_db) as conn:
+        archived = conn.execute("SELECT id, listing_date FROM papers").fetchall()
+    assert archived == [("P5", "2026-03-06")]
+
+
+def test_archive_papers_writes_yearly_sqlite_and_manifest(tmp_path):
+    paper = make_paper("2503.00001", "2026-03-09")
+    paper["authors"] = ["Kim, Chang-Goo"]
+    paper["local_match"] = "strong"
+    paper["local_authors"] = {"Kim, Chang-Goo": "strong"}
+    paper["discussed_at"] = "2026-03-10"
+
+    scrape.archive_papers(tmp_path, "2026-03-09", [paper])
+
+    with sqlite3.connect(tmp_path / "archive" / "2026.sqlite") as conn:
+        row = conn.execute(
+            """
+            SELECT id, listing_date, authors_json, local_match,
+                   local_authors_json, discussed_at, search_text
+            FROM papers
+            """
+        ).fetchone()
+
+    assert row[0] == "2503.00001"
+    assert row[1] == "2026-03-09"
+    assert json.loads(row[2]) == ["Kim, Chang-Goo"]
+    assert row[3] == "strong"
+    assert json.loads(row[4]) == {"Kim, Chang-Goo": "strong"}
+    assert row[5] == "2026-03-10"
+    assert "2503.00001" in row[6]
+
+    index = json.loads((tmp_path / "archive" / "index.json").read_text())
+    assert index["years"] == [{"year": "2026", "file": "archive/2026.sqlite", "count": 1}]
+
+
+def test_archive_papers_upserts_duplicate_ids(tmp_path):
+    first = make_paper("2503.00001", "2026-03-09")
+    second = make_paper("2503.00001", "2026-03-09")
+    second["title"] = "Updated title"
+
+    scrape.archive_papers(tmp_path, "2026-03-09", [first])
+    scrape.archive_papers(tmp_path, "2026-03-09", [second])
+
+    with sqlite3.connect(tmp_path / "archive" / "2026.sqlite") as conn:
+        rows = conn.execute("SELECT id, title FROM papers").fetchall()
+
+    assert rows == [("2503.00001", "Updated title")]
+
+
+def test_select_new_papers_dedupes_in_order():
+    seen = {"A"}
+    selected = scrape.select_new_papers([make_paper("A"), make_paper("B"), make_paper("B")], seen)
+    assert [paper["id"] for paper in selected] == ["B"]
+    assert seen == {"A", "B"}
+
+
+def test_group_papers_by_listing_date():
+    papers = [make_paper("A", "2026-03-09"), make_paper("B", "2026-03-10")]
+    groups = scrape.group_papers_by_listing_date(papers)
+    assert [paper["id"] for paper in groups["2026-03-09"]] == ["A"]
+    assert [paper["id"] for paper in groups["2026-03-10"]] == ["B"]
 
 
 # ── update_index ──────────────────────────────────────────────────────────────
@@ -500,39 +616,45 @@ def test_update_index_overwrites(tmp_path):
     assert "current" in index
 
 
-# ── today.json write logic ────────────────────────────────────────────────────
+# ── rolling today.json write logic ────────────────────────────────────────────
 
 def test_appends_when_same_arxiv_date(tmp_path):
     """Second scrape on the same arXiv date appends new papers to today.json."""
-    existing = {"date": "2026-03-09", "total": 82, "papers": [{"id": "A"}] * 82}
-    (tmp_path / "today.json").write_text(json.dumps(existing))
-    (tmp_path / "config").mkdir()
-    (tmp_path / "config" / "authors.json").write_text(json.dumps({"authors": []}))
+    scrape.save_listing(tmp_path / "today.json", "2026-03-09", [make_paper("A")])
 
-    # Simulate: 3 new papers for the same arXiv date
-    new_papers = [{"id": f"2503.{i:05d}", "authors": [], "title": "", "abstract": "",
-                   "primary_category": "astro-ph.GA", "categories": [],
-                   "arxiv_url": "", "pdf_url": "", "submitted": "2026-03-09"}
-                  for i in range(3)]
-    existing_papers = existing["papers"]
-    if existing.get("date") == "2026-03-09":
-        all_papers = existing_papers + new_papers
-    else:
-        all_papers = new_papers
-    assert len(all_papers) == 85
+    new_count = scrape.update_history_for_date(
+        tmp_path,
+        "2026-03-09",
+        [make_paper("A"), make_paper("B"), make_paper("C")],
+    )
+
+    data = json.loads((tmp_path / "today.json").read_text())
+    assert new_count == 2
+    assert [paper["id"] for paper in data["papers"]] == ["A", "B", "C"]
 
 
 def test_replaces_when_new_arxiv_date(tmp_path):
-    """Scrape for a new arXiv date starts fresh, discarding the previous day's papers."""
-    existing = {"date": "2026-03-06", "total": 82, "papers": [{"id": "A"}] * 82}
-    (tmp_path / "today.json").write_text(json.dumps(existing))
+    """Scrape for a new arXiv date rotates old today into today-1."""
+    scrape.save_listing(tmp_path / "today.json", "2026-03-06", [make_paper("A", "2026-03-06")])
 
-    new_papers = [{"id": "2503.00001"}]
-    if existing.get("date") == "2026-03-09":  # different date → no append
-        all_papers = existing["papers"] + new_papers
-    else:
-        all_papers = new_papers
-    assert len(all_papers) == 1
+    new_count = scrape.update_history_for_date(tmp_path, "2026-03-09", [make_paper("B")])
+
+    today = json.loads((tmp_path / "today.json").read_text())
+    previous = json.loads((tmp_path / "today-1.json").read_text())
+    assert new_count == 1
+    assert [paper["id"] for paper in today["papers"]] == ["B"]
+    assert [paper["id"] for paper in previous["papers"]] == ["A"]
+
+
+def test_new_date_dedupes_against_rotated_history(tmp_path):
+    """A new listing does not duplicate IDs already present in previous days."""
+    scrape.save_listing(tmp_path / "today.json", "2026-03-06", [make_paper("A", "2026-03-06")])
+
+    new_count = scrape.update_history_for_date(tmp_path, "2026-03-09", [make_paper("A"), make_paper("B")])
+
+    today = json.loads((tmp_path / "today.json").read_text())
+    assert new_count == 1
+    assert [paper["id"] for paper in today["papers"]] == ["B"]
 
 
 # ── fetch_xml retry logic ─────────────────────────────────────────────────────
@@ -610,3 +732,50 @@ def test_fetch_xml_respects_retry_after_header(monkeypatch):
     monkeypatch.setattr(scrape.time, "sleep", lambda s: slept.append(s))
     scrape.fetch_xml("http://example.com")
     assert slept == [30]
+
+
+def test_fetch_latest_papers_default_uses_200_results(monkeypatch):
+    """Normal fetches request the configured 200-paper page size."""
+    feed = f"""
+    <feed xmlns="http://www.w3.org/2005/Atom"
+          xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/"
+          xmlns:arxiv="http://arxiv.org/schemas/atom">
+      <opensearch:totalResults>1</opensearch:totalResults>
+      {SAMPLE_ENTRY_XML}
+    </feed>
+    """.encode()
+    requested_urls = []
+
+    def fake_urlopen(req, timeout=None):
+        requested_urls.append(req.full_url)
+        return io.BytesIO(feed)
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+
+    papers = scrape.fetch_latest_papers()
+
+    assert len(papers) == 1
+    assert len(requested_urls) == 1
+    assert "max_results=200" in requested_urls[0]
+
+
+def test_bootstrap_history_writes_six_listing_files(tmp_path, monkeypatch):
+    """bootstrap_history seeds today.json through today-5.json from grouped papers."""
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config" / "authors.json").write_text(json.dumps({"authors": []}))
+    listing_dates = ["2026-03-10", "2026-03-09", "2026-03-06", "2026-03-05", "2026-03-04", "2026-03-03"]
+    fetched = [make_paper(f"P{i}", listing_date) for i, listing_date in enumerate(listing_dates)]
+
+    def fake_fetch(n, include_listing_date=False, max_per_request=scrape.MAX_PER_REQUEST):
+        assert n == scrape.BOOTSTRAP_FETCH_SIZE
+        assert include_listing_date is True
+        assert max_per_request == scrape.BOOTSTRAP_FETCH_SIZE
+        return fetched
+
+    monkeypatch.setattr(scrape, "fetch_latest_papers", fake_fetch)
+
+    scrape.bootstrap_history(tmp_path, tmp_path)
+
+    assert json.loads((tmp_path / "today.json").read_text())["date"] == "2026-03-10"
+    assert json.loads((tmp_path / "today-5.json").read_text())["date"] == "2026-03-03"
+    assert json.loads((tmp_path / "today.json").read_text())["papers"][0]["id"] == "P0"

@@ -26,15 +26,15 @@ const DISCUSSED_ISSUE_LABEL = "discussed-paper";
 // ── Sorting state (three independent axes) ────────────────────────────────────
 let sortOrder  = localStorage.getItem("sort-order")   || "asc";       // "asc" | "desc"
 let localFirst = localStorage.getItem("local-first")  || "strong";    // "none" | "strong" | "strong+weak"
-let dataSource = "today";                                               // "today" | "archive"  (not persisted)
+let historyOffset = 0;                                                   // 0..5, not persisted
 // ─────────────────────────────────────────────────────────────────────────────
 let currentDate = null;
-let archivePapers = [];
 let discussedPapers = [];
-let archiveDisplayCount = 100;
 let searchQuery = "";
 let currentFontSize = localStorage.getItem("font-size") || "medium";
 let abstractMode = localStorage.getItem("abstract-mode") || "none";
+const HISTORY_OFFSETS = [0, 1, 2, 3, 4, 5];
+const historyData = new Map();
 
 // ── Initialise ────────────────────────────────────────────────────────────────
 
@@ -54,7 +54,7 @@ function syncSortUI() {
   document.querySelectorAll(".local-btn").forEach((b) =>
     b.classList.toggle("active", b.dataset.local === localFirst));
   document.querySelectorAll(".source-btn").forEach((b) =>
-    b.classList.toggle("active", b.dataset.source === dataSource));
+    b.classList.toggle("active", Number(b.dataset.historyOffset) === historyOffset));
   document.querySelectorAll(".abstract-btn").forEach((b) =>
     b.classList.toggle("active", b.dataset.abstract === abstractMode));
 }
@@ -70,14 +70,14 @@ async function init() {
 
   await loadIndex();
   buildCatFilter();
+  await loadHistoryData();
 
   if (!currentDate) {
     showEmptyState("No data available yet. The GitHub Action will populate data daily.");
     return;
   }
 
-  updateDateLabel(currentDate);
-  await loadDay(currentDate);
+  await loadDay(0);
 }
 
 // ── Data loading ──────────────────────────────────────────────────────────────
@@ -88,15 +88,45 @@ async function loadIndex() {
   currentDate = data.current || null;
 }
 
-async function loadDay(dateStr) {
+function historyFilename(offset) {
+  return offset === 0 ? "today.json" : `today-${offset}.json`;
+}
+
+async function fetchHistoryFile(offset) {
+  const res = await fetch(`data/${historyFilename(offset)}`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+async function loadHistoryData() {
+  const loads = HISTORY_OFFSETS.map(async (offset) => {
+    const btn = document.querySelector(`.source-btn[data-history-offset="${offset}"]`);
+    try {
+      const data = await fetchHistoryFile(offset);
+      historyData.set(offset, data);
+      if (btn) {
+        btn.hidden = false;
+        btn.disabled = false;
+        btn.title = data.date ? formatDate(data.date) : btn.title;
+      }
+    } catch (e) {
+      if (btn && offset > 0) {
+        btn.hidden = true;
+        btn.disabled = true;
+      }
+    }
+  });
+  await Promise.all(loads);
+}
+
+async function loadDay(offset) {
   document.getElementById("loading").style.display = "block";
   document.getElementById("paper-list").innerHTML = "";
   document.getElementById("stats").textContent = "";
 
   try {
-    const res = await fetch("data/today.json");
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
+    const data = historyData.get(offset) || await fetchHistoryFile(offset);
+    historyData.set(offset, data);
     const raw = data.papers || [];
 
     // Assign arXiv listing numbers by ascending ID within each group
@@ -115,9 +145,10 @@ async function loadDay(dateStr) {
 
     document.getElementById("fetched-at").textContent =
       data.fetched_at ? `fetched ${data.fetched_at.slice(0, 16).replace("T", " ")} UTC` : "";
+    updateDateLabel(data.date || currentDate);
   } catch (e) {
     allPapers = [];
-    showEmptyState(`Could not load data for ${dateStr}.`);
+    showEmptyState(`Could not load data for ${historyFilename(offset)}.`);
   } finally {
     document.getElementById("loading").style.display = "none";
   }
@@ -125,43 +156,12 @@ async function loadDay(dateStr) {
   render();
 }
 
-async function loadArchive() {
-  document.getElementById("loading").style.display = "block";
-  document.getElementById("loading").textContent = "Loading archive (1000 papers)…";
-  document.getElementById("paper-list").innerHTML = "";
-  document.getElementById("stats").textContent = "";
-
-  try {
-    const res = await fetch("data/archive.json");
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    const raw = data.papers || [];
-    archivePapers = raw.map((p, i) => ({
-      ...p,
-      _arxivIndex: raw.length - i,
-    }));
-    document.getElementById("fetched-at").textContent =
-      data.fetched_at ? `archive fetched ${data.fetched_at.slice(0, 16).replace("T", " ")} UTC` : "";
-  } catch (e) {
-    archivePapers = [];
-    showEmptyState("Could not load archive.");
-  } finally {
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("loading").textContent = "Loading…";
-  }
-
-  archiveDisplayCount = 100;
-  renderArchive();
-}
-
 // ── UI builders ───────────────────────────────────────────────────────────────
 
 function updateDateLabel(dateStr) {
   const label = document.getElementById("current-date-label");
   if (!label) return;
-  if (dateStr === "archive") {
-    label.textContent = "Archive (1000 papers)";
-  } else if (dateStr === "discussed") {
+  if (dateStr === "discussed") {
     label.textContent = "Discussed papers";
   } else {
     label.textContent = formatDate(dateStr);
@@ -269,7 +269,7 @@ function toggleCat(cat, btn) {
 // ── Render ────────────────────────────────────────────────────────────────────
 
 function renderCurrent() {
-  if (dataSource === "archive") renderArchive(); else render();
+  render();
 }
 
 function applyFilters(papers) {
@@ -328,7 +328,7 @@ function sortPapers(papers) {
  *
  * @param {HTMLElement} list    - container element
  * @param {object[]}    papers  - already sorted slice to render
- * @param {boolean}     partial - true when more papers remain (archive load-more)
+ * @param {boolean}     partial - true when more papers remain
  */
 /**
  * Render the "others" group, splitting new submissions from cross-listings.
@@ -414,50 +414,6 @@ function render() {
   document.getElementById("stats").textContent = statsText;
 
   appendPaperGroups(list, papers);
-}
-
-function renderArchive() {
-  const list = document.getElementById("paper-list");
-  list.innerHTML = "";
-
-  // Apply text search
-  let papers = archivePapers;
-  if (searchQuery) {
-    const q = searchQuery.toLowerCase();
-    papers = papers.filter((p) =>
-      p.title.toLowerCase().includes(q) ||
-      p.authors.some((a) => a.toLowerCase().includes(q))
-    );
-  }
-
-  // Apply category filter and sort
-  papers = applyFilters(papers);
-  papers = sortPapers(papers);
-
-  const total = papers.length;
-  const shown = papers.slice(0, archiveDisplayCount);
-  const partial = shown.length < total;
-
-  document.getElementById("stats").textContent =
-    `Showing ${shown.length} of ${total} papers in archive`;
-
-  if (shown.length === 0) {
-    list.innerHTML = `<div id="empty-state">No papers match the current filters.</div>`;
-    return;
-  }
-
-  appendPaperGroups(list, shown, partial);
-
-  if (partial) {
-    const btn = document.createElement("button");
-    btn.className = "load-more-btn";
-    btn.textContent = `Load ${Math.min(100, total - shown.length)} more  (${total - shown.length} remaining)`;
-    btn.addEventListener("click", () => {
-      archiveDisplayCount += 100;
-      renderArchive();
-    });
-    list.appendChild(btn);
-  }
 }
 
 // ── Name matching ─────────────────────────────────────────────────────────────
@@ -791,24 +747,17 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // ── Data source (today / archive) ──
+    // ── Data source (today / previous listings) ──
     document.querySelectorAll(".source-btn").forEach((btn) => {
       btn.addEventListener("click", async () => {
-        const newSource = btn.dataset.source;
-        if (newSource === dataSource) return;
-        dataSource = newSource;
+        const newOffset = Number(btn.dataset.historyOffset);
+        if (newOffset === historyOffset) return;
+        historyOffset = newOffset;
         syncSortUI();
 
         searchQuery = "";
         document.getElementById("search-input").value = "";
-        archiveDisplayCount = 100;
-        if (dataSource === "archive") {
-          updateDateLabel("archive");
-          await loadArchive();
-        } else {
-          updateDateLabel(currentDate);
-          await loadDay(currentDate);
-        }
+        await loadDay(historyOffset);
       });
     });
 
@@ -817,7 +766,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (searchInput) {
       searchInput.addEventListener("input", (e) => {
         searchQuery = e.target.value.trim();
-        archiveDisplayCount = 100;
         renderCurrent();
       });
     }
