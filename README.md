@@ -15,6 +15,7 @@ A daily arXiv astro-ph paper browser hosted on GitHub Pages.
 - Section dividers in the paper list reflect the active grouping (local-strong / local-weak / other, or new submissions / cross-listings)
 - **Discussed papers** — per-paper GitHub issue flow plus a separate discussed page synced nightly into `data/discussed.json`
 - Highlight Princeton authors (strong: bold amber; weak: italic pale yellow)
+- Long-term archive storage — purged `today-5.json` listings are saved into yearly SQLite files under `data/archive/`
 - Author match strength (`local_match`, `local_authors`) precomputed during scraping — no client-side name matching
 - **Font size control** — S / M / L in the filter row; persisted across sessions
 - **Abstract expand mode** — Off / Local / All button group; persisted across sessions
@@ -113,6 +114,9 @@ python scripts/scrape.py --bootstrap-history
 
 # Subsequent runs (automated by GitHub Action): fetch latest 200 and update rolling history
 python scripts/scrape.py
+
+# When today-5.json is purged, it is stored in data/archive/YYYY.sqlite
+# for future search features.
 
 # Scrape a specific date manually
 python scripts/scrape.py 2026-03-06

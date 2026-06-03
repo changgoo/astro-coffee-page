@@ -150,7 +150,9 @@ Calls `annotate_papers(papers, fav_authors)` and checks the `local_match` and
 | `test_history_filename` | Offset 0 maps to `today.json`; previous offsets map to `today-N.json` |
 | `test_save_listing_writes_file_and_strips_internal_fields` | Listing writes include `date`, `total`, `papers`, `fetched_at`, and omit scraper-only fields |
 | `test_load_history_reads_existing_files` | Existing rolling files are loaded and their IDs collected |
-| `test_rotate_history_drops_oldest` | Rotation moves `today` through `today-5` and drops the oldest file |
+| `test_rotate_history_drops_oldest` | Rotation moves `today` through `today-5`, archives the purged oldest file, and drops it |
+| `test_archive_papers_writes_yearly_sqlite_and_manifest` | Purged papers are stored in yearly SQLite files with full paper fields and an archive manifest |
+| `test_archive_papers_upserts_duplicate_ids` | Re-archiving an existing paper ID updates the record instead of duplicating it |
 | `test_select_new_papers_dedupes_in_order` | Candidate papers are deduplicated against seen IDs while preserving order |
 | `test_group_papers_by_listing_date` | Papers are grouped by computed arXiv listing date |
 

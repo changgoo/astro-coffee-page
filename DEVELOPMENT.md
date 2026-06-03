@@ -368,6 +368,18 @@ Replaced the 1000-paper archive workflow with explicit day-history files:
 
 ---
 
+## 26. Yearly SQLite archive storage
+
+Added long-term archive storage for rolling listings that age out of
+`today-5.json`:
+
+- before `today-5.json` is purged, its papers are upserted into `data/archive/YYYY.sqlite`
+- archived rows keep full paper metadata plus a normalized `search_text` field
+- `data/archive/index.json` records available archive years and paper counts
+- this is storage-only; frontend archive search will be added separately
+
+---
+
 ## Planned / open issues
 
 | # | Title |

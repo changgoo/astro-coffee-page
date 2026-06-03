@@ -2,6 +2,7 @@
 
 import io
 import json
+import sqlite3
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -536,6 +537,54 @@ def test_rotate_history_drops_oldest(tmp_path):
     assert not (tmp_path / "today.json").exists()
     assert json.loads((tmp_path / "today-1.json").read_text())["papers"][0]["id"] == "P0"
     assert json.loads((tmp_path / "today-5.json").read_text())["papers"][0]["id"] == "P4"
+    archive_db = tmp_path / "archive" / "2026.sqlite"
+    with sqlite3.connect(archive_db) as conn:
+        archived = conn.execute("SELECT id, listing_date FROM papers").fetchall()
+    assert archived == [("P5", "2026-03-06")]
+
+
+def test_archive_papers_writes_yearly_sqlite_and_manifest(tmp_path):
+    paper = make_paper("2503.00001", "2026-03-09")
+    paper["authors"] = ["Kim, Chang-Goo"]
+    paper["local_match"] = "strong"
+    paper["local_authors"] = {"Kim, Chang-Goo": "strong"}
+    paper["discussed_at"] = "2026-03-10"
+
+    scrape.archive_papers(tmp_path, "2026-03-09", [paper])
+
+    with sqlite3.connect(tmp_path / "archive" / "2026.sqlite") as conn:
+        row = conn.execute(
+            """
+            SELECT id, listing_date, authors_json, local_match,
+                   local_authors_json, discussed_at, search_text
+            FROM papers
+            """
+        ).fetchone()
+
+    assert row[0] == "2503.00001"
+    assert row[1] == "2026-03-09"
+    assert json.loads(row[2]) == ["Kim, Chang-Goo"]
+    assert row[3] == "strong"
+    assert json.loads(row[4]) == {"Kim, Chang-Goo": "strong"}
+    assert row[5] == "2026-03-10"
+    assert "2503.00001" in row[6]
+
+    index = json.loads((tmp_path / "archive" / "index.json").read_text())
+    assert index["years"] == [{"year": "2026", "file": "archive/2026.sqlite", "count": 1}]
+
+
+def test_archive_papers_upserts_duplicate_ids(tmp_path):
+    first = make_paper("2503.00001", "2026-03-09")
+    second = make_paper("2503.00001", "2026-03-09")
+    second["title"] = "Updated title"
+
+    scrape.archive_papers(tmp_path, "2026-03-09", [first])
+    scrape.archive_papers(tmp_path, "2026-03-09", [second])
+
+    with sqlite3.connect(tmp_path / "archive" / "2026.sqlite") as conn:
+        rows = conn.execute("SELECT id, title FROM papers").fetchall()
+
+    assert rows == [("2503.00001", "Updated title")]
 
 
 def test_select_new_papers_dedupes_in_order():
