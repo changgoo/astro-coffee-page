@@ -9,13 +9,12 @@ A daily arXiv astro-ph paper browser hosted on GitHub Pages.
 - Three independent sorting axes, freely combinable:
   - **Sort**: ↑ ascending / ↓ descending arXiv ID (persisted)
   - **Local first**: None / Strong / Strong+Weak — prioritises Princeton author papers (persisted)
-  - **Listing**: Today / Archive — switches between today's listing and the 1000-paper archive
-- **Search** — always-visible title + author search, works in both Today and Archive modes
+  - **Listing**: Today / -1 / -2 / -3 / -4 / -5 — switches between the latest six arXiv listings
+- **Search** — always-visible title + author search, works across the retained listing history
 - Filter by sub-category (GA, CO, EP, HE, IM, SR)
 - Section dividers in the paper list reflect the active grouping (local-strong / local-weak / other, or new submissions / cross-listings)
 - **Discussed papers** — per-paper GitHub issue flow plus a separate discussed page synced nightly into `data/discussed.json`
 - Highlight Princeton authors (strong: bold amber; weak: italic pale yellow)
-- Archive view — 1000-paper rolling snapshot with 100-paper paginated loading
 - Author match strength (`local_match`, `local_authors`) precomputed during scraping — no client-side name matching
 - **Font size control** — S / M / L in the filter row; persisted across sessions
 - **Abstract expand mode** — Off / Local / All button group; persisted across sessions
@@ -108,11 +107,10 @@ Names are matched by last name (exact) then first name. **Strong** match (bold a
 # Install dependencies for the author scraper
 pip install -r requirements.txt
 
-# First-time setup: seed archive.json and today's listing
-# N = number of papers in today's arXiv listing (check arxiv.org/list/astro-ph/new)
-python scripts/scrape.py --bootstrap N
+# First-time setup: seed today.json through today-5.json
+python scripts/scrape.py --bootstrap-history
 
-# Subsequent runs (automated by GitHub Action): diff vs archive
+# Subsequent runs (automated by GitHub Action): fetch latest 200 and update rolling history
 python scripts/scrape.py
 
 # Scrape a specific date manually

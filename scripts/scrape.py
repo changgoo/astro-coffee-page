@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""
-Scrape the latest arXiv astro-ph papers via the arXiv API using a diff approach.
+"""Scrape the latest arXiv astro-ph papers into rolling day files.
 
-Each run fetches the most recent 1000 papers. Papers not present in the previous
-archive snapshot are treated as new for today's listing. The archive is then updated.
+Normal runs fetch the latest 200 papers and update data/today.json. Older
+listing days are kept in data/today-1.json through data/today-5.json.
 
 Usage:
   python scripts/scrape.py [YYYY-MM-DD]
-  python scripts/scrape.py --bootstrap N [YYYY-MM-DD]   # first-run seed
-  python scripts/scrape.py --reannotate                 # re-tag today.json in-place
+  python scripts/scrape.py --bootstrap N [YYYY-MM-DD]   # first-run seed for today.json
+  python scripts/scrape.py --bootstrap-history          # seed today.json through today-5.json
+  python scripts/scrape.py --reannotate                 # re-tag today*.json in-place
 """
 
 import json
@@ -19,6 +19,7 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 NS = {
     "atom": "http://www.w3.org/2005/Atom",
@@ -27,15 +28,25 @@ NS = {
 }
 
 BASE_URL = "https://export.arxiv.org/api/query"
-MAX_PER_REQUEST = 500
+MAX_PER_REQUEST = 200
 RATE_LIMIT_SECONDS = 3
-ARCHIVE_SIZE = 1000
+FETCH_SIZE = 200
+BOOTSTRAP_FETCH_SIZE = 1000
+HISTORY_DAYS = 5
+NY_TZ = ZoneInfo("America/New_York")
 
 
 def prev_business_day(d):
     """Return the most recent weekday on or before date d."""
     while d.weekday() >= 5:
         d -= timedelta(days=1)
+    return d
+
+
+def next_business_day(d):
+    """Return the next weekday on or after date d."""
+    while d.weekday() >= 5:
+        d += timedelta(days=1)
     return d
 
 
@@ -57,7 +68,7 @@ def get_target_date(date_str=None, _et_now=None):
         return date_str
 
     if _et_now is None:
-        _et_now = datetime.now(timezone(timedelta(hours=-5)))
+        _et_now = datetime.now(NY_TZ)
 
     if _et_now.hour >= 14:
         target = _et_now.date()
@@ -65,6 +76,14 @@ def get_target_date(date_str=None, _et_now=None):
         target = _et_now.date() - timedelta(days=1)
 
     return prev_business_day(target).strftime("%Y-%m-%d")
+
+
+def listing_date_for_published(published):
+    """Return the arXiv listing date for an Atom published timestamp."""
+    published_dt = datetime.fromisoformat(published.replace("Z", "+00:00"))
+    et_dt = published_dt.astimezone(NY_TZ)
+    target = et_dt.date() + timedelta(days=1) if et_dt.hour >= 14 else et_dt.date()
+    return next_business_day(target).strftime("%Y-%m-%d")
 
 
 def build_query_url(start=0, max_results=MAX_PER_REQUEST):
@@ -104,7 +123,7 @@ def fetch_xml(url, max_retries=5, base_delay=10):
                 raise
 
 
-def parse_entry(entry):
+def parse_entry(entry, include_listing_date=False):
     """Parse a single Atom <entry> element into a paper dict."""
     def find_text(tag, ns_key="atom"):
         el = entry.find(f"{ns_key}:{tag}", NS)
@@ -114,7 +133,8 @@ def parse_entry(entry):
     arxiv_id = id_url.rstrip("/").split("/abs/")[-1].split("v")[0]
     title = " ".join(find_text("title").split())
     abstract = " ".join(find_text("summary").split())
-    submitted = find_text("published")[:10]
+    published = find_text("published")
+    submitted = published[:10]
 
     authors = [
         author.find("atom:name", NS).text.strip()
@@ -132,7 +152,7 @@ def parse_entry(entry):
     })
     categories = sorted(categories, key=lambda c: (c != primary_category, c))
 
-    return {
+    paper = {
         "id": arxiv_id,
         "title": title,
         "authors": authors,
@@ -143,9 +163,12 @@ def parse_entry(entry):
         "arxiv_url": f"https://arxiv.org/abs/{arxiv_id}",
         "pdf_url": f"https://arxiv.org/pdf/{arxiv_id}",
     }
+    if include_listing_date:
+        paper["_listing_date"] = listing_date_for_published(published)
+    return paper
 
 
-def fetch_latest_papers(n=ARCHIVE_SIZE):
+def fetch_latest_papers(n=FETCH_SIZE, include_listing_date=False):
     """Fetch the n most recently submitted astro-ph papers from the arXiv API."""
     papers = []
     start = 0
@@ -168,7 +191,7 @@ def fetch_latest_papers(n=ARCHIVE_SIZE):
             break
 
         for entry in entries:
-            papers.append(parse_entry(entry))
+            papers.append(parse_entry(entry, include_listing_date=include_listing_date))
 
         start += len(entries)
         if start >= min(total, n):
@@ -321,29 +344,97 @@ def annotate_discussed_papers(papers, discussed_papers):
             paper["discussed_at"] = discussed_at
 
 
-def load_archive(data_dir):
-    """Load data/archive.json; return (papers_list, ids_set) or ([], set())."""
-    archive_path = data_dir / "archive.json"
-    if not archive_path.exists():
-        return [], set()
-    with open(archive_path) as f:
-        data = json.load(f)
-    papers = data.get("papers", [])
-    ids = {p["id"] for p in papers}
-    return papers, ids
+def history_filename(offset):
+    """Return the rolling history filename for offset 0..HISTORY_DAYS."""
+    if offset == 0:
+        return "today.json"
+    return f"today-{offset}.json"
 
 
-def save_archive(data_dir, papers):
-    """Overwrite data/archive.json with the given papers list."""
-    archive_path = data_dir / "archive.json"
+def history_path(data_dir, offset):
+    """Return the path for one rolling history file."""
+    return data_dir / history_filename(offset)
+
+
+def load_listing(path):
+    """Load a listing JSON file, returning None when the file is absent."""
+    if not path.exists():
+        return None
+    with open(path) as f:
+        return json.load(f)
+
+
+def strip_internal_fields(papers):
+    """Remove scraper-only fields before writing paper JSON."""
+    for paper in papers:
+        paper.pop("_listing_date", None)
+
+
+def save_listing(path, date, papers):
+    """Write one listing file with the standard data shape."""
+    strip_internal_fields(papers)
     output = {
         "fetched_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "date": date,
         "total": len(papers),
         "papers": papers,
     }
-    with open(archive_path, "w") as f:
+    with open(path, "w") as f:
         json.dump(output, f, indent=2)
-    print(f"  Saved archive.json with {len(papers)} papers.")
+    print(f"  Saved {path.name} with {len(papers)} papers.")
+
+
+def load_history(data_dir):
+    """Load all existing rolling history files keyed by offset."""
+    history = {}
+    for offset in range(HISTORY_DAYS + 1):
+        data = load_listing(history_path(data_dir, offset))
+        if data is not None:
+            history[offset] = data
+    return history
+
+
+def collect_history_ids(history):
+    """Return all paper IDs present in loaded rolling history files."""
+    return {
+        paper["id"]
+        for data in history.values()
+        for paper in data.get("papers", [])
+        if paper.get("id")
+    }
+
+
+def rotate_history(data_dir):
+    """Rotate today.json through today-5.json, dropping the oldest file."""
+    oldest = history_path(data_dir, HISTORY_DAYS)
+    if oldest.exists():
+        oldest.unlink()
+    for offset in range(HISTORY_DAYS - 1, -1, -1):
+        src = history_path(data_dir, offset)
+        if src.exists():
+            src.replace(history_path(data_dir, offset + 1))
+
+
+def select_new_papers(candidates, seen_ids):
+    """Return candidates whose IDs are not in seen_ids, updating seen_ids in order."""
+    selected = []
+    for paper in candidates:
+        paper_id = paper.get("id")
+        if paper_id and paper_id not in seen_ids:
+            selected.append(paper)
+            seen_ids.add(paper_id)
+    return selected
+
+
+def group_papers_by_listing_date(papers):
+    """Group papers by scraper-computed arXiv listing date in input order."""
+    groups = {}
+    for paper in papers:
+        listing_date = paper.get("_listing_date")
+        if not listing_date:
+            continue
+        groups.setdefault(listing_date, []).append(paper)
+    return groups
 
 
 def update_index(data_dir):
@@ -356,35 +447,112 @@ def update_index(data_dir):
 
 
 def reannotate(data_dir, repo_root):
-    """Re-run author tagging on today.json and archive.json in-place without re-scraping."""
+    """Re-run author tagging on rolling today*.json files without re-scraping."""
     fav_authors = load_favorite_authors(repo_root)
     discussed_papers = load_discussed_papers(data_dir)
     print(f"  {len(fav_authors)} favorites loaded.")
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    for filename in ("today.json", "archive.json"):
-        path = data_dir / filename
+    for offset in range(HISTORY_DAYS + 1):
+        path = history_path(data_dir, offset)
         if not path.exists():
-            print(f"  {filename} not found, skipping.")
+            print(f"  {path.name} not found, skipping.")
             continue
         with open(path) as f:
             data = json.load(f)
         papers = data.get("papers", [])
-        print(f"  Re-annotating {len(papers)} papers in {filename} ...")
+        print(f"  Re-annotating {len(papers)} papers in {path.name} ...")
         annotate_papers(papers, fav_authors)
         annotate_discussed_papers(papers, discussed_papers)
         data["papers"] = papers
         data["fetched_at"] = now
         with open(path, "w") as f:
             json.dump(data, f, indent=2)
-        print(f"  Saved {filename}.")
+        print(f"  Saved {path.name}.")
+
+
+def bootstrap_history(data_dir, repo_root):
+    """Seed today.json through today-5.json from up to 1000 recent arXiv papers."""
+    print(f"Fetching latest {BOOTSTRAP_FETCH_SIZE} arXiv astro-ph papers for history bootstrap ...")
+    fetched = fetch_latest_papers(n=BOOTSTRAP_FETCH_SIZE, include_listing_date=True)
+    if not fetched:
+        print("  No papers fetched. Skipping.")
+        return
+
+    fav_authors = load_favorite_authors(repo_root)
+    discussed_papers = load_discussed_papers(data_dir)
+    print(f"  Annotating local author matches ({len(fav_authors)} favorites) ...")
+    annotate_papers(fetched, fav_authors)
+    annotate_discussed_papers(fetched, discussed_papers)
+
+    groups = group_papers_by_listing_date(fetched)
+    listing_dates = sorted(groups.keys(), reverse=True)
+    if len(listing_dates) < HISTORY_DAYS + 1:
+        print(f"  Warning: only found {len(listing_dates)} listing days in bootstrap fetch.")
+
+    for offset, listing_date in enumerate(listing_dates[:HISTORY_DAYS + 1]):
+        papers = groups[listing_date]
+        save_listing(history_path(data_dir, offset), listing_date, papers)
+
+    for offset in range(len(listing_dates[:HISTORY_DAYS + 1]), HISTORY_DAYS + 1):
+        path = history_path(data_dir, offset)
+        if path.exists():
+            path.unlink()
+
+    update_index(data_dir)
+    print("Done.")
+
+
+def update_history_for_date(data_dir, arxiv_date, target_papers, bootstrap_n=None, discussed_papers=None):
+    """Update rolling history for one arXiv listing date; return count of new papers."""
+    discussed_papers = discussed_papers or {}
+
+    if bootstrap_n is not None:
+        sorted_by_id = sorted(target_papers, key=lambda p: p["id"], reverse=True)
+        new_papers = sorted_by_id[:bootstrap_n]
+        print(f"  Bootstrap mode: using top {bootstrap_n} papers by arXiv ID desc as today's listing.")
+        annotate_discussed_papers(new_papers, discussed_papers)
+        save_listing(history_path(data_dir, 0), arxiv_date, new_papers)
+        return len(new_papers)
+
+    history = load_history(data_dir)
+    today = history.get(0)
+    same_date = today and today.get("date") == arxiv_date
+
+    if same_date:
+        existing_papers = today.get("papers", [])
+        seen_ids = collect_history_ids(history)
+        new_papers = select_new_papers(target_papers, seen_ids)
+        all_papers = existing_papers + new_papers
+        print(f"  Appending {len(new_papers)} papers to existing {len(existing_papers)}.")
+    else:
+        if today:
+            rotate_history(data_dir)
+            history = load_history(data_dir)
+        else:
+            history = {}
+        seen_ids = collect_history_ids(history)
+        new_papers = select_new_papers(target_papers, seen_ids)
+        all_papers = new_papers
+        print(f"  Starting fresh listing with {len(new_papers)} papers.")
+
+    if len(new_papers) >= int(FETCH_SIZE * 0.9):
+        print("  Warning: new-paper count is close to fetch size; latest 200 papers may be insufficient.")
+
+    if not new_papers and same_date:
+        print("  No new papers. Skipping.")
+        return 0
+
+    annotate_discussed_papers(all_papers, discussed_papers)
+    save_listing(history_path(data_dir, 0), arxiv_date, all_papers)
+    return len(new_papers)
 
 
 def main():
-    """Scrape latest papers, compute diff vs archive, save today's listing and update archive.
+    """Scrape latest papers, update rolling day files, and refresh index.json.
 
     --bootstrap N  First-run mode: use the top N fetched papers as today's listing
-                   without requiring an existing archive.
+                   without requiring existing history.
     """
     repo_root = Path(__file__).parent.parent
     data_dir = repo_root / "data"
@@ -393,6 +561,9 @@ def main():
     args = sys.argv[1:]
     if "--reannotate" in args:
         reannotate(data_dir, repo_root)
+        return
+    if "--bootstrap-history" in args:
+        bootstrap_history(data_dir, repo_root)
         return
 
     bootstrap_n = None
@@ -404,8 +575,8 @@ def main():
     arxiv_date = args[0] if args else get_target_date()
     print(f"arXiv date: {arxiv_date}")
 
-    print(f"Fetching latest {ARCHIVE_SIZE} arXiv astro-ph papers ...")
-    fetched = fetch_latest_papers(n=ARCHIVE_SIZE)
+    print(f"Fetching latest {FETCH_SIZE} arXiv astro-ph papers ...")
+    fetched = fetch_latest_papers(n=FETCH_SIZE, include_listing_date=True)
     if not fetched:
         print("  No papers fetched. Skipping.")
         return
@@ -418,46 +589,21 @@ def main():
     annotate_papers(fetched, fav_authors)
     annotate_discussed_papers(fetched, discussed_papers)
 
-    _, archive_ids = load_archive(data_dir)
-
-    if bootstrap_n is not None:
-        sorted_by_id = sorted(fetched, key=lambda p: p["id"], reverse=True)
-        new_papers = sorted_by_id[:bootstrap_n]
-        print(f"  Bootstrap mode: using top {bootstrap_n} papers by arXiv ID desc as today's listing.")
-    elif not archive_ids:
-        print("  No archive found. Run with --bootstrap N to initialize.")
+    grouped = group_papers_by_listing_date(fetched)
+    target_papers = grouped.get(arxiv_date, [])
+    if not target_papers:
+        print(f"  No fetched papers matched arXiv date {arxiv_date}. Skipping.")
         return
-    else:
-        new_papers = [p for p in fetched if p["id"] not in archive_ids]
-        print(f"  Diff: {len(new_papers)} new papers since last archive.")
 
-    new_count = len(new_papers)
+    new_count = update_history_for_date(
+        data_dir,
+        arxiv_date,
+        target_papers,
+        bootstrap_n=bootstrap_n,
+        discussed_papers=discussed_papers,
+    )
     if new_count == 0:
-        print("  No new papers. Skipping.")
         return
-
-    # Append to today.json if it already holds the same arXiv date; otherwise start fresh.
-    out_path = data_dir / "today.json"
-    existing_papers = []
-    if bootstrap_n is None and out_path.exists():
-        with open(out_path) as f:
-            existing = json.load(f)
-        if existing.get("date") == arxiv_date:
-            existing_papers = existing.get("papers", [])
-            print(f"  Appending {new_count} papers to existing {len(existing_papers)}.")
-    all_papers = existing_papers + new_papers
-    output = {
-        "date": arxiv_date,
-        "fetched_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "total": len(all_papers),
-        "papers": all_papers,
-    }
-    annotate_discussed_papers(all_papers, discussed_papers)
-    with open(out_path, "w") as f:
-        json.dump(output, f, indent=2)
-    print(f"  Saved {len(all_papers)} papers to {out_path} ({new_count} new).")
-
-    save_archive(data_dir, fetched)
     update_index(data_dir)
     print("Done.")
 

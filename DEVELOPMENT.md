@@ -260,7 +260,7 @@ All changes are in `match_author()` in `scripts/scrape.py`. The complete rule ta
 | Conflicting middle initials | `M. A. Kunz` vs `Matthew W. Kunz` | none |
 | Conflicting full first names (both ≥ 2 chars after dot removal) | `Yujie Chen` vs `Yixian Chen` | none |
 
-**`--reannotate` flag** — `python scripts/scrape.py --reannotate` re-runs `annotate_papers` on `today.json` and `archive.json` in-place without any API calls. Useful after updating matching rules or the authors list.
+**`--reannotate` flag** — `python scripts/scrape.py --reannotate` re-runs `annotate_papers` on the retained `today*.json` listing files in-place without any API calls. Useful after updating matching rules or the authors list.
 
 **`config/authors_manual.json`** — added `"Eve Ostriker"` (no middle initial) so that `E. Ostriker` produces a strong match. The auto-scraped entry `"Eve C. Ostriker"` handles `E. C. Ostriker`. Later additions: `"Jake Nibauer"` (2026-03-12).
 
@@ -274,9 +274,9 @@ Three independent sorting axes replace the old single sort dropdown + archive to
 |---|---|---|
 | **Sort** | ↑ (ascending arXiv ID) / ↓ (descending) | yes |
 | **Local first** | None / Strong / Strong+Weak | yes |
-| **Listing** | Today / Archive | no |
+| **Listing** | Today / -1 / -2 / -3 / -4 / -5 | no |
 
-All three axes are combinable (e.g. ↓ + Strong+Weak + Archive).
+All three axes are combinable (e.g. ↓ + Strong+Weak + -2).
 
 **Section headers** in the paper list now reflect the active grouping:
 - *None*: "Cross-listings (N)" divider (arXiv new-submissions / cross-listings split)
@@ -351,6 +351,20 @@ Added `import urllib.error` to the module imports.
 The scraper was using `http://export.arxiv.org/api/query`. arXiv now permanently redirects HTTP to HTTPS (301 Moved Permanently), and Python's `urllib` cannot follow a cross-protocol redirect, causing an infinite redirect loop error. After the retry logic from PR #35 exhausted all 429 retries, the final attempt hit this 301 and crashed.
 
 Changed `BASE_URL` in `scripts/scrape.py` from `http://` to `https://`.
+
+---
+
+## 25. Rolling 5-day history and smaller arXiv fetches
+
+Replaced the 1000-paper archive workflow with explicit day-history files:
+
+- `scripts/scrape.py` normal runs now fetch the latest 200 astro-ph papers, group them by arXiv listing date, and update `data/today.json`
+- Previous listings rotate through `data/today-1.json` ... `data/today-5.json`
+- `--bootstrap-history` fetches up to 1000 papers in 200-paper pages and seeds the six retained listing files
+- `--reannotate` now processes all existing `today*.json` files
+- `app.js` replaces the Archive view with Today / -1 / -2 / -3 / -4 / -5 listing buttons and hides missing history files
+
+`data/archive.json` is no longer maintained or loaded by the frontend.
 
 ---
 

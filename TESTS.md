@@ -143,13 +143,16 @@ Calls `annotate_papers(papers, fav_authors)` and checks the `local_match` and
 | `test_load_favorite_authors_deduplicates` | Duplicate names across both files appear only once |
 | `test_load_favorite_authors_missing_files` | Missing config files return an empty list without error |
 
-### `load_archive` / `save_archive`
+### rolling history helpers
 
 | Test | What it checks |
 |------|----------------|
-| `test_load_archive_missing` | Missing `archive.json` returns empty list and empty set without error |
-| `test_load_archive_returns_ids` | Existing archive returns all papers and their IDs as a set |
-| `test_save_archive_writes_file` | `save_archive` creates `archive.json` with correct structure (`total`, `papers`, `fetched_at`) |
+| `test_history_filename` | Offset 0 maps to `today.json`; previous offsets map to `today-N.json` |
+| `test_save_listing_writes_file_and_strips_internal_fields` | Listing writes include `date`, `total`, `papers`, `fetched_at`, and omit scraper-only fields |
+| `test_load_history_reads_existing_files` | Existing rolling files are loaded and their IDs collected |
+| `test_rotate_history_drops_oldest` | Rotation moves `today` through `today-5` and drops the oldest file |
+| `test_select_new_papers_dedupes_in_order` | Candidate papers are deduplicated against seen IDs while preserving order |
+| `test_group_papers_by_listing_date` | Papers are grouped by computed arXiv listing date |
 
 ### `update_index`
 
@@ -161,12 +164,13 @@ is touched.
 | `test_update_index_writes_current` | `index.json` is created with a valid `YYYY-MM-DD` string in `current` (today's UTC date) |
 | `test_update_index_overwrites` | A second call overwrites `index.json` and `current` is still present |
 
-### `today.json` write logic
+### rolling `today.json` write logic
 
 | Test | What it checks |
 |------|----------------|
-| `test_appends_when_same_arxiv_date` | A second scrape for the same `arxiv_date` appends new papers to the existing 82, yielding 85 total |
-| `test_replaces_when_new_arxiv_date` | A scrape for a different `arxiv_date` starts fresh, discarding the previous day's papers |
+| `test_appends_when_same_arxiv_date` | A second scrape for the same `arxiv_date` appends only new papers |
+| `test_replaces_when_new_arxiv_date` | A scrape for a different `arxiv_date` rotates old `today.json` into `today-1.json` |
+| `test_new_date_dedupes_against_rotated_history` | A new listing does not duplicate IDs already present in previous days |
 
 ### `fetch_xml` retry logic
 
@@ -183,6 +187,8 @@ tests run instantly.
 | `test_fetch_xml_raises_after_max_retries` | Raises `HTTPError` after exhausting all 5 retries |
 | `test_fetch_xml_raises_immediately_on_404` | Raises `HTTPError` without retrying for non-transient errors (404) |
 | `test_fetch_xml_respects_retry_after_header` | Uses the `Retry-After: 30` header value as the sleep delay on 429 |
+| `test_fetch_latest_papers_default_uses_200_results` | Normal arXiv fetches request 200 results |
+| `test_bootstrap_history_writes_six_listing_files` | `--bootstrap-history` seeds `today.json` through `today-5.json` from grouped papers |
 
 ---
 
