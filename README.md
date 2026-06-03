@@ -108,6 +108,7 @@ Names are matched by last name (exact) then first name. **Strong** match (bold a
 pip install -r requirements.txt
 
 # First-time setup: seed today.json through today-5.json
+# Fetches up to 1000 papers in one arXiv API request
 python scripts/scrape.py --bootstrap-history
 
 # Subsequent runs (automated by GitHub Action): fetch latest 200 and update rolling history

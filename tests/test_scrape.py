@@ -717,9 +717,10 @@ def test_bootstrap_history_writes_six_listing_files(tmp_path, monkeypatch):
     listing_dates = ["2026-03-10", "2026-03-09", "2026-03-06", "2026-03-05", "2026-03-04", "2026-03-03"]
     fetched = [make_paper(f"P{i}", listing_date) for i, listing_date in enumerate(listing_dates)]
 
-    def fake_fetch(n, include_listing_date=False):
+    def fake_fetch(n, include_listing_date=False, max_per_request=scrape.MAX_PER_REQUEST):
         assert n == scrape.BOOTSTRAP_FETCH_SIZE
         assert include_listing_date is True
+        assert max_per_request == scrape.BOOTSTRAP_FETCH_SIZE
         return fetched
 
     monkeypatch.setattr(scrape, "fetch_latest_papers", fake_fetch)

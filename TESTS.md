@@ -188,7 +188,7 @@ tests run instantly.
 | `test_fetch_xml_raises_immediately_on_404` | Raises `HTTPError` without retrying for non-transient errors (404) |
 | `test_fetch_xml_respects_retry_after_header` | Uses the `Retry-After: 30` header value as the sleep delay on 429 |
 | `test_fetch_latest_papers_default_uses_200_results` | Normal arXiv fetches request 200 results |
-| `test_bootstrap_history_writes_six_listing_files` | `--bootstrap-history` seeds `today.json` through `today-5.json` from grouped papers |
+| `test_bootstrap_history_writes_six_listing_files` | `--bootstrap-history` seeds `today.json` through `today-5.json` from grouped papers using a 1000-paper request |
 
 ---
 

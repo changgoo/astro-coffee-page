@@ -360,7 +360,7 @@ Replaced the 1000-paper archive workflow with explicit day-history files:
 
 - `scripts/scrape.py` normal runs now fetch the latest 200 astro-ph papers, group them by arXiv listing date, and update `data/today.json`
 - Previous listings rotate through `data/today-1.json` ... `data/today-5.json`
-- `--bootstrap-history` fetches up to 1000 papers in 200-paper pages and seeds the six retained listing files
+- `--bootstrap-history` fetches up to 1000 papers in one request and seeds the six retained listing files
 - `--reannotate` now processes all existing `today*.json` files
 - `app.js` replaces the Archive view with Today / -1 / -2 / -3 / -4 / -5 listing buttons and hides missing history files
 

@@ -168,14 +168,14 @@ def parse_entry(entry, include_listing_date=False):
     return paper
 
 
-def fetch_latest_papers(n=FETCH_SIZE, include_listing_date=False):
+def fetch_latest_papers(n=FETCH_SIZE, include_listing_date=False, max_per_request=MAX_PER_REQUEST):
     """Fetch the n most recently submitted astro-ph papers from the arXiv API."""
     papers = []
     start = 0
     total = None
 
     while start < n:
-        max_results = min(MAX_PER_REQUEST, n - start)
+        max_results = min(max_per_request, n - start)
         url = build_query_url(start=start, max_results=max_results)
         print(f"  Fetching start={start} ...", flush=True)
         raw = fetch_xml(url)
@@ -474,7 +474,11 @@ def reannotate(data_dir, repo_root):
 def bootstrap_history(data_dir, repo_root):
     """Seed today.json through today-5.json from up to 1000 recent arXiv papers."""
     print(f"Fetching latest {BOOTSTRAP_FETCH_SIZE} arXiv astro-ph papers for history bootstrap ...")
-    fetched = fetch_latest_papers(n=BOOTSTRAP_FETCH_SIZE, include_listing_date=True)
+    fetched = fetch_latest_papers(
+        n=BOOTSTRAP_FETCH_SIZE,
+        include_listing_date=True,
+        max_per_request=BOOTSTRAP_FETCH_SIZE,
+    )
     if not fetched:
         print("  No papers fetched. Skipping.")
         return
