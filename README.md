@@ -42,15 +42,12 @@ In your repository → **Settings → Pages**:
 ### 3. Enable the GitHub Action
 
 The workflow in `.github/workflows/daily-scrape.yml` runs on the following schedule,
-timed around arXiv's ~8 PM ET daily announcement:
+timed around arXiv's ~8 PM ET daily announcement. Times are New York local time:
 
-| Runs | ET time | Days |
+| Runs | NY time | Days |
 |------|---------|------|
-| Hourly ×4 | 9 PM, 10 PM, 11 PM, midnight | Sun–Thu nights |
-| Once | 6 AM | Mon–Fri mornings |
-
-> **Note:** Times above assume EST (UTC−5). During EDT (UTC−4, mid-March to early
-> November) all night runs fire 1 hour earlier ET (8 PM–11 PM).
+| Evening | 9:17 PM | Sun–Thu |
+| Catch-up | 1:17 AM, 5:17 AM, 9:17 AM | Mon–Fri |
 
 To run it manually: **Actions → Daily arXiv scrape → Run workflow** (no inputs required).
 

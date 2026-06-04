@@ -2,22 +2,15 @@ name: Daily arXiv scrape
 
 on:
   schedule:
-    # arXiv announces new papers at ~8 PM ET on weekdays.
-    # All times below are UTC; ET = UTC-5 (EST) / UTC-4 (EDT).
+    # GitHub Actions supports timezone-aware schedules. These run in New York
+    # local time and intentionally avoid the top of the hour.
     # The discussed sync runs earlier in the morning so this scrape can annotate
     # papers directly from data/discussed.json, the same way local authors are
     # annotated during scraping.
-    #
-    # Hourly 9 PM–midnight ET, Sun–Thu nights:
-    #   9 PM ET  = 02:00 UTC next day
-    - cron: "5 9 * * 0-4"
-      timezone: 'America/New_York'
-    #   midnight = 05:00 UTC next day
-    - cron: "10 0 * * 1-5"
-      timezone: 'America/New_York'
-    # 6 AM ET Mon–Fri = 11:00 UTC Mon–Fri
-    - cron: "13 6 * * 1-5"
-      timezone: 'America/New_York'
+    - cron: "17 21 * * 0-4"
+      timezone: "America/New_York"
+    - cron: "17 1,5,9 * * 1-5"
+      timezone: "America/New_York"
   workflow_dispatch:
 
 permissions:

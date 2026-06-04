@@ -2,9 +2,9 @@ name: Sync discussed papers
 
 on:
   schedule:
-    # Run before the first daily scrape so the next build can pick up discussed papers.
-    - cron: "0 1 * * *"
-    - cron: "0 17 * * *"
+    # Run in New York local time using GitHub Actions timezone-aware schedules.
+    - cron: "0 12,18 * * *"
+      timezone: "America/New_York"
   workflow_dispatch:
 
 permissions:

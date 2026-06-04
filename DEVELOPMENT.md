@@ -389,6 +389,15 @@ additional same-run attempts may make throttling worse.
 
 ---
 
+## 28. Timezone-aware workflow schedules
+
+Updated GitHub Actions schedules to use native `timezone: "America/New_York"`:
+
+- daily arXiv scrape: 9:17 PM Sun–Thu and 1:17 AM, 5:17 AM, 9:17 AM Mon–Fri
+- discussed-paper sync: 12:00 PM and 6:00 PM daily
+
+---
+
 ## Planned / open issues
 
 | # | Title |
