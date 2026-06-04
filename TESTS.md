@@ -184,11 +184,11 @@ tests run instantly.
 |------|----------------|
 | `test_fetch_xml_succeeds_immediately` | Returns bytes when the first attempt succeeds |
 | `test_fetch_xml_retries_on_503` | Retries after `HTTP 503` and returns bytes on the second attempt |
-| `test_fetch_xml_retries_on_429` | Retries after `HTTP 429` and returns bytes on the second attempt |
+| `test_fetch_xml_raises_immediately_on_429` | Raises immediately after `HTTP 429` without sleeping or retrying |
 | `test_fetch_xml_retries_on_timeout` | Retries after `TimeoutError` and returns bytes on the second attempt |
 | `test_fetch_xml_raises_after_max_retries` | Raises `HTTPError` after exhausting all 5 retries |
 | `test_fetch_xml_raises_immediately_on_404` | Raises `HTTPError` without retrying for non-transient errors (404) |
-| `test_fetch_xml_respects_retry_after_header` | Uses the `Retry-After: 30` header value as the sleep delay on 429 |
+| `test_fetch_xml_ignores_retry_after_header_on_429` | Ignores `Retry-After` on 429 because 429 responses are not retried |
 | `test_fetch_latest_papers_default_uses_200_results` | Normal arXiv fetches request 200 results |
 | `test_bootstrap_history_writes_six_listing_files` | `--bootstrap-history` seeds `today.json` through `today-5.json` from grouped papers using a 1000-paper request |
 

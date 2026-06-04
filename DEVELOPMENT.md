@@ -380,6 +380,15 @@ Added long-term archive storage for rolling listings that age out of
 
 ---
 
+## 27. Stop retrying arXiv 429 responses
+
+`fetch_xml` now raises immediately on `HTTP 429 Too Many Requests` instead of
+retrying with exponential backoff. The scheduled scraper still retries `HTTP 503`
+and network timeouts, but 429 is treated as an explicit rate-limit response where
+additional same-run attempts may make throttling worse.
+
+---
+
 ## Planned / open issues
 
 | # | Title |

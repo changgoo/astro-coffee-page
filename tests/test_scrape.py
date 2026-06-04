@@ -688,12 +688,16 @@ def test_fetch_xml_retries_on_503(monkeypatch):
     assert scrape.fetch_xml("http://example.com") == b"<xml/>"
 
 
-def test_fetch_xml_retries_on_429(monkeypatch):
-    """fetch_xml retries on HTTP 429 and succeeds on the second attempt."""
+def test_fetch_xml_raises_immediately_on_429(monkeypatch):
+    """fetch_xml does not retry on HTTP 429."""
+    slept = []
     err429 = urllib.error.HTTPError("", 429, "Too Many Requests", {}, None)
     monkeypatch.setattr(urllib.request, "urlopen", _make_urlopen([err429, b"<xml/>"]))
-    monkeypatch.setattr(scrape.time, "sleep", lambda s: None)
-    assert scrape.fetch_xml("http://example.com") == b"<xml/>"
+    monkeypatch.setattr(scrape.time, "sleep", lambda s: slept.append(s))
+    with pytest.raises(urllib.error.HTTPError) as exc_info:
+        scrape.fetch_xml("http://example.com")
+    assert exc_info.value.code == 429
+    assert slept == []
 
 
 def test_fetch_xml_retries_on_timeout(monkeypatch):
@@ -723,15 +727,17 @@ def test_fetch_xml_raises_immediately_on_404(monkeypatch):
     assert exc_info.value.code == 404
 
 
-def test_fetch_xml_respects_retry_after_header(monkeypatch):
-    """fetch_xml uses Retry-After header value as delay on 429."""
+def test_fetch_xml_ignores_retry_after_header_on_429(monkeypatch):
+    """fetch_xml does not sleep on 429 even when Retry-After is present."""
     slept = []
     headers = {"Retry-After": "30"}
     err429 = urllib.error.HTTPError("", 429, "Too Many Requests", headers, None)
     monkeypatch.setattr(urllib.request, "urlopen", _make_urlopen([err429, b"<xml/>"]))
     monkeypatch.setattr(scrape.time, "sleep", lambda s: slept.append(s))
-    scrape.fetch_xml("http://example.com")
-    assert slept == [30]
+    with pytest.raises(urllib.error.HTTPError) as exc_info:
+        scrape.fetch_xml("http://example.com")
+    assert exc_info.value.code == 429
+    assert slept == []
 
 
 def test_fetch_latest_papers_default_uses_200_results(monkeypatch):
