@@ -119,6 +119,25 @@ async function loadHistoryData() {
   await Promise.all(loads);
 }
 
+function buildListingPapers(data) {
+  const raw = data.papers || [];
+
+  // Assign arXiv listing numbers by ascending ID within each group
+  const newSubs = raw.filter((p) => (p.primary_category || "").startsWith("astro-ph"))
+                     .sort((a, b) => a.id.localeCompare(b.id));
+  const crossList = raw.filter((p) => !(p.primary_category || "").startsWith("astro-ph"))
+                       .sort((a, b) => a.id.localeCompare(b.id));
+  const newNums  = new Map(newSubs.map((p, i)  => [p.id, i + 1]));
+  const crossNums = new Map(crossList.map((p, i) => [p.id, newSubs.length + i + 1]));
+
+  return raw.map((p) => ({
+    ...p,
+    _arxivNum: newNums.get(p.id) ?? crossNums.get(p.id),
+    _isCrossListing: !(p.primary_category || "").startsWith("astro-ph"),
+    _listingDate: data.date || "",
+  }));
+}
+
 async function loadDay(offset) {
   document.getElementById("loading").style.display = "block";
   document.getElementById("paper-list").innerHTML = "";
@@ -127,21 +146,7 @@ async function loadDay(offset) {
   try {
     const data = historyData.get(offset) || await fetchHistoryFile(offset);
     historyData.set(offset, data);
-    const raw = data.papers || [];
-
-    // Assign arXiv listing numbers by ascending ID within each group
-    const newSubs = raw.filter((p) => (p.primary_category || "").startsWith("astro-ph"))
-                       .sort((a, b) => a.id.localeCompare(b.id));
-    const crossList = raw.filter((p) => !(p.primary_category || "").startsWith("astro-ph"))
-                         .sort((a, b) => a.id.localeCompare(b.id));
-    const newNums  = new Map(newSubs.map((p, i)  => [p.id, i + 1]));
-    const crossNums = new Map(crossList.map((p, i) => [p.id, newSubs.length + i + 1]));
-
-    allPapers = raw.map((p) => ({
-      ...p,
-      _arxivNum: newNums.get(p.id) ?? crossNums.get(p.id),
-      _isCrossListing: !(p.primary_category || "").startsWith("astro-ph"),
-    }));
+    allPapers = buildListingPapers(data);
 
     document.getElementById("fetched-at").textContent =
       data.fetched_at ? `fetched ${data.fetched_at.slice(0, 16).replace("T", " ")} UTC` : "";
@@ -379,17 +384,69 @@ function appendPaperGroups(list, papers, partial = false) {
   }
 }
 
+function matchesSearch(paper, query) {
+  return paper.title.toLowerCase().includes(query) ||
+    paper.authors.some((a) => a.toLowerCase().includes(query));
+}
+
+function getAllHistoryPapers() {
+  const papers = [];
+  HISTORY_OFFSETS.forEach((offset) => {
+    const data = historyData.get(offset);
+    if (!data) return;
+    buildListingPapers(data).forEach((paper) => {
+      papers.push({
+        ...paper,
+        _historyOffset: offset,
+        _listingDate: data.date || "",
+      });
+    });
+  });
+  return papers;
+}
+
+function renderSearchResults() {
+  const list = document.getElementById("paper-list");
+  list.innerHTML = "";
+
+  const q = searchQuery.toLowerCase();
+  const sourcePapers = getAllHistoryPapers();
+  let papers = sourcePapers.filter((p) => matchesSearch(p, q));
+  papers = applyFilters(papers);
+
+  if (papers.length === 0) {
+    document.getElementById("stats").textContent = `0 of ${sourcePapers.length} papers`;
+    list.innerHTML = `<div id="empty-state">No papers match the current search and filters across retained listings.</div>`;
+    return;
+  }
+
+  const groups = new Map();
+  papers.forEach((paper) => {
+    const date = paper._listingDate || "unknown";
+    if (!groups.has(date)) groups.set(date, []);
+    groups.get(date).push(paper);
+  });
+
+  document.getElementById("stats").textContent =
+    `${papers.length} match${papers.length !== 1 ? "es" : ""} across ` +
+    `${groups.size} listing${groups.size !== 1 ? "s" : ""} ` +
+    `(searching ${sourcePapers.length} papers)`;
+
+  [...groups.keys()].sort((a, b) => b.localeCompare(a)).forEach((date) => {
+    const group = sortPapers(groups.get(date));
+    list.appendChild(makeSectionHeader(`${formatDate(date)} (${group.length})`));
+    appendPaperGroups(list, group);
+  });
+}
+
 function render() {
   const list = document.getElementById("paper-list");
   list.innerHTML = "";
 
   let papers = allPapers;
   if (searchQuery) {
-    const q = searchQuery.toLowerCase();
-    papers = papers.filter((p) =>
-      p.title.toLowerCase().includes(q) ||
-      p.authors.some((a) => a.toLowerCase().includes(q))
-    );
+    renderSearchResults();
+    return;
   }
   papers = applyFilters(papers);
   papers = sortPapers(papers);

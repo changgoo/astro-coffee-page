@@ -10,7 +10,7 @@ A daily arXiv astro-ph paper browser hosted on GitHub Pages.
   - **Sort**: ↑ ascending / ↓ descending arXiv ID (persisted)
   - **Local first**: None / Strong / Strong+Weak — prioritises Princeton author papers (persisted)
   - **Listing**: Today / -1 / -2 / -3 / -4 / -5 — switches between the latest six arXiv listings
-- **Search** — always-visible title + author search, works across the retained listing history
+- **Search** — always-visible title + author search across the retained listing history
 - Filter by sub-category (GA, CO, EP, HE, IM, SR)
 - Section dividers in the paper list reflect the active grouping (local-strong / local-weak / other, or new submissions / cross-listings)
 - **Discussed papers** — per-paper GitHub issue flow plus a separate discussed page synced nightly into `data/discussed.json`

@@ -398,6 +398,14 @@ Updated GitHub Actions schedules to use native `timezone: "America/New_York"`:
 
 ---
 
+## 29. Search across retained listings
+
+The search box now searches all loaded `today*.json` listing files when a query is
+present. Empty search keeps the selected listing view; non-empty search renders
+matches grouped by arXiv listing date.
+
+---
+
 ## Planned / open issues
 
 | # | Title |
