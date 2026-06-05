@@ -423,11 +423,11 @@ history because they need multiple days.
 Refactored the monolithic `scripts/scrape.py` into a `scripts/scraper/` package
 organized by responsibility: configuration, date helpers, paper normalization,
 HTTP helpers, arXiv API parsing, arXiv HTML parsing, fallback fetch orchestration,
-author/discussed annotation, archive storage, rolling history, workflows, and
-CLI handling.
+author/discussed annotation, archive storage, rolling history, and workflows.
 
-`scripts/scrape.py` remains the stable command entrypoint and compatibility
-facade for existing tests and ad hoc imports.
+`scripts/scrape.py` remains the stable command entrypoint and owns CLI argument
+dispatch. Tests import the focused modules directly instead of relying on a
+broad compatibility facade.
 
 ---
 
