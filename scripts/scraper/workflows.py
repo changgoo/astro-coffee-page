@@ -3,6 +3,7 @@
 import json
 
 from .authors import annotate_papers, load_favorite_authors
+from .arxiv_html import fetch_latest_papers_from_listing
 from .config import BOOTSTRAP_FETCH_SIZE, FETCH_SIZE, HISTORY_DAYS
 from .discussed import annotate_discussed_papers, load_discussed_papers
 from .fetch import fetch_latest_papers_with_fallback
@@ -52,12 +53,12 @@ def reannotate(data_dir, repo_root):
 
 
 def bootstrap_history(data_dir, repo_root):
-    """Seed today.json through today-5.json from up to 1000 recent arXiv papers."""
-    print(f"Fetching latest {BOOTSTRAP_FETCH_SIZE} arXiv astro-ph papers for history bootstrap ...")
-    fetched = fetch_latest_papers_with_fallback(
+    """Seed today.json through today-5.json from arXiv's recent HTML listing."""
+    print(f"Fetching latest {BOOTSTRAP_FETCH_SIZE} arXiv astro-ph papers from recent listing ...")
+    fetched = fetch_latest_papers_from_listing(
         n=BOOTSTRAP_FETCH_SIZE,
         include_listing_date=True,
-        max_per_request=BOOTSTRAP_FETCH_SIZE,
+        source="recent",
     )
     if not fetched:
         print("  No papers fetched. Skipping.")
