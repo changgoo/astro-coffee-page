@@ -431,6 +431,23 @@ broad compatibility facade.
 
 ---
 
+## 32. Keep expected listing date when HTML fallback sees late papers
+
+Fixed normal scrape date selection after HTML fallback. If fetched HTML listings
+contain the clock-estimated arXiv date, the scraper now updates that listing
+instead of switching to a newer partial listing date. This prevents a few late
+papers from rolling `today.json` forward and rotating the existing full listing
+into `today-1.json`.
+
+The scraper only falls back to the newest fetched listing date when the expected
+date is absent from the fetched groups.
+
+`--bootstrap-history` now always rebuilds retained listings from arXiv's recent
+HTML listing instead of the API, so repair/bootstrap runs use arXiv listing
+headings as the source of truth for `today.json` through `today-5.json`.
+
+---
+
 ## Planned / open issues
 
 | # | Title |

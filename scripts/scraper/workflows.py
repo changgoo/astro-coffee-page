@@ -3,6 +3,7 @@
 import json
 
 from .authors import annotate_papers, load_favorite_authors
+from .arxiv_html import fetch_latest_papers_from_listing
 from .config import BOOTSTRAP_FETCH_SIZE, FETCH_SIZE, HISTORY_DAYS
 from .discussed import annotate_discussed_papers, load_discussed_papers
 from .fetch import fetch_latest_papers_with_fallback
@@ -52,12 +53,12 @@ def reannotate(data_dir, repo_root):
 
 
 def bootstrap_history(data_dir, repo_root):
-    """Seed today.json through today-5.json from up to 1000 recent arXiv papers."""
-    print(f"Fetching latest {BOOTSTRAP_FETCH_SIZE} arXiv astro-ph papers for history bootstrap ...")
-    fetched = fetch_latest_papers_with_fallback(
+    """Seed today.json through today-5.json from arXiv's recent HTML listing."""
+    print(f"Fetching latest {BOOTSTRAP_FETCH_SIZE} arXiv astro-ph papers from recent listing ...")
+    fetched = fetch_latest_papers_from_listing(
         n=BOOTSTRAP_FETCH_SIZE,
         include_listing_date=True,
-        max_per_request=BOOTSTRAP_FETCH_SIZE,
+        source="recent",
     )
     if not fetched:
         print("  No papers fetched. Skipping.")
@@ -101,8 +102,8 @@ def run_scrape(data_dir, repo_root, arxiv_date, explicit_date=False, bootstrap_n
 
     grouped = group_papers_by_listing_date(fetched)
     if not explicit_date and grouped:
-        fetched_date = max(grouped.keys())
-        if fetched_date != arxiv_date:
+        if arxiv_date not in grouped:
+            fetched_date = max(grouped.keys())
             print(f"  Using fetched arXiv listing date {fetched_date} instead of clock estimate {arxiv_date}.")
             arxiv_date = fetched_date
     target_papers = grouped.get(arxiv_date, [])

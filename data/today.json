@@ -1,118 +1,728 @@
 {
-  "fetched_at": "2026-06-05T12:21:16Z",
+  "fetched_at": "2026-06-05T16:51:34Z",
   "date": "2026-06-05",
-  "total": 3,
+  "total": 88,
   "papers": [
     {
-      "id": "2606.05237",
-      "title": "GREX-PLUS Science Book v2",
+      "id": "2606.06495",
+      "title": "What it takes to solve the Hubble tension through Modifications of Cosmological Recombination II: in light of ACT DR6 and DESI DR2",
       "authors": [
-        "GREX-PLUS Science Team : Shunsuke Baba (ISAS/JAXA)",
-        "Sirio Belli (Universita di Bologna)",
-        "Pietro Benotto (INAF - Osservatorio Astronomico di Padova / Universita di Bologna)",
-        "Ivan Delvecchio (INAF - Osservatorio di Astrofisica e Scienza dello Spazio di Bologna)",
-        "Yoshinobu Fudamoto (Chiba University)",
-        "Yuka Fujii (NAOJ)",
-        "Yuichi Harikane (University of Tokyo)",
-        "Yasuhiro Hirahara (Nagoya University)",
-        "Akio K. Inoue (Waseda University)",
-        "Yoshiyuki Inoue (University of Osaka)",
-        "Hajime Kawahara (ISAS/JAXA / University of Tokyo)",
-        "Taiki Kawamuro (University of Osaka)",
-        "Yui Kawashima (Kyoto University)",
-        "Lucas Kimmig (Ludwig-Maximilians-University / University of Nottingham)",
-        "Tadayuki Kodama (Tohoku University)",
-        "Mitsuru Kokubo (NAOJ)",
-        "Hiroyuki Kurokawa (University of Tokyo)",
-        "Katsunori Kusakabe (University of Osaka)",
-        "Kosei Matsumoto (Ghent University)",
-        "Noriyuki Matsunaga (University of Tokyo)",
-        "Taro Matsuo (University of Osaka)",
-        "Yoshiki Matsuoka (Ehime University)",
-        "Shuji Matsuura (Kwansei Gakuin University)",
-        "Toru Misawa (Shinshu University)",
-        "Shota Miyazaki (ISAS/JAXA)",
-        "Alessia Moretti (INAF - Osservatorio Astronomico di Padova)",
-        "Kumiko Morihana (NAOJ)",
-        "Takashi Moriya (NAOJ)",
-        "Kentaro Nagamine (University of Osaka / University of Tokyo / University of Nevada Las Vegas)",
-        "Kimihiko Nakajima (Kanazawa University)",
-        "Hideko Nomura (NAOJ)",
-        "Shota Notsu (University of Tokyo)",
-        "Takafumi Ootsubo (University of Occupational and Environmental Health)",
-        "Kazumasa Ohno (NAOJ)",
-        "Giorgia Peluso (INAF - Osservatorio di Astrofisica e Scienza dello Spazio di Bologna)",
-        "Bianca M. Poggianti (INAF - Osservatorio Astronomico di Padova)",
-        "Mario Radovich (INAF - Osservatorio Astronomico di Padova)",
-        "Giulia Rodighiero (University of Padova)",
-        "Hideo Sagawa (Kyoto Sangyo University)",
-        "Kazuhiro Shimasaku (University of Tokyo)",
-        "Takashi Shimonishi (Niigata University)",
-        "Ken-ichi Tadaki (Hokkai-Gakuen University)",
-        "Kosuke Takahashi (Tohoku University)",
-        "Michihiro Takami (ASIAA)",
-        "Shuya Tan (JAMSTEC)",
-        "Takumi Tanaka (University of Tokyo)",
-        "Tsuyoshi Terai (NAOJ)",
-        "Yoshiki Toba (Ritsumeikan University)",
-        "Roberta Tripodi (INAF - Astronomical Observatory of Rome)",
-        "Francesco Valentino (DAWN / Technical University of Denmark)",
-        "Benedetta Vulcani (INAF - Osservatorio Astronomico di Padova)",
-        "Taihei Yano (NAOJ)",
-        "Chikako Yasui (NAOJ)",
-        "Stefano Zibetti (INAF - Arcetri Astrophysical Observatory)"
+        "Nanoom Lee",
+        "Tianji Zhou"
       ],
-      "abstract": "GREX-PLUS (Galaxy Reionization EXplorer and PLanetary Universe Spectrometer) is a mission candidate for a JAXA strategic L-class mission to be launched in the 2030s. Its primary science goals are two-fold: galaxy formation and evolution, and planetary system formation and evolution. The GREX-PLUS spacecraft will carry a telescope with a 1 m primary mirror aperture cooled down to 50 K. The two science instruments will be onboard: a wide-field camera in the 2--8 $\\mu$m wavelength band and a high-resolution spectrometer with a wavelength resolution of 30,000 in the 10--18 $\\mu$m band. The GREX-PLUS wide-field camera aims to detect the first generation of galaxies at redshift $z>15$. The GREX-PLUS high-resolution spectrometer aims to identify the location of the water ``snowline'' in protoplanetary disks. Both instruments will provide unique datasets for a broad range of scientific topics, including galaxy mass assembly, the origin of supermassive blackholes, infrared background radiation, molecular spectroscopy in the interstellar medium, transit spectroscopy of exoplanet atmospheres, planetary atmospheres in the Solar System, and so on. This document is the second version of a collection of scientific themes that can be achieved with GREX-PLUS. Each section in Chapters~2 and 3 is based on presentations at several GREX-PLUS Science Workshops.",
-      "primary_category": "astro-ph.IM",
+      "abstract": "",
+      "primary_category": "astro-ph.CO",
       "categories": [
-        "astro-ph.IM",
-        "astro-ph.EP",
-        "astro-ph.GA",
-        "astro-ph.HE",
-        "astro-ph.SR"
+        "astro-ph.CO"
       ],
       "submitted": "2026-06-05",
-      "arxiv_url": "https://arxiv.org/abs/2606.05237",
-      "pdf_url": "https://arxiv.org/pdf/2606.05237",
+      "arxiv_url": "https://arxiv.org/abs/2606.06495",
+      "pdf_url": "https://arxiv.org/pdf/2606.06495",
       "local_match": null,
       "local_authors": {}
     },
     {
-      "id": "2606.05244",
-      "title": "UK White Paper on Space-based total solar eclipse observations: structure and dynamics of the solar atmosphere",
+      "id": "2606.06484",
+      "title": "Phenomenology of Inflaton-Driven Early QCD Confinement and Solution to Axion Isocurvature Problem",
       "authors": [
-        "Lucie M. Green",
-        "Nicola Baresi",
-        "Huw Morgan",
-        "Matt Gunn",
-        "Amir Caspi",
-        "Daniel B. Seaton",
-        "Giulio Del Zanna",
-        "Yeimy J. Rivera",
-        "Francisco Javier Bailen",
-        "David Orozco Suarez",
-        "Anthony R. Yeates",
-        "Peter Wyper",
-        "Nawin Ngampoopun",
-        "Nathalia Alzate",
-        "Simone Di Matteo",
-        "Erika Palmerio",
-        "Richard J. Morton",
-        "Eleanna Asvestari",
-        "Manuela Temmer",
-        "Greta Cappello",
-        "Teodora Mihailescu",
-        "Karl Battams"
+        "Evangelos I. Sfakianakis",
+        "Barmak Shams Es Haghi",
+        "Katherine Freese"
       ],
-      "abstract": "Our Sun is uniquely placed to enable a detailed study of astrophysical plasmas and how they are governed by the magnetic fields that thread through them. On the one hand, magnetic fields confine plasma and determine plasma heating, flows, and energisation. On the other hand, magnetic fields and their evolution give rise to the most violent eruptions in the Solar System. Understanding the details of how energy is built up and released, and the impact of these physical processes on the plasma, remain key open questions that directly map to UKRI's science strategy through the STFC Solar System Advisory Panel's roadmap for Solar System research goals: What are the causes, consequences and predictability of solar magnetic variability and the solar cycle? What are the structures, dynamics and energetics of the Sun? What are the underlying processes that drive Sun-planet connections? And what are the fundamental processes at work in the Solar System? As laid out in this White Paper, the Moon-Enabled Sun Occultation Mission (MESOM) directly addresses these questions and in doing so delivers several Pillars of the National Space Strategy.",
-      "primary_category": "astro-ph.IM",
+      "abstract": "",
+      "primary_category": "astro-ph.CO",
       "categories": [
-        "astro-ph.IM",
+        "astro-ph.CO",
+        "hep-ph",
+        "hep-th"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06484",
+      "pdf_url": "https://arxiv.org/pdf/2606.06484",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06471",
+      "title": "Analytic insight into the physics of SASI II. Spiral instability of the prograde mode in a rotating stellar core",
+      "authors": [
+        "T. Foglizzo"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE",
         "astro-ph.SR"
       ],
       "submitted": "2026-06-05",
-      "arxiv_url": "https://arxiv.org/abs/2606.05244",
-      "pdf_url": "https://arxiv.org/pdf/2606.05244",
+      "arxiv_url": "https://arxiv.org/abs/2606.06471",
+      "pdf_url": "https://arxiv.org/pdf/2606.06471",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06457",
+      "title": "Dynamical evolution and dissolution timescale of young stellar clusters in the Orion star-forming complex",
+      "authors": [
+        "Sergio S\u00e1nchez-Sanju\u00e1n",
+        "\u00c1ngeles P\u00e9rez-Villegas",
+        "Jes\u00fas Hern\u00e1ndez",
+        "Luis Aguilar"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA",
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06457",
+      "pdf_url": "https://arxiv.org/pdf/2606.06457",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06433",
+      "title": "Depolarization and Polarization-Transfer Rates for Solar He I Lines due to Collisions with Neutral Hydrogen",
+      "authors": [
+        "Moncef Derouich",
+        "Saleh Qutub"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.SR",
+      "categories": [
+        "astro-ph.SR",
+        "physics.atom-ph",
+        "physics.plasm-ph",
+        "physics.space-ph"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06433",
+      "pdf_url": "https://arxiv.org/pdf/2606.06433",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06410",
+      "title": "The Atacama Cosmology Telescope: Probing new signatures of ultralight axions with gravitational lensing",
+      "authors": [
+        "Alex Lagu\u00eb",
+        "Keir K. Rogers",
+        "Mathew S. Madhavacheril",
+        "J. Richard Bond",
+        "Erminia Calabrese",
+        "Mark J. Devlin",
+        "Jo Dunkley",
+        "Vera Gluscevic",
+        "Ren\u00e9e Hlo\u017eek",
+        "Hidde T. Jense",
+        "Thibaut Louis",
+        "Frank J. Qu",
+        "Bernardita Ried Guachalla",
+        "Neelima Sehgal",
+        "Blake D. Sherwin",
+        "Suzanne T. Staggs",
+        "Alexander van Engelen"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.CO",
+      "categories": [
+        "astro-ph.CO",
+        "gr-qc"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06410",
+      "pdf_url": "https://arxiv.org/pdf/2606.06410",
+      "local_match": "strong",
+      "local_authors": {
+        "Jo Dunkley": "strong",
+        "Suzanne T. Staggs": "strong"
+      }
+    },
+    {
+      "id": "2606.06409",
+      "title": "A high-energy neutrino flare associated with nearby bright interacting supernova SN 2021foa",
+      "authors": [
+        "Ming-Xuan Lu",
+        "Yun-Feng Liang",
+        "Xue-Rui Ouyang",
+        "Da-Bin Lin",
+        "Xiang-Gao Wang",
+        "Yi-Zhong Fan"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06409",
+      "pdf_url": "https://arxiv.org/pdf/2606.06409",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06340",
+      "title": "Minor Ions as a Diagnostic of Solar Wind Heating: Inverted Mass-to-Charge Scaling in Imbalanced Turbulence",
+      "authors": [
+        "Michael F. Zhang",
+        "Evan L. Yerger",
+        "Matthew W. Kunz",
+        "Jonathan Squire"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.SR",
+      "categories": [
+        "astro-ph.SR",
+        "physics.plasm-ph",
+        "physics.space-ph"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06340",
+      "pdf_url": "https://arxiv.org/pdf/2606.06340",
+      "local_match": "strong",
+      "local_authors": {
+        "Matthew W. Kunz": "strong"
+      }
+    },
+    {
+      "id": "2606.06305",
+      "title": "A micronova burst in the intermediate polar IGR J17014-4306",
+      "authors": [
+        "Alexandre S. Oliveira",
+        "D. C. Souza",
+        "G. J. M. Luna",
+        "C. V. Rodrigues"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE",
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06305",
+      "pdf_url": "https://arxiv.org/pdf/2606.06305",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06270",
+      "title": "Research Note: Ghostly DLAs in SDSS DR16",
+      "authors": [
+        "Patrick Petitjean"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06270",
+      "pdf_url": "https://arxiv.org/pdf/2606.06270",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06248",
+      "title": "Bar-induced deflection of open cluster tidal tails",
+      "authors": [
+        "Hanna Parul",
+        "Laia Casamiquela",
+        "Paola Di Matteo",
+        "Salvatore Ferrone"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06248",
+      "pdf_url": "https://arxiv.org/pdf/2606.06248",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06237",
+      "title": "Sensitivity Limits and Operational Threshold Calibration for DINOv2-based Gravitational-Wave Glitch Characterization: A Strain-Domain Mock Data Challenge on LIGO O4a",
+      "authors": [
+        "Luca Cirfeta"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.IM",
+      "categories": [
+        "astro-ph.IM",
+        "gr-qc"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06237",
+      "pdf_url": "https://arxiv.org/pdf/2606.06237",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06234",
+      "title": "gr8stars II : judgement day for spectroscopic parameter model systematics",
+      "authors": [
+        "Alix Violet Freckelton",
+        "Annelies Mortier",
+        "Megan Bedell",
+        "Michael Cretignier",
+        "Jared R. Kolecki",
+        "Andreas J. Korn",
+        "S\u00e9rgio G. Sousa",
+        "Maria Tsantaki",
+        "John M. Brewer",
+        "Lars A. Buchhave",
+        "Guy R. Davies",
+        "J. I. Gonz\u00e1lez Hern\u00e1ndez",
+        "Sam Morrell",
+        "Martin B. Nielsen",
+        "Vera Maria Passegger",
+        "Andreas Quirrenbach",
+        "Arpita Roy",
+        "Nuno C. Santos",
+        "A. Su\u00e1rez Mascare\u00f1o",
+        "Christopher Allan Watson",
+        "Lily L. Zhao"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.SR",
+      "categories": [
+        "astro-ph.SR",
+        "astro-ph.EP",
+        "astro-ph.IM"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06234",
+      "pdf_url": "https://arxiv.org/pdf/2606.06234",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06230",
+      "title": "Peas and USPs: Can Stellar Spindown and Peas in a Pod Replicate Ultra-Short-Period Planet Characteristics?",
+      "authors": [
+        "Adam Distler",
+        "Juliette Becker"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.EP",
+      "categories": [
+        "astro-ph.EP"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06230",
+      "pdf_url": "https://arxiv.org/pdf/2606.06230",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06226",
+      "title": "A New Member of the Fast and Furious Family: A Relativistic and Time-Variable UV Outflow in a Luminous Quasar",
+      "authors": [
+        "Lucas M. Seaton",
+        "Patrick B. Hall",
+        "Liliana Flores",
+        "Paola Rodr\u00edguez Hidalgo",
+        "Marianna Veltri",
+        "Zezhou Zhu",
+        "Javier Serna",
+        "W. Niel Brandt",
+        "Scott Anderson",
+        "Roberto J. Assef",
+        "Eduardo Ba\u00f1ados",
+        "Catherine J. Grier",
+        "Yasaman Homayouni",
+        "Sean Morrison",
+        "C. Alenka Negrete",
+        "Amy L. Rankine",
+        "Jessie Runnoe",
+        "Donald P. Schneider",
+        "Yue Shen",
+        "Matthew Temple",
+        "Benny Trakhtenbrot",
+        "Jonathan R. Trump",
+        "Erik Weiss"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06226",
+      "pdf_url": "https://arxiv.org/pdf/2606.06226",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06213",
+      "title": "Probing a new subclass of llGRB-SN transients: Insights from EP250304a and its associated supernova",
+      "authors": [
+        "L. Cotter",
+        "A. Martin-Carrillo",
+        "R. A. J. Eyles-Ferris",
+        "L. Izzo",
+        "D. B. Malesani",
+        "Y. Julakanti",
+        "G. Corcoran",
+        "A. Saccardi",
+        "P. G. Jonker",
+        "A. J. Levan",
+        "F. Carotenuto",
+        "P. T. O'Brien",
+        "J. H. Gillanders",
+        "J. N. D. van Dalen",
+        "M. E. Ravasio",
+        "S. Schulze",
+        "N. Sarin",
+        "F. E. Bauer",
+        "M. Fraser",
+        "J. Quirola-Vasquez",
+        "A. P. C. van Hoof",
+        "S. J. Smartt",
+        "C. Gall",
+        "A. Rest",
+        "C. T. Murphey",
+        "N. Tanvir",
+        "T.-W. Chen",
+        "S. Campana",
+        "C. Ashall",
+        "J. P. Anderson",
+        "J. A. Chacon",
+        "F. J. Cowie",
+        "V. D'Elia",
+        "L. Galbany",
+        "C. P. Gutierrez",
+        "D. H. Hartmann",
+        "P. Jakobsson",
+        "S. Kobayashi",
+        "A. H. Kong",
+        "P. Mazalli",
+        "T. E. Muller-Bravo",
+        "M. De Pasquale",
+        "L. Rhodes",
+        "A. Rossi",
+        "J. Sanchez-Sierras",
+        "J. Sollerman",
+        "A. Andersson",
+        "A. Aryan",
+        "T. de Boer",
+        "J. S. Bright",
+        "K. C. Chambers",
+        "M. Gromadzki",
+        "M. E. Huber",
+        "C. Inserra",
+        "T. Lowe",
+        "P. Minguez",
+        "G. S. Narayan",
+        "M. Nicholl",
+        "G. S. H. Paek",
+        "A. Sedgewick",
+        "K. W. Smith",
+        "J. W. Tweddle",
+        "S. Yang"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06213",
+      "pdf_url": "https://arxiv.org/pdf/2606.06213",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06175",
+      "title": "AKRA 3.0: A matrix-free Inversion Framework for Weak Lensing Mass Mapping and Its Application to DES Y3 Data",
+      "authors": [
+        "Yuan Shi",
+        "Pengjie Zhang",
+        "Li Cui",
+        "Jian Qin",
+        "Ji Yao"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.CO",
+      "categories": [
+        "astro-ph.CO"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06175",
+      "pdf_url": "https://arxiv.org/pdf/2606.06175",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06141",
+      "title": "Mass-Orbital Period Distribution of Massive White Dwarfs Formed Through Stable Mass Transfer",
+      "authors": [
+        "Rizhong Zheng",
+        "Hongwei Ge",
+        "Christopher A Tout",
+        "Hailiang Chen",
+        "Zhenwei Li",
+        "Dengkai Jiang",
+        "Chengyuan Li",
+        "Zhijia Tian",
+        "Bo Ma",
+        "Lifu Zhang",
+        "Jian Mou",
+        "Xuefei Chen",
+        "Zhanwen Han"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.SR",
+      "categories": [
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06141",
+      "pdf_url": "https://arxiv.org/pdf/2606.06141",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06134",
+      "title": "Detectability of secondary images from flares near Sgr A* with mock GRAVITY data",
+      "authors": [
+        "Fengting Xie",
+        "Qing-Hua Zhu",
+        "Xin Li"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE",
+        "gr-qc"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06134",
+      "pdf_url": "https://arxiv.org/pdf/2606.06134",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06108",
+      "title": "Grain-size evolution and rapid dust growth in high-redshift galaxies",
+      "authors": [
+        "Daisuke Toyouchi",
+        "Andrea Ferrara",
+        "Yurina Nakazato",
+        "Kosei Matsumoto",
+        "Raffaella Schneider",
+        "Koki Otaki"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06108",
+      "pdf_url": "https://arxiv.org/pdf/2606.06108",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06082",
+      "title": "Interaction of Fast Magnetoacoustic Wave with the Localized Coronal Null and Generation of the Energetic Alfv\u00e9n Wave Packet",
+      "authors": [
+        "Akash Bairagi",
+        "Abhishekh K. Srivastava",
+        "Sripan Mondal",
+        "T.V. Zaqarashvili",
+        "Astrid Veronig",
+        "P. Bourdin",
+        "Ding Yuan",
+        "Ryun-Young Kwon"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.SR",
+      "categories": [
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06082",
+      "pdf_url": "https://arxiv.org/pdf/2606.06082",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06023",
+      "title": "Morphological and mineralogical characterization of the Freundlich-Sharonov Basin: Implications for the lunar farside magmatism",
+      "authors": [
+        "Tvisha Kapadia",
+        "Neha Panwar",
+        "Neeraj Srivastava",
+        "Rishitosh Sinha",
+        "Megha Bhatt",
+        "Anil Bhardwaj"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.EP",
+      "categories": [
+        "astro-ph.EP"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06023",
+      "pdf_url": "https://arxiv.org/pdf/2606.06023",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06005",
+      "title": "The Multi-phase Biconical Outflow in the local IR-Luminous Merger IRASF01364-1042",
+      "authors": [
+        "Y. Song (1 and 2 and 3)",
+        "V. U (4 and 5)",
+        "J. Kader (5)",
+        "M. Bianchin (5 and 6 and 7) J. Agostino (8)",
+        "L. Barcos-Mu\u00f1oz (9 and 10)",
+        "N. Torres-Alb\u00e0 (10)",
+        "A.Medling (8)",
+        "C. Ricci (11 and 12)",
+        "L. Armus (4)",
+        "T. Lai (4)",
+        "L. Ghodsi (13)",
+        "A. Evans (9 and 10)",
+        "H. Inami (14)",
+        "S. Stierwalt (15)",
+        "T. Bohn (14)",
+        "K. L. Emig (9)",
+        "V. Buiten (16)",
+        "G. Donnelly (8)",
+        "E. Treister (17)",
+        "A. Jimenez-Gallardo (1)",
+        "T. B\u00f6ker (18)",
+        "D. Kakkad (19)",
+        "S. Linden (20)",
+        "P. van der Werf (16)",
+        "V. Charmandaris (21 and 22 and 23)",
+        "R. Remigio (5)",
+        "L. Lenkic (4)",
+        "C. Finlez (1 and 2)",
+        "M. Sanchez-Garc\u00eda (22 and 23)",
+        "C. Lofaro (22 and 23)",
+        "A. Saravia (9 and 10)",
+        "I. Yoon (9)",
+        "G. C. Privon (9 and 10 and 24)",
+        "T. Gao (25 and 26)",
+        "H. Aziz (5)",
+        "R. McGurk (27)",
+        "T. D\u00edaz-Santos (22 and 23)",
+        "D. Kunneriath (9)",
+        "David B. Sanders (28) ((1) European Southern Observatory",
+        "Chile",
+        "(2) Joint ALMA Observatory",
+        "Chile",
+        "(3) Max-Planck-Institut f\u00fcr Radioastronomie",
+        "Germany",
+        "(4) IPAC",
+        "California Institute of Technology",
+        "USA",
+        "(5) University of California",
+        "Irvine",
+        "USA",
+        "(6) Instituto de Astrof\\' isica de Canarias",
+        "Spain",
+        "(7) Universidad de La Laguna",
+        "Spain",
+        "(8) Ritter Astrophysical Research Center and Department of Physics and Astronomy",
+        "University of Toledo",
+        "USA (9) National Radio Astronomy Observatory",
+        "Charlottesville",
+        "USA",
+        "(10) Department of Astronomy",
+        "University of Virginia",
+        "Charlottesville",
+        "USA",
+        "(11) Department of Astronomy",
+        "University of Geneva",
+        "Switzerland",
+        "(12) Instituto de Estudios Astrof\u00edsicos",
+        "Facultad de Ingenier\u00eda y Ciencias",
+        "Universidad Diego Portales",
+        "Chile",
+        "(13) Department of Physics \\&amp; Astronomy",
+        "University of British Columbia",
+        "Canada",
+        "(13) Hiroshima Astrophysical Science Center",
+        "Hiroshima University",
+        "Japan",
+        "(14) Occidental College",
+        "Physics Department",
+        "USA",
+        "(15) Leiden Observatory",
+        "Leiden University",
+        "The Netherlands",
+        "(16) Instituto de Alta Investigaci\u00f3n",
+        "Universidad de Tarapac\u00e1",
+        "Chile",
+        "(17) European Space Agency",
+        "c/o STScI",
+        "USA",
+        "(18) Centre for Astrophysics Research",
+        "University of Hertfordshire",
+        "UK",
+        "(19) Steward Observatory",
+        "University of Arizona",
+        "USA",
+        "(20) School of Sciences",
+        "European University Cyprus",
+        "Cyprus",
+        "(21) Institute of Astrophysics",
+        "Foundation for Research and Technology-Hellas (FORTH)",
+        "Greece",
+        "(22) Department of Physics",
+        "University of Crete",
+        "Greece",
+        "(23) Department of Astronomy",
+        "University of Florida",
+        "USA",
+        "(24) Research School of Astronomy and Astrophysics",
+        "Australian National University",
+        "Australia",
+        "(25) ARC Centre of Excellence for All Sky Astrophysics in 3 Dimensions (ASTRO 3D)",
+        "Australia",
+        "(26) W. M. Keck Observatory",
+        "USA",
+        "(27) Institute for Astronomy",
+        "University of Hawaii",
+        "USA)"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06005",
+      "pdf_url": "https://arxiv.org/pdf/2606.06005",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05971",
+      "title": "The quenching time and timescale distribution of z~2 quiescent galaxies from precise colour distribution analysis",
+      "authors": [
+        "Vivienne Wild",
+        "Ho-Hin Leung",
+        "Adam Carnall",
+        "Maya Skarbinski"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05971",
+      "pdf_url": "https://arxiv.org/pdf/2606.05971",
       "local_match": null,
       "local_authors": {}
     },
@@ -187,7 +797,7 @@
         "Z. Zhang",
         "O4 LIGO Detector authors"
       ],
-      "abstract": "We present efforts to identify, characterize, and mitigate narrow spectral artifacts in LIGO detector data during the fourth LIGO-Virgo-KAGRA observing run. Narrow spectral artifacts in gravitational-wave detectors are non-astrophysical noise sources that can degrade searches for narrowband persistent gravitational waves. Identifying and, where possible, mitigating these noise sources is one of the core efforts of the LIGO Detector Characterization group. Key software tools have been updated and new tools deployed for the fourth LIGO-Virgo-KAGRA observing run to facilitate investigations and data monitoring. We discuss these tool upgrades, and present several identified narrowband artifacts that have been successfully investigated and mitigated in LIGO data. Regardless of whether artifacts are mitigated or not, narrowband persistent gravitational-wave searches require information on which frequency bands contain non-astrophysical artifacts. Minimizing the number of bands containing non-astrophysical artifacts is essential to maximize the potential for discovery of a new class of gravitational-wave signals.",
+      "abstract": "",
       "primary_category": "astro-ph.IM",
       "categories": [
         "astro-ph.IM",
@@ -196,6 +806,1634 @@
       "submitted": "2026-06-05",
       "arxiv_url": "https://arxiv.org/abs/2606.05959",
       "pdf_url": "https://arxiv.org/pdf/2606.05959",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05944",
+      "title": "Simulations of interaction between outflow and surrounding broken power-law circumnuclear medium: implications for different radio light curves of TDEs",
+      "authors": [
+        "Xiangli Lei",
+        "Qingwen Wu",
+        "Chang Zhou",
+        "Wei-Hua Lei",
+        "Ya-Ping Li",
+        "Jiancheng Wu",
+        "Weibo Yang"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05944",
+      "pdf_url": "https://arxiv.org/pdf/2606.05944",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05934",
+      "title": "Planet engulfment in the chemically anomalous HD 129171/HD 129209 pair",
+      "authors": [
+        "Anne Rathsam",
+        "Jorge Mel\u00e9ndez",
+        "Rodolfo Smiljanic",
+        "Fan Liu",
+        "Lorenzo Spina"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.SR",
+      "categories": [
+        "astro-ph.SR",
+        "astro-ph.EP"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05934",
+      "pdf_url": "https://arxiv.org/pdf/2606.05934",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05910",
+      "title": "Modeling Gamma-Ray Burst Spectra with Convolutional Neural Networks: Fast-Cooling Synchrotron Emission in a Decaying Magnetic Field",
+      "authors": [
+        "Jia-Ming Chen",
+        "Ke-Rui Zhu",
+        "Shan Chang",
+        "Zhao-Yang Peng",
+        "Yong-Gang Zheng",
+        "Li Zhang"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05910",
+      "pdf_url": "https://arxiv.org/pdf/2606.05910",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05908",
+      "title": "Near- to Far-Infrared Spectral Energy Distribution Analysis of Interacting Galaxies in Hickson Compact Groups 56 and Stephan's Quintet (HCG 92)",
+      "authors": [
+        "Ayato Ikeuchi",
+        "Itsuki Sakon",
+        "Takashi Onaka",
+        "Fr\u00e9d\u00e9ric Galliano",
+        "Ronin Wu"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05908",
+      "pdf_url": "https://arxiv.org/pdf/2606.05908",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05891",
+      "title": "The Analysis of the Influence of Coordinate Error of Observation Station On the Construction Accuracy of Pulsar Time",
+      "authors": [
+        "Zurong Zhou",
+        "Chengshi Zhao",
+        "Yuping Gao",
+        "Jianping Yuan",
+        "Wei Han",
+        "Shougang Zhang",
+        "Yue Hu",
+        "Shijun Dang",
+        "Na Wang",
+        "Jingbo Wang",
+        "Minglei Tong",
+        "De Wu"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.IM",
+      "categories": [
+        "astro-ph.IM",
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05891",
+      "pdf_url": "https://arxiv.org/pdf/2606.05891",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05887",
+      "title": "Early Results from GLASS-JWST. XXVI. Spatially Resolved Star Formation and Balmer Decrements at $1.1<z<2.3$ from NIRISS Slitless Spectroscopy",
+      "authors": [
+        "Pengfei Ren",
+        "Xin Wang",
+        "Yuxuan Pang",
+        "Mengting Ju",
+        "Tucker Jones",
+        "Karl Glazebrook",
+        "Matthew A. Malkan",
+        "Gabriel Brammer",
+        "Victoria Strait",
+        "Themiya Nanayakkara",
+        "Tommaso Treu",
+        "Benedetta Vulcani",
+        "Peter J. Watson"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05887",
+      "pdf_url": "https://arxiv.org/pdf/2606.05887",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05853",
+      "title": "Reconstructing dark energy with fewer assumptions",
+      "authors": [
+        "Daniel A. Kessler",
+        "Eleonora Di Valentino",
+        "Luis A. Escamilla",
+        "Dragan Huterer"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.CO",
+      "categories": [
+        "astro-ph.CO"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05853",
+      "pdf_url": "https://arxiv.org/pdf/2606.05853",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05842",
+      "title": "The X-ray emission of the long-period transient and accreting cataclysmic variable ASKAP J174508.9-505149",
+      "authors": [
+        "M. Imbrogno",
+        "M. Veresvarska",
+        "Y. L. Wang",
+        "N. Rea",
+        "F. Coti Zelati",
+        "K. Rose",
+        "J. Pritchard",
+        "D. de Martino",
+        "S. Scaringi",
+        "Z. Wang",
+        "D. L. Kaplan"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05842",
+      "pdf_url": "https://arxiv.org/pdf/2606.05842",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05811",
+      "title": "Observing the integrated and spatially resolved Sun with ultra-high spectral resolution",
+      "authors": [
+        "S. Sch\u00e4fer",
+        "K. Royen",
+        "A. Huster Zapke",
+        "M. Ellwarth",
+        "A. Reiners"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.IM",
+      "categories": [
+        "astro-ph.IM",
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05811",
+      "pdf_url": "https://arxiv.org/pdf/2606.05811",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05810",
+      "title": "Fiber-coupling of Fourier Transform Spectrographs",
+      "authors": [
+        "S. Sch\u00e4fer",
+        "P. Huke",
+        "D. Meyer",
+        "A. Reiners"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.IM",
+      "categories": [
+        "astro-ph.IM"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05810",
+      "pdf_url": "https://arxiv.org/pdf/2606.05810",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05808",
+      "title": "Galaxy morphology dependent (black hole mass)-(velocity dispersion) relations: implications for gravitational wave forecasts and cosmological simulations",
+      "authors": [
+        "Alister W. Graham"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05808",
+      "pdf_url": "https://arxiv.org/pdf/2606.05808",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05807",
+      "title": "Simulation of proton-induced activation for low-Earth orbit high energy astrophysics missions",
+      "authors": [
+        "Riccardo Campana"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.IM",
+      "categories": [
+        "astro-ph.IM",
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05807",
+      "pdf_url": "https://arxiv.org/pdf/2606.05807",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05782",
+      "title": "Two Fabry-Perots and two calibration units for CARMENES",
+      "authors": [
+        "Sebastian Schafer",
+        "Eike W. G\u00fcnther",
+        "Ansgar Reiners",
+        "Johannes Winkler",
+        "Michael Pluto",
+        "J\u00f6rg Schiller"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.IM",
+      "categories": [
+        "astro-ph.IM"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05782",
+      "pdf_url": "https://arxiv.org/pdf/2606.05782",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05780",
+      "title": "WISE Photometry of Galaxies within 10 Mpc",
+      "authors": [
+        "R. Brent Tully",
+        "Ehsan Kourkchi",
+        "James D. Neill"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05780",
+      "pdf_url": "https://arxiv.org/pdf/2606.05780",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05762",
+      "title": "Evolution of the stellar mass function in open clusters from a universal and unsegregated initial state",
+      "authors": [
+        "Lu Li",
+        "Zhaozhou Li",
+        "Zhengyi Shao",
+        "Zepeng Zheng",
+        "Long Wang"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA",
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05762",
+      "pdf_url": "https://arxiv.org/pdf/2606.05762",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05738",
+      "title": "Joint Multi-Period Fermi-LAT and LHAASO Constraints on Axion-Like Particles from Mrk 421 Using Profile Likelihood with Gaussian Copula Correlation",
+      "authors": [
+        "Longhua Qin",
+        "Jiancheng Wang",
+        "Chuyuan Yang",
+        "Huaizhen Li",
+        "Ao Wang",
+        "Weiwei Na",
+        "Hushan Xu",
+        "Xiaogu Zhong",
+        "Zunli Yuan",
+        "Yubin Li",
+        "Guangbo Long"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05738",
+      "pdf_url": "https://arxiv.org/pdf/2606.05738",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05723",
+      "title": "Metastability in Emergent Dark Energy: A New Framework Confronting Cosmological Observations",
+      "authors": [
+        "Xiaolei Li",
+        "Tonghua Liu",
+        "Tian-Nuo Li",
+        "Guo-Hong Du",
+        "Arman Shafieloo",
+        "Marek Biesiada"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.CO",
+      "categories": [
+        "astro-ph.CO"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05723",
+      "pdf_url": "https://arxiv.org/pdf/2606.05723",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05668",
+      "title": "Mapping Active Star-Formation in Serpens and the Aquila Rift",
+      "authors": [
+        "T.A. Rector",
+        "R.M.P. Kerr",
+        "L. Prato",
+        "R.Y. Shuping",
+        "C. Bender",
+        "T.L. Esplin",
+        "S.E. Abhilash"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA",
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05668",
+      "pdf_url": "https://arxiv.org/pdf/2606.05668",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05659",
+      "title": "Dark asteroids exhibiting intermediate characteristics between C and X types",
+      "authors": [
+        "Sunao Hasegawa",
+        "Chrysa Avdellidou",
+        "Michael Marsset",
+        "Ullas Bhat",
+        "Marco Delbo",
+        "Daisuke Kuroda",
+        "Moe Matsuoka",
+        "Masateru Ishiguro",
+        "Cristina A. Thomas",
+        "Francesca E. DeMeo",
+        "Pierre Vernazza"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.EP",
+      "categories": [
+        "astro-ph.EP"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05659",
+      "pdf_url": "https://arxiv.org/pdf/2606.05659",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05601",
+      "title": "Station-Keeping Approach for Extremely Low Lunar Orbits with Solar Sailing",
+      "authors": [
+        "Jack Yarndley",
+        "Gregory Lantoine",
+        "Roberto Armellin"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.IM",
+      "categories": [
+        "astro-ph.IM"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05601",
+      "pdf_url": "https://arxiv.org/pdf/2606.05601",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05540",
+      "title": "A linear residual structure across galaxy rotation curves",
+      "authors": [
+        "Hosik Lee"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05540",
+      "pdf_url": "https://arxiv.org/pdf/2606.05540",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05539",
+      "title": "Dissipative Cosmology and the Nature of Dark Energy: Insights from Bulk Viscosity with DESI DR2 observations",
+      "authors": [
+        "Shahnawaz A. Adil",
+        "Sonej Alam",
+        "Somasri Sen",
+        "J. Alberto Vazquez"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.CO",
+      "categories": [
+        "astro-ph.CO"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05539",
+      "pdf_url": "https://arxiv.org/pdf/2606.05539",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05529",
+      "title": "The Double-lined Eclipsing $\u03b3$ Doradus System AX Draconis in a 0.568-day Orbit",
+      "authors": [
+        "Jae Woo Lee",
+        "Min-Ji Jeong",
+        "Kyeongsoo Hong",
+        "Jang-Ho Park",
+        "Pakakaew Rittipruk",
+        "Hye-Young Kim"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.SR",
+      "categories": [
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05529",
+      "pdf_url": "https://arxiv.org/pdf/2606.05529",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05521",
+      "title": "A Kinematic Study of Wolf-Rayet Stars at the Galactic Center I: Binary Candidates and Constraints on the Binary Fraction",
+      "authors": [
+        "Rory O. Bentley",
+        "Tuan Do",
+        "Andrea Ghez",
+        "Devin Chu",
+        "Anna Ciurlo",
+        "Abhimat K. Gautam",
+        "Zo\u00eb Haggard",
+        "Matthew W. Hosek Jr.",
+        "Kelly Kosmo O'neil",
+        "Rebecca Lewis-Merrill",
+        "Gregory D. Martinez",
+        "Anna Pusack",
+        "Shoko Sakai",
+        "Jessica R. Lu",
+        "Mark R. Morris",
+        "Keith Matthews"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA",
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05521",
+      "pdf_url": "https://arxiv.org/pdf/2606.05521",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05514",
+      "title": "Complex Analysis of Askaryan Radiation: UHECR Reconstruction with Askaryan Radio Array",
+      "authors": [
+        "J. C. Hanson",
+        "D. Ibanez-Rodriguez"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05514",
+      "pdf_url": "https://arxiv.org/pdf/2606.05514",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05479",
+      "title": "On the potential for inhomogeneities to mimic an evolving dark energy",
+      "authors": [
+        "Hayley J. Macpherson",
+        "Georgios Valogiannis"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.CO",
+      "categories": [
+        "astro-ph.CO",
+        "gr-qc"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05479",
+      "pdf_url": "https://arxiv.org/pdf/2606.05479",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05451",
+      "title": "Ultraviolet-Driven Atmospheric Degeneracies Challenge Conventional Biosignature Frameworks for Terrestrial Planets with Ultracool M Dwarf Hosts: An Archean-Analog TRAPPIST-1 e Case Study",
+      "authors": [
+        "Evan L. Sneed",
+        "Edward W. Schwieterman",
+        "Sarah R. Peacock",
+        "Nicholas F. Wogan",
+        "Timothy W. Lyons"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.EP",
+      "categories": [
+        "astro-ph.EP",
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05451",
+      "pdf_url": "https://arxiv.org/pdf/2606.05451",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05417",
+      "title": "Building a Roadmap for Hubble science into the 2030s: Crucial UV spectroscopy of Oe stars in nearby galaxies",
+      "authors": [
+        "A. Wofford",
+        "D. Pauli",
+        "A.A.C. Sander",
+        "O. Arangur\u00e9",
+        "M.S. Oey",
+        "O.G. Telford",
+        "P.A. Crowther",
+        "J. S. Vink",
+        "Tomer Shenar",
+        "M. Gull",
+        "L.P. Martins",
+        "S. Sim\u00f3n-D\u00edaz",
+        "S. Zharikov",
+        "L. M. Oskinova",
+        "L.J. Smith"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.IM",
+      "categories": [
+        "astro-ph.IM",
+        "astro-ph.GA",
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05417",
+      "pdf_url": "https://arxiv.org/pdf/2606.05417",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05364",
+      "title": "A Critical UV Legacy: A Hubble Roadmap for HWO Science Readiness",
+      "authors": [
+        "Sarah Peacock",
+        "Aiden S. Zelakewicz",
+        "Lisa Kaltenegger",
+        "Breanna A. Binder",
+        "Jos\u00e9 A. Caballero",
+        "L\u00eda Corrales",
+        "Kevin France",
+        "Cynthia Froning",
+        "Eric Mamajek",
+        "Seth Redfield",
+        "Tyler Richey-Yowell",
+        "Keighley Rockcliffe",
+        "Edward Schwieterman",
+        "Riccardo Spinelli",
+        "Noah Tuchow",
+        "David Wilson",
+        "Allison Youngblood"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.IM",
+      "categories": [
+        "astro-ph.IM",
+        "astro-ph.EP",
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05364",
+      "pdf_url": "https://arxiv.org/pdf/2606.05364",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05360",
+      "title": "Entropy-mode imprints in the solar corona: non-exponential damping and phase shifts of compressive oscillations",
+      "authors": [
+        "Dmitrii Kolotkov",
+        "Sergey Belov",
+        "Mohamed Sherif"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.SR",
+      "categories": [
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05360",
+      "pdf_url": "https://arxiv.org/pdf/2606.05360",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05358",
+      "title": "The DESI results impact the local determination of $H_0$",
+      "authors": [
+        "Michael S. Turner",
+        "Dragan Huterer"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.CO",
+      "categories": [
+        "astro-ph.CO"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05358",
+      "pdf_url": "https://arxiv.org/pdf/2606.05358",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05355",
+      "title": "Bulk vs. turbulent motions at the centres of galaxy clusters: AGN-driven turbulence according to TNG-Cluster",
+      "authors": [
+        "Bipradeep Saha",
+        "Annalisa Pillepich",
+        "Joey Braspenning",
+        "Marine Prunier",
+        "Dimitris Chatzigiannakis",
+        "Dylan Nelson"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05355",
+      "pdf_url": "https://arxiv.org/pdf/2606.05355",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05344",
+      "title": "Sky-Plane Velocity Distributions of Interstellar Objects and Implications for Their Detection",
+      "authors": [
+        "Cassidy E. Walker",
+        "Darryl Z. Seligman"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.EP",
+      "categories": [
+        "astro-ph.EP",
+        "astro-ph.GA",
+        "astro-ph.IM"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05344",
+      "pdf_url": "https://arxiv.org/pdf/2606.05344",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05343",
+      "title": "Constraining Orbital Eccentricity of a Supermassive Black Hole Binary Candidate PKS 2131-0211",
+      "authors": [
+        "Avinash Kumar Paladi",
+        "A. Gopakumar",
+        "Sushmita Agarwal",
+        "Fazal Kareem"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE",
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05343",
+      "pdf_url": "https://arxiv.org/pdf/2606.05343",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05323",
+      "title": "Strong [OIII]$+$H$\u03b2$ emitters dominated the ionizing budget at $z\\sim7$",
+      "authors": [
+        "Isak Wold",
+        "Sangeeta Malhotra",
+        "James Rhoads"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05323",
+      "pdf_url": "https://arxiv.org/pdf/2606.05323",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05322",
+      "title": "How Common Are Common Envelopes? Quantifying Their Role in Forming Gravitational-Wave Sources",
+      "authors": [
+        "Floor S. Broekgaarden",
+        "Ana Lam",
+        "Sasha Levina",
+        "Jakub Klencki",
+        "Kyle A. Rocha",
+        "Lieke van Son",
+        "Steffani M. Grondin",
+        "Monica Gallegos-Garcia",
+        "Brian D. Metzger",
+        "Enrico Ramirez-Ruiz",
+        "Angela Twum",
+        "Melanie Santiago",
+        "Julia Haynes",
+        "Tyler B. Smith",
+        "Amedeo Romagnolo",
+        "Edo Berger",
+        "Lucas M. de S\u00e1"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE",
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05322",
+      "pdf_url": "https://arxiv.org/pdf/2606.05322",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05321",
+      "title": "Hot Degenerate Components in Blue Stragglers: A Multi-Wavelength SED Analysis of Nine Open Clusters with Swift/UVOT",
+      "authors": [
+        "Deniz Cennet \u00c7\u0131nar",
+        "D. Bisht",
+        "Sel\u00e7uk Bilir",
+        "Songmei Qin",
+        "Leila Saker"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.SR",
+      "categories": [
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05321",
+      "pdf_url": "https://arxiv.org/pdf/2606.05321",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05318",
+      "title": "The Influence of Opacity on Inferred MHD Wave Signatures in the Lower Solar Atmosphere",
+      "authors": [
+        "Samuel J. Skirvin",
+        "Samuel D. T. Grant",
+        "David B. Jess",
+        "Ryan J. Campbell",
+        "Shahin Jafarzadeh",
+        "Mika V. Kontiainen",
+        "Michele Berretti",
+        "Timothy J. Duckenfield",
+        "Glen Chambers",
+        "Marco Stangalini",
+        "Luc Rouppe van der Voort"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.SR",
+      "categories": [
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05318",
+      "pdf_url": "https://arxiv.org/pdf/2606.05318",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05312",
+      "title": "The WISSHFUL program: the highest redshift UFO discovered in a non-lensed QSO",
+      "authors": [
+        "G. Lanzuisi",
+        "L. Borrelli",
+        "E. Piconcelli",
+        "G. Chartas",
+        "A. Luminari",
+        "J. Reeves",
+        "V. Braito",
+        "E. Bertola",
+        "S. Bianchi",
+        "A. Comastri",
+        "M. Brusa",
+        "C. Vignali",
+        "F. Vito",
+        "S. Marchesi",
+        "M. Cappi",
+        "M. Dadina",
+        "L. Zappacosta",
+        "A. Tortosa",
+        "M. Bischetti",
+        "G. Vietri",
+        "F. Salvestrini",
+        "G. Bruni",
+        "M. Fanelli",
+        "E. Kammoun",
+        "X. Zhao",
+        "G. Matzeu",
+        "F. Tombesi",
+        "A. Marinucci",
+        "M. Gaspari",
+        "T. Misawa",
+        "D. Stern"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE",
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05312",
+      "pdf_url": "https://arxiv.org/pdf/2606.05312",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05310",
+      "title": "A Decade to Map the Diffuse Universe: FRB-QSO Pairs with HST/COS Spectroscopy",
+      "authors": [
+        "Jessica Werk",
+        "Matthew McQuinn",
+        "J. Xavier Prochaska",
+        "Sunil Simha",
+        "Rongmon Bordoloi",
+        "Liam Connor",
+        "Andrew Fox",
+        "J. Chris Howk",
+        "Cameron Hummels",
+        "Lordrick Kahinga",
+        "Victoria Kaspi",
+        "Khee-Gan Lee",
+        "Nicolas Lehner",
+        "Kiyoshi Masui",
+        "Benjamin Oppenheimer",
+        "Vikram Ravi",
+        "Kate Rubin",
+        "Kirill Tchernyshyov",
+        "Yong Zheng"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05310",
+      "pdf_url": "https://arxiv.org/pdf/2606.05310",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05307",
+      "title": "Constraining the jet base emission of M87* with past and future Event Horizon Telescope observations",
+      "authors": [
+        "Noemi La Bella",
+        "Michael Janssen",
+        "Britton Jeter",
+        "Hendrik M\u00fcller",
+        "Bram Van de Berg",
+        "Hung-Yi Pu",
+        "Paul Tiede",
+        "Heino Falcke"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05307",
+      "pdf_url": "https://arxiv.org/pdf/2606.05307",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05301",
+      "title": "AGN Line-Intensity Mapping: A Probe of Faint Black Holes at Cosmic Noon",
+      "authors": [
+        "Eli Visbal",
+        "Greg L. Bryan"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.CO",
+      "categories": [
+        "astro-ph.CO",
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05301",
+      "pdf_url": "https://arxiv.org/pdf/2606.05301",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05298",
+      "title": "Dynamical models of cluster members to probe the total mass properties of cluster subhalos. I. A comparison with parametric strong lensing models",
+      "authors": [
+        "Nicola Bianchetti",
+        "Claudio Grillo",
+        "Giovanni Granata",
+        "Pietro Bergamini",
+        "Massimo Meneghetti",
+        "Amata Mercurio",
+        "Piero Rosati",
+        "Eros Vanzella",
+        "Gabriel B. Caminha"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05298",
+      "pdf_url": "https://arxiv.org/pdf/2606.05298",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05295",
+      "title": "TOI-3664 b, TOI-4034 b & TOI-6564 b: Three new hot Jupiters around stars approaching the terminal age main sequence",
+      "authors": [
+        "Matthew P. Battley",
+        "Marina Lafarga",
+        "Edward Gillen",
+        "Monika Lendl",
+        "Sol\u00e8ne Ulmer-Moll",
+        "Cynthia S. K. Ho",
+        "Emilio Marfil",
+        "Sergio Sousa",
+        "Yolanda Frensch",
+        "Dimitri Veras",
+        "Fran\u00e7ois Bouchy",
+        "Yann Carteret",
+        "Ian J. M. Crossfield",
+        "Tyler Fairnington",
+        "Mathilde Houelle",
+        "Dan Huber",
+        "Marziye Jafariyazani",
+        "L\u00e9na Parc",
+        "Don Radford",
+        "TG Tan",
+        "Sara Tavella",
+        "Rob Wittenmyer",
+        "Duncan Wright",
+        "George Zhou"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.EP",
+      "categories": [
+        "astro-ph.EP"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05295",
+      "pdf_url": "https://arxiv.org/pdf/2606.05295",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05292",
+      "title": "Eppur binaria non \u00e9 esclusa: Gaia astrometry does not disfavor a binary origin for Long Secondary Periods",
+      "authors": [
+        "Patryk Iwanek",
+        "Piotr A. Ko\u0142aczek-Szyma\u0144ski",
+        "Dorota M. Skowron",
+        "Grzegorz Pojma\u0144ski",
+        "Igor Soszy\u0144ski"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.SR",
+      "categories": [
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05292",
+      "pdf_url": "https://arxiv.org/pdf/2606.05292",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05286",
+      "title": "Nonthermal Particle Acceleration by Magnetic Pumping in Pulsating Plasmas",
+      "authors": [
+        "Giuseppe Arr\u00f2",
+        "Vladimir Zhdankin",
+        "Fabio Bacchini"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE",
+        "physics.plasm-ph"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05286",
+      "pdf_url": "https://arxiv.org/pdf/2606.05286",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05285",
+      "title": "Toward decision-aware AI for LSST-scale time-domain astronomy",
+      "authors": [
+        "C. R. Bom",
+        "A. Mahabal",
+        "F. Bianco",
+        "P. Darc",
+        "B. Fraga",
+        "R. Bonito",
+        "S. Chaini",
+        "M. W. Coughlin",
+        "S. Dillmann",
+        "F. Fontinele Nunes",
+        "A. Gomboc",
+        "N. Hernitschek",
+        "X. Li",
+        "F. Z. Majidi",
+        "A. I. Malz",
+        "A. Melandri",
+        "V. Petrecca",
+        "S. Piranomonte",
+        "M. Rabus",
+        "F. Ragosta",
+        "O. Razim",
+        "M. C. Rom\u00e3o",
+        "N. Sarin",
+        "A. Sasli",
+        "V. A. Sre\u0107kovi\u0107",
+        "A. Tramuto",
+        "V. Vuj\u010di\u0107",
+        "M. J. Vyas",
+        "Rubin LSST Transients",
+        "Variable Stars Science Collaboration"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.IM",
+      "categories": [
+        "astro-ph.IM",
+        "astro-ph.HE",
+        "hep-ph"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05285",
+      "pdf_url": "https://arxiv.org/pdf/2606.05285",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05284",
+      "title": "Metal-Poor Gas Accretion Drives Giant Clump Formation at 0.6 < z < 2.6",
+      "authors": [
+        "Visal Sok",
+        "Adam Muzzin",
+        "Ben Forrest",
+        "Gillian Wilson",
+        "Jialu Chen",
+        "Vivian Yun Yan Tan",
+        "Sunna Withers",
+        "Roberto Abraham",
+        "Maru\u0161a Brada\u010d",
+        "Vicente Estrada-Carpenter",
+        "Kartheik G. Iyer",
+        "Nicholas S. Martis",
+        "Ga\u00ebl Noirot",
+        "Ghassan T. E. Sarrouh",
+        "Marcin Sawicki",
+        "Chris J. Willott",
+        "Aur\u00e9lien Henry",
+        "Naadiyah Jagga",
+        "Danilo Marchesini",
+        "Ian McConachie",
+        "Katherine Myers",
+        "Nelson Nunes",
+        "Luke Robbins"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05284",
+      "pdf_url": "https://arxiv.org/pdf/2606.05284",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05283",
+      "title": "Strong environmental AGN enhancement among DSFGs in z > 2 protoclusters",
+      "authors": [
+        "Monica Natalia Isla Llave",
+        "Fabio Vito",
+        "Alberto Traina",
+        "Cristian Vignali",
+        "Olga Cucciati",
+        "Benjamin Forrest",
+        "Gayathri Gururajan",
+        "Brian Lemaux",
+        "Sylvia Adscheid",
+        "Sebastiano Cantalupo",
+        "Kazuki Daikuhara",
+        "Marta Galbiati",
+        "Roberto Gilli",
+        "Tadayuki Kodama",
+        "Stefano Marchesi",
+        "Maurillio Pannella",
+        "Antonio Pensabene",
+        "Maria del Carmen Polletta",
+        "Rhythm Shimakawa",
+        "Paolo Tozzi"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05283",
+      "pdf_url": "https://arxiv.org/pdf/2606.05283",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05281",
+      "title": "Little red dots as a cosmological probe: constraining $H_0$ with quasi-periodic pulsations",
+      "authors": [
+        "Zijian Zhang",
+        "Kohei Inayoshi",
+        "Masamune Oguri",
+        "Linhua Jiang",
+        "Fengwu Sun",
+        "Mingyu Li",
+        "Xiaojing Lin"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA",
+        "astro-ph.CO",
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05281",
+      "pdf_url": "https://arxiv.org/pdf/2606.05281",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05277",
+      "title": "The free-streaming length of dark matter from JWST observations of 28 strong gravitational lenses",
+      "authors": [
+        "D. Gilman",
+        "A. M. Nierenberg",
+        "T. Treu",
+        "K. N. Abazajian",
+        "T. Anguita",
+        "V. N. Bennert",
+        "A. J. Benson",
+        "S. Birrer",
+        "S. G. Djorgovski",
+        "X. Du",
+        "C. Gannon",
+        "S. F. Hoenig",
+        "R. E. Keeley",
+        "A. Kusenko",
+        "H. R. Larsson",
+        "M. Malkan",
+        "T. Morishita",
+        "V. Motta",
+        "L. A. Moustakas",
+        "P. Mozumdar",
+        "H. Paugnat",
+        "W. Sheu",
+        "D. Sluse",
+        "D. Stern",
+        "M. Stiavelli",
+        "D. Williams",
+        "K. C. Wong"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.CO",
+      "categories": [
+        "astro-ph.CO",
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05277",
+      "pdf_url": "https://arxiv.org/pdf/2606.05277",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05244",
+      "title": "UK White Paper on Space-based total solar eclipse observations: structure and dynamics of the solar atmosphere",
+      "authors": [
+        "Lucie M. Green",
+        "Nicola Baresi",
+        "Huw Morgan",
+        "Matt Gunn",
+        "Amir Caspi",
+        "Daniel B. Seaton",
+        "Giulio Del Zanna",
+        "Yeimy J. Rivera",
+        "Francisco Javier Bailen",
+        "David Orozco Suarez",
+        "Anthony R. Yeates",
+        "Peter Wyper",
+        "Nawin Ngampoopun",
+        "Nathalia Alzate",
+        "Simone Di Matteo",
+        "Erika Palmerio",
+        "Richard J. Morton",
+        "Eleanna Asvestari",
+        "Manuela Temmer",
+        "Greta Cappello",
+        "Teodora Mihailescu",
+        "Karl Battams"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.IM",
+      "categories": [
+        "astro-ph.IM",
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05244",
+      "pdf_url": "https://arxiv.org/pdf/2606.05244",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05237",
+      "title": "GREX-PLUS Science Book v2",
+      "authors": [
+        "GREX-PLUS Science Team : Shunsuke Baba (ISAS/JAXA)",
+        "Sirio Belli (Universita di Bologna)",
+        "Pietro Benotto (INAF - Osservatorio Astronomico di Padova / Universita di Bologna)",
+        "Ivan Delvecchio (INAF - Osservatorio di Astrofisica e Scienza dello Spazio di Bologna)",
+        "Yoshinobu Fudamoto (Chiba University)",
+        "Yuka Fujii (NAOJ)",
+        "Yuichi Harikane (University of Tokyo)",
+        "Yasuhiro Hirahara (Nagoya University)",
+        "Akio K. Inoue (Waseda University)",
+        "Yoshiyuki Inoue (University of Osaka)",
+        "Hajime Kawahara (ISAS/JAXA / University of Tokyo)",
+        "Taiki Kawamuro (University of Osaka)",
+        "Yui Kawashima (Kyoto University)",
+        "Lucas Kimmig (Ludwig-Maximilians-University / University of Nottingham)",
+        "Tadayuki Kodama (Tohoku University)",
+        "Mitsuru Kokubo (NAOJ)",
+        "Hiroyuki Kurokawa (University of Tokyo)",
+        "Katsunori Kusakabe (University of Osaka)",
+        "Kosei Matsumoto (Ghent University)",
+        "Noriyuki Matsunaga (University of Tokyo)",
+        "Taro Matsuo (University of Osaka)",
+        "Yoshiki Matsuoka (Ehime University)",
+        "Shuji Matsuura (Kwansei Gakuin University)",
+        "Toru Misawa (Shinshu University)",
+        "Shota Miyazaki (ISAS/JAXA)",
+        "Alessia Moretti (INAF - Osservatorio Astronomico di Padova)",
+        "Kumiko Morihana (NAOJ)",
+        "Takashi Moriya (NAOJ)",
+        "Kentaro Nagamine (University of Osaka / University of Tokyo / University of Nevada Las Vegas)",
+        "Kimihiko Nakajima (Kanazawa University)",
+        "Hideko Nomura (NAOJ)",
+        "Shota Notsu (University of Tokyo)",
+        "Takafumi Ootsubo (University of Occupational and Environmental Health)",
+        "Kazumasa Ohno (NAOJ)",
+        "Giorgia Peluso (INAF - Osservatorio di Astrofisica e Scienza dello Spazio di Bologna)",
+        "Bianca M. Poggianti (INAF - Osservatorio Astronomico di Padova)",
+        "Mario Radovich (INAF - Osservatorio Astronomico di Padova)",
+        "Giulia Rodighiero (University of Padova)",
+        "Hideo Sagawa (Kyoto Sangyo University)",
+        "Kazuhiro Shimasaku (University of Tokyo)",
+        "Takashi Shimonishi (Niigata University)",
+        "Ken-ichi Tadaki (Hokkai-Gakuen University)",
+        "Kosuke Takahashi (Tohoku University)",
+        "Michihiro Takami (ASIAA)",
+        "Shuya Tan (JAMSTEC)",
+        "Takumi Tanaka (University of Tokyo)",
+        "Tsuyoshi Terai (NAOJ)",
+        "Yoshiki Toba (Ritsumeikan University)",
+        "Roberta Tripodi (INAF - Astronomical Observatory of Rome)",
+        "Francesco Valentino (DAWN / Technical University of Denmark)",
+        "Benedetta Vulcani (INAF - Osservatorio Astronomico di Padova)",
+        "Taihei Yano (NAOJ)",
+        "Chikako Yasui (NAOJ)",
+        "Stefano Zibetti (INAF - Arcetri Astrophysical Observatory)"
+      ],
+      "abstract": "",
+      "primary_category": "astro-ph.IM",
+      "categories": [
+        "astro-ph.IM",
+        "astro-ph.EP",
+        "astro-ph.GA",
+        "astro-ph.HE",
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05237",
+      "pdf_url": "https://arxiv.org/pdf/2606.05237",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06478",
+      "title": "Short Gravitational-Wave Transients as Probes of Cosmic Domain Walls",
+      "authors": [
+        "Tore Boybeyi",
+        "Doga Veske",
+        "David Maibach"
+      ],
+      "abstract": "",
+      "primary_category": "gr-qc",
+      "categories": [
+        "gr-qc",
+        "astro-ph.CO",
+        "hep-ph"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06478",
+      "pdf_url": "https://arxiv.org/pdf/2606.06478",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06378",
+      "title": "On the Possibility of a Strong First-Order Phase Transition in Neutron Stars",
+      "authors": [
+        "Zheng Cao",
+        "Lie-Wen Chen"
+      ],
+      "abstract": "",
+      "primary_category": "nucl-th",
+      "categories": [
+        "nucl-th",
+        "astro-ph.HE",
+        "hep-ph",
+        "nucl-ex"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06378",
+      "pdf_url": "https://arxiv.org/pdf/2606.06378",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06376",
+      "title": "Detecting Tidal Resonances in Binary Neutron Stars",
+      "authors": [
+        "Fabian Gittins",
+        "Harsh Narola",
+        "Thibeau Wouters",
+        "Peter T. H. Pang",
+        "Tanja Hinderer",
+        "Chris Van Den Broeck"
+      ],
+      "abstract": "",
+      "primary_category": "gr-qc",
+      "categories": [
+        "gr-qc",
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06376",
+      "pdf_url": "https://arxiv.org/pdf/2606.06376",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06355",
+      "title": "$\\tt BlackHawk$ $\\tt v3.0$: Hawking Radiation from Regular Black Holes",
+      "authors": [
+        "Alexandre Arbey",
+        "Marco Calz\u00e0",
+        "L\u00e9a Malacher",
+        "Davide Pedrotti",
+        "Yuber F. Perez-Gonzalez"
+      ],
+      "abstract": "",
+      "primary_category": "gr-qc",
+      "categories": [
+        "gr-qc",
+        "astro-ph.CO",
+        "hep-ph"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06355",
+      "pdf_url": "https://arxiv.org/pdf/2606.06355",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.06198",
+      "title": "Hub-Aware Hybrid Search: Accelerating the Locally Aligned Ant Technique",
+      "authors": [
+        "Simone Vilardi",
+        "Reynier Peletier",
+        "Felipe Contreras",
+        "Kerstin Bunte"
+      ],
+      "abstract": "",
+      "primary_category": "cs.NE",
+      "categories": [
+        "cs.NE",
+        "astro-ph.CO",
+        "astro-ph.GA",
+        "astro-ph.IM"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.06198",
+      "pdf_url": "https://arxiv.org/pdf/2606.06198",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05508",
+      "title": "Black Bounce Solutions from a Self-Interacting 3-Form Field in General Relativity",
+      "authors": [
+        "Francisco S.N. Lobo",
+        "Manuel E. Rodrigues"
+      ],
+      "abstract": "",
+      "primary_category": "gr-qc",
+      "categories": [
+        "gr-qc",
+        "astro-ph.HE",
+        "hep-th"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05508",
+      "pdf_url": "https://arxiv.org/pdf/2606.05508",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05352",
+      "title": "Running Vacuum in the expanding Universe: a unified QFT paradigm for Inflation and Dark Energy",
+      "authors": [
+        "Joan Sol\u00e0 Peracaula"
+      ],
+      "abstract": "",
+      "primary_category": "gr-qc",
+      "categories": [
+        "gr-qc",
+        "astro-ph.CO",
+        "hep-ph",
+        "hep-th"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05352",
+      "pdf_url": "https://arxiv.org/pdf/2606.05352",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05341",
+      "title": "Behavior of kinetic instabilities in a dynamically forming resonant distribution",
+      "authors": [
+        "E. J. Hartigan-O'Connor",
+        "T. Barberis",
+        "E. G. Devin",
+        "A. Bierwage",
+        "V. N. Duarte"
+      ],
+      "abstract": "",
+      "primary_category": "physics.plasm-ph",
+      "categories": [
+        "physics.plasm-ph",
+        "astro-ph.GA",
+        "physics.flu-dyn"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05341",
+      "pdf_url": "https://arxiv.org/pdf/2606.05341",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05320",
+      "title": "Gravitational Wave Imprints of a High-Quality Axion and the Origin of Flavor Hierarchies",
+      "authors": [
+        "K.S. Babu",
+        "Sai Charan Chandrasekar",
+        "Sudip Jana",
+        "Sudip Manna"
+      ],
+      "abstract": "",
+      "primary_category": "hep-ph",
+      "categories": [
+        "hep-ph",
+        "astro-ph.CO",
+        "astro-ph.HE",
+        "hep-ex"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05320",
+      "pdf_url": "https://arxiv.org/pdf/2606.05320",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.05299",
+      "title": "Heavy-element paleodetectors for Higgsino dark matter",
+      "authors": [
+        "Peter W. Graham",
+        "Harikrishnan Ramani",
+        "Samuel S. Y. Wong"
+      ],
+      "abstract": "",
+      "primary_category": "hep-ph",
+      "categories": [
+        "hep-ph",
+        "astro-ph.CO",
+        "astro-ph.GA",
+        "hep-ex"
+      ],
+      "submitted": "2026-06-05",
+      "arxiv_url": "https://arxiv.org/abs/2606.05299",
+      "pdf_url": "https://arxiv.org/pdf/2606.05299",
       "local_match": null,
       "local_authors": {}
     }
