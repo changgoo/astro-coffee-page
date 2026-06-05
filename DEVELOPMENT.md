@@ -455,6 +455,10 @@ Bootstrap-history listing writes are skipped when the existing date and paper
 payload already match, so failed/no-op enrichment attempts do not refresh
 `fetched_at` timestamps.
 
+Explicit API metadata enrichment includes `max_results` matching the `id_list`
+size so each chunk can return all requested papers rather than the API default
+page size.
+
 ---
 
 ## Planned / open issues

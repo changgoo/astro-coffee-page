@@ -23,7 +23,10 @@ def build_query_url(start=0, max_results=MAX_PER_REQUEST):
 
 def build_id_list_url(ids):
     """Build an arXiv API URL for an explicit list of arXiv IDs."""
-    params = urllib.parse.urlencode({"id_list": ",".join(ids)})
+    params = urllib.parse.urlencode({
+        "id_list": ",".join(ids),
+        "max_results": len(ids),
+    })
     return f"{BASE_URL}?{params}"
 
 

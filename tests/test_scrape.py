@@ -143,6 +143,13 @@ def test_build_query_url_no_date_window():
     assert "submittedDate:[" not in url
 
 
+def test_build_id_list_url_requests_all_ids():
+    """Explicit metadata lookups must request all IDs in the id_list."""
+    url = arxiv_api.build_id_list_url(["2606.00001", "2606.00002"])
+    assert "id_list=2606.00001%2C2606.00002" in url
+    assert "max_results=2" in url
+
+
 # ── get_target_date ───────────────────────────────────────────────────────────
 
 def test_get_target_date_passthrough():
