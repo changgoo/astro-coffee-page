@@ -1051,6 +1051,30 @@ def test_bootstrap_history_writes_six_listing_files(tmp_path, monkeypatch):
     assert json.loads((tmp_path / "today.json").read_text())["papers"][0]["id"] == "P0"
 
 
+def test_bootstrap_history_skips_unchanged_listing_write(tmp_path, monkeypatch):
+    """bootstrap_history does not refresh fetched_at when listing content is unchanged."""
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config" / "authors.json").write_text(json.dumps({"authors": []}))
+    fetched = [make_paper("P0", "2026-03-10")]
+    expected_paper = dict(fetched[0])
+    expected_paper.pop("_listing_date")
+    expected_paper["local_match"] = None
+    expected_paper["local_authors"] = {}
+    (tmp_path / "today.json").write_text(json.dumps({
+        "fetched_at": "2026-01-01T00:00:00Z",
+        "date": "2026-03-10",
+        "total": 1,
+        "papers": [expected_paper],
+    }))
+
+    monkeypatch.setattr(scrape_workflows, "fetch_latest_papers_from_listing", lambda **kwargs: fetched)
+
+    scrape_workflows.bootstrap_history(tmp_path, tmp_path)
+
+    today = json.loads((tmp_path / "today.json").read_text())
+    assert today["fetched_at"] == "2026-01-01T00:00:00Z"
+
+
 def test_run_scrape_keeps_clock_date_when_newer_late_listing_exists(tmp_path, monkeypatch):
     """A partial newer HTML listing must not roll the expected listing forward."""
     (tmp_path / "config").mkdir()

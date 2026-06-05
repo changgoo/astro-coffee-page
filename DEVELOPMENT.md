@@ -451,6 +451,10 @@ HTML-scraped papers are enriched before writing: missing fields such as
 `--api-enrich` enables an explicit arXiv API metadata pass for remaining missing
 abstracts while preserving HTML-derived listing dates.
 
+Bootstrap-history listing writes are skipped when the existing date and paper
+payload already match, so failed/no-op enrichment attempts do not refresh
+`fetched_at` timestamps.
+
 ---
 
 ## Planned / open issues

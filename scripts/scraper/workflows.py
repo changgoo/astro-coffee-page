@@ -78,7 +78,7 @@ def bootstrap_history(data_dir, repo_root, api_enrich=False):
 
     for offset, listing_date in enumerate(listing_dates[:HISTORY_DAYS + 1]):
         papers = groups[listing_date]
-        save_listing(history_path(data_dir, offset), listing_date, papers)
+        save_listing(history_path(data_dir, offset), listing_date, papers, skip_unchanged=True)
 
     for offset in range(len(listing_dates[:HISTORY_DAYS + 1]), HISTORY_DAYS + 1):
         path = history_path(data_dir, offset)
