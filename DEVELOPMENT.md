@@ -406,6 +406,31 @@ matches grouped by arXiv listing date.
 
 ---
 
+## 30. HTML listing fallback for arXiv API errors
+
+Added a Python 3 stdlib fallback scraper for arXiv HTML listings. Normal
+scraping still tries the arXiv API first, but uses a single quick API attempt
+and falls back to `arxiv.org/list/astro-ph/new` on `HTTP 429`, `HTTP 503`, or
+API network timeouts. The fallback parser emits the same paper JSON shape used
+by the API path, with arXiv listing-date headings used for `_listing_date` and
+`submitted`. Bootstrap-sized fallback requests still use the recent listing
+history because they need multiple days.
+
+---
+
+## 31. Split scraper implementation into modules
+
+Refactored the monolithic `scripts/scrape.py` into a `scripts/scraper/` package
+organized by responsibility: configuration, date helpers, paper normalization,
+HTTP helpers, arXiv API parsing, arXiv HTML parsing, fallback fetch orchestration,
+author/discussed annotation, archive storage, rolling history, and workflows.
+
+`scripts/scrape.py` remains the stable command entrypoint and owns CLI argument
+dispatch. Tests import the focused modules directly instead of relying on a
+broad compatibility facade.
+
+---
+
 ## Planned / open issues
 
 | # | Title |
