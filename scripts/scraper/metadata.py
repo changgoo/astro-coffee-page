@@ -18,6 +18,7 @@ FILL_FIELDS = (
     "arxiv_url",
     "pdf_url",
 )
+API_METADATA_TIMEOUT = 60
 
 
 def _has_value(value):
@@ -97,7 +98,7 @@ def _chunks(items, size):
         yield items[start : start + size]
 
 
-def enrich_from_api(papers, chunk_size=100):
+def enrich_from_api(papers, chunk_size=100, fetch_timeout=API_METADATA_TIMEOUT):
     """Fill missing metadata by fetching explicit arXiv IDs from the API."""
     missing = papers_missing_abstract(papers)
     if not missing:
@@ -108,7 +109,7 @@ def enrich_from_api(papers, chunk_size=100):
     ids = [paper["id"] for paper in missing if paper.get("id")]
     for chunk in _chunks(ids, chunk_size):
         try:
-            fetched = fetch_papers_by_ids(chunk, include_listing_date=False)
+            fetched = fetch_papers_by_ids(chunk, include_listing_date=False, fetch_timeout=fetch_timeout)
         except (TimeoutError, urllib.error.HTTPError, urllib.error.URLError) as e:
             print(f"  API metadata enrichment failed after {enriched} papers: {type(e).__name__}.")
             return enriched

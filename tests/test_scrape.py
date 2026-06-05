@@ -673,9 +673,10 @@ def test_enrich_html_papers_uses_api_when_requested(monkeypatch):
     html_paper = make_paper("2606.00001", "2026-06-05")
     html_paper["abstract"] = ""
 
-    def fake_fetch(ids, include_listing_date=False):
+    def fake_fetch(ids, include_listing_date=False, fetch_timeout=10):
         assert ids == ["2606.00001"]
         assert include_listing_date is False
+        assert fetch_timeout == metadata.API_METADATA_TIMEOUT
         source = make_paper("2606.00001", "2026-06-05")
         source["abstract"] = "API abstract."
         return [source]
