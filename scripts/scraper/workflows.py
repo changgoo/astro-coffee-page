@@ -101,8 +101,8 @@ def run_scrape(data_dir, repo_root, arxiv_date, explicit_date=False, bootstrap_n
 
     grouped = group_papers_by_listing_date(fetched)
     if not explicit_date and grouped:
-        fetched_date = max(grouped.keys())
-        if fetched_date != arxiv_date:
+        if arxiv_date not in grouped:
+            fetched_date = max(grouped.keys())
             print(f"  Using fetched arXiv listing date {fetched_date} instead of clock estimate {arxiv_date}.")
             arxiv_date = fetched_date
     target_papers = grouped.get(arxiv_date, [])

@@ -431,6 +431,19 @@ broad compatibility facade.
 
 ---
 
+## 32. Keep expected listing date when HTML fallback sees late papers
+
+Fixed normal scrape date selection after HTML fallback. If fetched HTML listings
+contain the clock-estimated arXiv date, the scraper now updates that listing
+instead of switching to a newer partial listing date. This prevents a few late
+papers from rolling `today.json` forward and rotating the existing full listing
+into `today-1.json`.
+
+The scraper only falls back to the newest fetched listing date when the expected
+date is absent from the fetched groups.
+
+---
+
 ## Planned / open issues
 
 | # | Title |

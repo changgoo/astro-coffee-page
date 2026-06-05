@@ -1017,3 +1017,26 @@ def test_bootstrap_history_writes_six_listing_files(tmp_path, monkeypatch):
     assert json.loads((tmp_path / "today.json").read_text())["date"] == "2026-03-10"
     assert json.loads((tmp_path / "today-5.json").read_text())["date"] == "2026-03-03"
     assert json.loads((tmp_path / "today.json").read_text())["papers"][0]["id"] == "P0"
+
+
+def test_run_scrape_keeps_clock_date_when_newer_late_listing_exists(tmp_path, monkeypatch):
+    """A partial newer HTML listing must not roll the expected listing forward."""
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config" / "authors.json").write_text(json.dumps({"authors": []}))
+    history_mod.save_listing(tmp_path / "today.json", "2026-06-04", [make_paper("J4A", "2026-06-04")])
+    fetched = [
+        make_paper("J5A", "2026-06-05"),
+        make_paper("J5B", "2026-06-05"),
+        make_paper("J5C", "2026-06-05"),
+        make_paper("J4A", "2026-06-04"),
+        make_paper("J4B", "2026-06-04"),
+    ]
+
+    monkeypatch.setattr(scrape_workflows, "fetch_latest_papers_with_fallback", lambda **kwargs: fetched)
+
+    scrape_workflows.run_scrape(tmp_path, tmp_path, "2026-06-04")
+
+    today = json.loads((tmp_path / "today.json").read_text())
+    assert today["date"] == "2026-06-04"
+    assert [paper["id"] for paper in today["papers"]] == ["J4A", "J4B"]
+    assert not (tmp_path / "today-1.json").exists()
