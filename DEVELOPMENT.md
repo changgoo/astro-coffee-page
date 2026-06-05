@@ -406,6 +406,18 @@ matches grouped by arXiv listing date.
 
 ---
 
+## 30. HTML listing fallback for arXiv API errors
+
+Added a Python 3 stdlib fallback scraper for arXiv HTML listings. Normal
+scraping still tries the arXiv API first, but uses a single quick API attempt
+and falls back to `arxiv.org/list/astro-ph/new` on `HTTP 429`, `HTTP 503`, or
+API network timeouts. The fallback parser emits the same paper JSON shape used
+by the API path, with arXiv listing-date headings used for `_listing_date` and
+`submitted`. Bootstrap-sized fallback requests still use the recent listing
+history because they need multiple days.
+
+---
+
 ## Planned / open issues
 
 | # | Title |

@@ -12,12 +12,14 @@ Usage:
 """
 
 import json
+import re
 import sqlite3
 import sys
 import time
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
+from html.parser import HTMLParser
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -29,6 +31,9 @@ NS = {
 }
 
 BASE_URL = "https://export.arxiv.org/api/query"
+NEW_LISTING_URL = "https://arxiv.org/list/astro-ph/new"
+RECENT_LISTING_URL = "https://arxiv.org/list/astro-ph/recent"
+LISTING_SHOW_SIZES = (25, 50, 100, 250, 500, 1000, 2000)
 MAX_PER_REQUEST = 200
 RATE_LIMIT_SECONDS = 3
 FETCH_SIZE = 200
@@ -98,7 +103,22 @@ def build_query_url(start=0, max_results=MAX_PER_REQUEST):
     return f"{BASE_URL}?{params}"
 
 
-def fetch_xml(url, max_retries=5, base_delay=10):
+def build_listing_url(show=FETCH_SIZE, source="new"):
+    """Build the arXiv HTML listing URL for recent astro-ph papers."""
+    if source == "new":
+        return NEW_LISTING_URL
+    return f"{RECENT_LISTING_URL}?show={listing_show_size(show)}"
+
+
+def listing_show_size(show):
+    """Return an arXiv HTML listing size accepted by the website."""
+    for size in LISTING_SHOW_SIZES:
+        if show <= size:
+            return size
+    return LISTING_SHOW_SIZES[-1]
+
+
+def fetch_xml(url, max_retries=5, base_delay=10, timeout=60):
     """Fetch a URL and return raw bytes, retrying on transient errors with exponential backoff.
 
     Retries on HTTP 503 and network timeouts; raises immediately on 429 and other HTTP errors.
@@ -106,7 +126,7 @@ def fetch_xml(url, max_retries=5, base_delay=10):
     req = urllib.request.Request(url, headers={"User-Agent": "coffee-page/1.0 (arxiv paper browser)"})
     for attempt in range(max_retries + 1):
         try:
-            with urllib.request.urlopen(req, timeout=60) as resp:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
                 return resp.read()
         except urllib.error.HTTPError as e:
             if e.code == 429:
@@ -125,6 +145,188 @@ def fetch_xml(url, max_retries=5, base_delay=10):
                 time.sleep(delay)
             else:
                 raise
+
+
+def fetch_html(url):
+    """Fetch an HTML page from arXiv and return decoded text."""
+    req = urllib.request.Request(url, headers={"User-Agent": "coffee-page/1.0 (arxiv paper browser)"})
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        charset = resp.headers.get_content_charset() or "utf-8"
+        return resp.read().decode(charset, errors="replace")
+
+
+def normalize_text(value):
+    """Collapse runs of whitespace in scraped text."""
+    return " ".join(value.split())
+
+
+def parse_listing_date_heading(text):
+    """Parse an arXiv listing heading into YYYY-MM-DD, returning None if it fails."""
+    heading = re.sub(r"\s*\(.*\)$", "", normalize_text(text))
+    heading = heading.removeprefix("Showing new listings for ")
+    for fmt in ("%A, %d %B %Y", "%A, %d %B %y", "%a, %d %b %Y", "%a, %d %b %y"):
+        try:
+            return datetime.strptime(heading, fmt).strftime("%Y-%m-%d")
+        except ValueError:
+            continue
+    return None
+
+
+class ArxivListingParser(HTMLParser):
+    """Parse arXiv astro-ph listing HTML into paper dictionaries."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.papers = []
+        self.current_date = ""
+        self._tag_stack = []
+        self._current_dt = None
+        self._current_paper = None
+        self._capture = None
+        self._capture_parts = []
+        self._links = []
+        self._current_section = "papers"
+
+    def handle_starttag(self, tag, attrs):
+        """Handle the start of relevant arXiv listing tags."""
+        attrs = dict(attrs)
+        self._tag_stack.append(tag)
+
+        if tag == "h3":
+            self._start_capture("heading")
+            return
+
+        if tag == "dt":
+            self._current_dt = {"links": [], "text": []}
+            self._links = []
+            self._start_capture("dt")
+            return
+
+        if tag == "dd":
+            self._current_paper = {
+                "listing_date": self.current_date,
+                "dt_text": normalize_text(" ".join(self._current_dt.get("text", []))) if self._current_dt else "",
+                "links": list(self._links),
+                "title": "",
+                "authors": [],
+                "abstract": "",
+                "categories": [],
+                "primary_category": "",
+            }
+            return
+
+        if tag == "a" and self._current_dt is not None:
+            self._current_dt["links"].append({"href": attrs.get("href", ""), "text": ""})
+
+        if tag == "div" and self._current_paper is not None:
+            classes = set(attrs.get("class", "").split())
+            if "list-title" in classes:
+                self._start_capture("title")
+            elif "list-authors" in classes:
+                self._start_capture("authors")
+            elif "list-subjects" in classes:
+                self._start_capture("subjects")
+
+        if tag == "p" and self._current_paper is not None:
+            self._start_capture("abstract")
+
+    def handle_endtag(self, tag):
+        """Handle the end of relevant arXiv listing tags."""
+        text = normalize_text(" ".join(self._capture_parts)) if self._capture else ""
+
+        if tag == "h3" and self._capture == "heading":
+            self._update_section(text)
+            parsed = parse_listing_date_heading(text)
+            if parsed:
+                self.current_date = parsed
+            self._stop_capture()
+        elif tag == "dt" and self._capture == "dt":
+            if self._current_dt is not None:
+                self._current_dt["text"].append(text)
+                self._links = self._current_dt["links"]
+            self._stop_capture()
+        elif tag == "div" and self._capture in {"title", "authors", "subjects"}:
+            self._apply_captured_div(self._capture, text)
+            self._stop_capture()
+        elif tag == "p" and self._capture == "abstract":
+            if self._current_paper is not None:
+                self._current_paper["abstract"] = text
+            self._stop_capture()
+        elif tag == "dd" and self._current_paper is not None:
+            paper = self._finish_paper(self._current_paper)
+            if paper is not None and self._current_section != "replacement":
+                self.papers.append(paper)
+            self._current_paper = None
+            self._current_dt = None
+            self._links = []
+
+        if self._tag_stack:
+            self._tag_stack.pop()
+
+    def handle_data(self, data):
+        """Collect text for the active listing field."""
+        if self._capture:
+            self._capture_parts.append(data)
+        if self._tag_stack and self._tag_stack[-1] == "a" and self._current_dt is not None:
+            if self._current_dt["links"]:
+                self._current_dt["links"][-1]["text"] += data
+
+    def _start_capture(self, name):
+        self._capture = name
+        self._capture_parts = []
+
+    def _stop_capture(self):
+        self._capture = None
+        self._capture_parts = []
+
+    def _update_section(self, text):
+        heading = normalize_text(text).lower()
+        if heading.startswith("new submissions"):
+            self._current_section = "new"
+        elif heading.startswith("cross submissions"):
+            self._current_section = "cross"
+        elif heading.startswith("replacement submissions"):
+            self._current_section = "replacement"
+
+    def _apply_captured_div(self, field, text):
+        if self._current_paper is None:
+            return
+        if field == "title":
+            self._current_paper["title"] = normalize_text(text.removeprefix("Title:"))
+        elif field == "authors":
+            author_text = normalize_text(text.removeprefix("Authors:"))
+            self._current_paper["authors"] = [a.strip() for a in author_text.split(", ") if a.strip()]
+        elif field == "subjects":
+            subject_text = normalize_text(text.removeprefix("Subjects:"))
+            categories = re.findall(r"\(([^()]+)\)", subject_text)
+            self._current_paper["categories"] = categories
+            self._current_paper["primary_category"] = categories[0] if categories else ""
+
+    def _finish_paper(self, paper):
+        abs_link = next((link for link in paper["links"] if "/abs/" in link["href"]), None)
+        if abs_link is None:
+            return None
+
+        id_text = normalize_text(abs_link["text"] or abs_link["href"].rstrip("/").split("/abs/")[-1])
+        match = re.search(r"(\d{4}\.\d{4,5}|[a-z.-]+/\d{7})", id_text)
+        arxiv_id = match.group(1) if match else id_text.replace("arXiv:", "")
+        arxiv_id = arxiv_id.split("v")[0]
+        pdf_link = next((link for link in paper["links"] if "/pdf/" in link["href"]), None)
+        pdf_href = pdf_link["href"] if pdf_link else f"/pdf/{arxiv_id}"
+        categories = sorted(set(paper["categories"]), key=lambda c: (c != paper["primary_category"], c))
+
+        return {
+            "id": arxiv_id,
+            "title": paper["title"],
+            "authors": paper["authors"],
+            "abstract": paper["abstract"],
+            "primary_category": paper["primary_category"],
+            "categories": categories,
+            "submitted": paper["listing_date"],
+            "arxiv_url": f"https://arxiv.org/abs/{arxiv_id}",
+            "pdf_url": f"https://arxiv.org{pdf_href}" if pdf_href.startswith("/") else pdf_href,
+            "_listing_date": paper["listing_date"],
+        }
 
 
 def parse_entry(entry, include_listing_date=False):
@@ -172,7 +374,13 @@ def parse_entry(entry, include_listing_date=False):
     return paper
 
 
-def fetch_latest_papers(n=FETCH_SIZE, include_listing_date=False, max_per_request=MAX_PER_REQUEST):
+def fetch_latest_papers(
+    n=FETCH_SIZE,
+    include_listing_date=False,
+    max_per_request=MAX_PER_REQUEST,
+    fetch_max_retries=5,
+    fetch_timeout=60,
+):
     """Fetch the n most recently submitted astro-ph papers from the arXiv API."""
     papers = []
     start = 0
@@ -182,7 +390,7 @@ def fetch_latest_papers(n=FETCH_SIZE, include_listing_date=False, max_per_reques
         max_results = min(max_per_request, n - start)
         url = build_query_url(start=start, max_results=max_results)
         print(f"  Fetching start={start} ...", flush=True)
-        raw = fetch_xml(url)
+        raw = fetch_xml(url, max_retries=fetch_max_retries, timeout=fetch_timeout)
         root = ET.fromstring(raw)
 
         if total is None:
@@ -204,6 +412,51 @@ def fetch_latest_papers(n=FETCH_SIZE, include_listing_date=False, max_per_reques
         time.sleep(RATE_LIMIT_SECONDS)
 
     return papers
+
+
+def parse_listing_html(html, include_listing_date=False):
+    """Parse arXiv listing HTML and return paper dictionaries."""
+    parser = ArxivListingParser()
+    parser.feed(html)
+    papers = parser.papers
+    if not include_listing_date:
+        for paper in papers:
+            paper.pop("_listing_date", None)
+    return papers
+
+
+def fetch_latest_papers_from_listing(n=FETCH_SIZE, include_listing_date=False, source="new"):
+    """Fetch recent astro-ph papers from arXiv's HTML listing page."""
+    url = build_listing_url(show=n, source=source)
+    if source == "new":
+        print("  Fetching arXiv HTML new listing ...", flush=True)
+    else:
+        print(f"  Fetching arXiv HTML recent listing show={listing_show_size(n)} ...", flush=True)
+    html = fetch_html(url)
+    papers = parse_listing_html(html, include_listing_date=include_listing_date)
+    return papers[:n]
+
+
+def fetch_latest_papers_with_fallback(n=FETCH_SIZE, include_listing_date=False, max_per_request=MAX_PER_REQUEST):
+    """Fetch recent papers from the API, falling back to HTML listing on API throttling/errors."""
+    try:
+        return fetch_latest_papers(
+            n=n,
+            include_listing_date=include_listing_date,
+            max_per_request=max_per_request,
+            fetch_max_retries=0,
+            fetch_timeout=10,
+        )
+    except urllib.error.HTTPError as e:
+        if e.code not in {429, 503}:
+            raise
+        print(f"  Falling back to arXiv HTML listing scrape after API HTTP {e.code}.", flush=True)
+        source = "recent" if n > FETCH_SIZE else "new"
+        return fetch_latest_papers_from_listing(n=n, include_listing_date=include_listing_date, source=source)
+    except (TimeoutError, urllib.error.URLError) as e:
+        print(f"  Falling back to arXiv HTML listing scrape after API {type(e).__name__}.", flush=True)
+        source = "recent" if n > FETCH_SIZE else "new"
+        return fetch_latest_papers_from_listing(n=n, include_listing_date=include_listing_date, source=source)
 
 
 def load_favorite_authors(repo_root):
@@ -610,7 +863,7 @@ def reannotate(data_dir, repo_root):
 def bootstrap_history(data_dir, repo_root):
     """Seed today.json through today-5.json from up to 1000 recent arXiv papers."""
     print(f"Fetching latest {BOOTSTRAP_FETCH_SIZE} arXiv astro-ph papers for history bootstrap ...")
-    fetched = fetch_latest_papers(
+    fetched = fetch_latest_papers_with_fallback(
         n=BOOTSTRAP_FETCH_SIZE,
         include_listing_date=True,
         max_per_request=BOOTSTRAP_FETCH_SIZE,
@@ -712,11 +965,12 @@ def main():
         bootstrap_n = int(args[idx + 1])
         args = args[:idx] + args[idx + 2:]
 
-    arxiv_date = args[0] if args else get_target_date()
+    explicit_date = bool(args)
+    arxiv_date = args[0] if explicit_date else get_target_date()
     print(f"arXiv date: {arxiv_date}")
 
     print(f"Fetching latest {FETCH_SIZE} arXiv astro-ph papers ...")
-    fetched = fetch_latest_papers(n=FETCH_SIZE, include_listing_date=True)
+    fetched = fetch_latest_papers_with_fallback(n=FETCH_SIZE, include_listing_date=True)
     if not fetched:
         print("  No papers fetched. Skipping.")
         return
@@ -730,6 +984,11 @@ def main():
     annotate_discussed_papers(fetched, discussed_papers)
 
     grouped = group_papers_by_listing_date(fetched)
+    if not explicit_date and grouped:
+        fetched_date = max(grouped.keys())
+        if fetched_date != arxiv_date:
+            print(f"  Using fetched arXiv listing date {fetched_date} instead of clock estimate {arxiv_date}.")
+            arxiv_date = fetched_date
     target_papers = grouped.get(arxiv_date, [])
     if not target_papers:
         print(f"  No fetched papers matched arXiv date {arxiv_date}. Skipping.")

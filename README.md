@@ -110,6 +110,7 @@ pip install -r requirements.txt
 python scripts/scrape.py --bootstrap-history
 
 # Subsequent runs (automated by GitHub Action): fetch latest 200 and update rolling history
+# If the arXiv API is throttled or unavailable, the scraper falls back to arXiv's /new HTML listing.
 python scripts/scrape.py
 
 # When today-5.json is purged, it is stored in data/archive/YYYY.sqlite

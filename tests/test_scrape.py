@@ -35,6 +35,69 @@ SAMPLE_ENTRY_XML = """
 </entry>
 """
 
+SAMPLE_LISTING_HTML = """
+<html>
+  <body>
+    <h3>Showing new listings for Friday, 5 June 2026</h3>
+    <h3>New submissions (showing 1 of 1 entries)</h3>
+    <dl>
+      <dt>
+        <a name="item1">[1]</a>
+        <a href="/abs/2606.01234">arXiv:2606.01234</a>
+        [<a href="/pdf/2606.01234">pdf</a>]
+      </dt>
+      <dd>
+        <div class="meta">
+          <div class="list-title mathjax">Title: First Listing Paper</div>
+          <div class="list-authors">Authors:
+            <a href="/search/astro-ph?searchtype=author&amp;query=Kim">Chang-Goo Kim</a>,
+            <a href="/search/astro-ph?searchtype=author&amp;query=Ostriker">Eve C. Ostriker</a>
+          </div>
+          <div class="list-subjects">Subjects:
+            Astrophysics of Galaxies (astro-ph.GA); Cosmology and Nongalactic Astrophysics (astro-ph.CO)
+          </div>
+          <p class="mathjax">Abstract text from the listing page.</p>
+        </div>
+      </dd>
+    </dl>
+    <h3>Cross submissions (showing 1 of 1 entries)</h3>
+    <dl>
+      <dt>
+        <a name="item2">[2]</a>
+        <a href="/abs/2606.01235v2">arXiv:2606.01235</a> (cross-list from hep-ph)
+        [<a href="/pdf/2606.01235">pdf</a>]
+      </dt>
+      <dd>
+        <div class="meta">
+          <div class="list-title mathjax">Title: Cross Listed Paper</div>
+          <div class="list-authors">Authors: Jane Doe, John Smith</div>
+          <div class="list-subjects">Subjects:
+            High Energy Physics - Phenomenology (hep-ph); Cosmology and Nongalactic Astrophysics (astro-ph.CO)
+          </div>
+          <p class="mathjax">Cross-listed abstract.</p>
+        </div>
+      </dd>
+    </dl>
+    <h3>Replacement submissions (showing 1 of 1 entries)</h3>
+    <dl>
+      <dt>
+        <a name="item3">[3]</a>
+        <a href="/abs/2606.01236">arXiv:2606.01236</a>
+        [<a href="/pdf/2606.01236">pdf</a>]
+      </dt>
+      <dd>
+        <div class="meta">
+          <div class="list-title mathjax">Title: Replacement Paper</div>
+          <div class="list-authors">Authors: Ignored Author</div>
+          <div class="list-subjects">Subjects: Astrophysics of Galaxies (astro-ph.GA)</div>
+          <p class="mathjax">Replacement abstract.</p>
+        </div>
+      </dd>
+    </dl>
+  </body>
+</html>
+"""
+
 
 @pytest.fixture
 def sample_entry():
@@ -765,6 +828,170 @@ def test_fetch_latest_papers_default_uses_200_results(monkeypatch):
     assert "max_results=200" in requested_urls[0]
 
 
+def test_parse_listing_html_matches_paper_schema():
+    """HTML listing fallback returns paper dictionaries shaped like API results."""
+    papers = scrape.parse_listing_html(SAMPLE_LISTING_HTML, include_listing_date=True)
+
+    assert len(papers) == 2
+    assert papers[0]["id"] == "2606.01234"
+    assert papers[0]["title"] == "First Listing Paper"
+    assert papers[0]["authors"] == ["Chang-Goo Kim", "Eve C. Ostriker"]
+    assert papers[0]["abstract"] == "Abstract text from the listing page."
+    assert papers[0]["primary_category"] == "astro-ph.GA"
+    assert papers[0]["categories"] == ["astro-ph.GA", "astro-ph.CO"]
+    assert papers[0]["submitted"] == "2026-06-05"
+    assert papers[0]["_listing_date"] == "2026-06-05"
+    assert papers[0]["arxiv_url"] == "https://arxiv.org/abs/2606.01234"
+    assert papers[0]["pdf_url"] == "https://arxiv.org/pdf/2606.01234"
+
+
+def test_parse_listing_html_detects_cross_list_primary_category():
+    """HTML listing fallback keeps non-astro primary category for cross-list sorting."""
+    papers = scrape.parse_listing_html(SAMPLE_LISTING_HTML, include_listing_date=True)
+
+    assert papers[1]["id"] == "2606.01235"
+    assert papers[1]["primary_category"] == "hep-ph"
+    assert papers[1]["categories"] == ["hep-ph", "astro-ph.CO"]
+
+
+def test_parse_listing_html_can_drop_listing_date():
+    """HTML listing parser mirrors fetch_latest_papers include_listing_date behavior."""
+    papers = scrape.parse_listing_html(SAMPLE_LISTING_HTML, include_listing_date=False)
+
+    assert "_listing_date" not in papers[0]
+
+
+def test_fetch_latest_papers_from_listing_clamps_small_show_size(monkeypatch):
+    """HTML fallback uses arXiv's minimum listing size while returning n papers."""
+    requested_urls = []
+
+    class FakeHeaders:
+        """Minimal response headers object for fetch_html."""
+
+        def get_content_charset(self):
+            return "utf-8"
+
+    class FakeResponse(io.BytesIO):
+        headers = FakeHeaders()
+
+    def fake_urlopen(req, timeout=None):
+        requested_urls.append(req.full_url)
+        return FakeResponse(SAMPLE_LISTING_HTML.encode())
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+
+    papers = scrape.fetch_latest_papers_from_listing(n=1, include_listing_date=True, source="recent")
+
+    assert len(papers) == 1
+    assert "show=25" in requested_urls[0]
+
+
+def test_fetch_latest_papers_from_listing_uses_supported_show_size(monkeypatch):
+    """HTML fallback maps normal fetch size to an arXiv-supported listing size."""
+    requested_urls = []
+
+    class FakeHeaders:
+        """Minimal response headers object for fetch_html."""
+
+        def get_content_charset(self):
+            return "utf-8"
+
+    class FakeResponse(io.BytesIO):
+        headers = FakeHeaders()
+
+    def fake_urlopen(req, timeout=None):
+        requested_urls.append(req.full_url)
+        return FakeResponse(SAMPLE_LISTING_HTML.encode())
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+
+    papers = scrape.fetch_latest_papers_from_listing(n=200, include_listing_date=True, source="recent")
+
+    assert len(papers) == 2
+    assert "show=250" in requested_urls[0]
+
+
+def test_fetch_latest_papers_with_fallback_uses_listing_on_429(monkeypatch):
+    """API HTTP 429 falls back to HTML listing scrape."""
+    err429 = urllib.error.HTTPError("", 429, "Too Many Requests", {}, None)
+    seen = {}
+    monkeypatch.setattr(scrape, "fetch_latest_papers", lambda **kwargs: (_ for _ in ()).throw(err429))
+
+    def fake_fetch_listing(n, include_listing_date=False, source="new"):
+        seen["source"] = source
+        return [{"id": "2606.01234", "_listing_date": "2026-06-05"}]
+
+    monkeypatch.setattr(scrape, "fetch_latest_papers_from_listing", fake_fetch_listing)
+
+    papers = scrape.fetch_latest_papers_with_fallback(n=200, include_listing_date=True)
+
+    assert papers == [{"id": "2606.01234", "_listing_date": "2026-06-05"}]
+    assert seen["source"] == "new"
+
+
+def test_fetch_latest_papers_with_fallback_uses_recent_for_bootstrap(monkeypatch):
+    """Bootstrap-sized fallback still uses recent listing history."""
+    err429 = urllib.error.HTTPError("", 429, "Too Many Requests", {}, None)
+    seen = {}
+    monkeypatch.setattr(scrape, "fetch_latest_papers", lambda **kwargs: (_ for _ in ()).throw(err429))
+
+    def fake_fetch_listing(n, include_listing_date=False, source="new"):
+        seen["source"] = source
+        return [{"id": "2606.01234", "_listing_date": "2026-06-05"}]
+
+    monkeypatch.setattr(scrape, "fetch_latest_papers_from_listing", fake_fetch_listing)
+
+    scrape.fetch_latest_papers_with_fallback(n=scrape.BOOTSTRAP_FETCH_SIZE, include_listing_date=True)
+
+    assert seen["source"] == "recent"
+
+
+def test_fetch_latest_papers_with_fallback_uses_quick_api_attempt(monkeypatch):
+    """Fallback wrapper does not wait through long API retries or timeouts."""
+    seen = {}
+
+    def fake_fetch_latest_papers(**kwargs):
+        seen.update(kwargs)
+        return [{"id": "2606.01234"}]
+
+    monkeypatch.setattr(scrape, "fetch_latest_papers", fake_fetch_latest_papers)
+
+    papers = scrape.fetch_latest_papers_with_fallback(n=200, include_listing_date=True)
+
+    assert papers == [{"id": "2606.01234"}]
+    assert seen["fetch_max_retries"] == 0
+    assert seen["fetch_timeout"] == 10
+
+
+def test_fetch_latest_papers_with_fallback_uses_listing_on_503(monkeypatch):
+    """API HTTP 503 falls back to HTML listing scrape without retry sleep."""
+    err503 = urllib.error.HTTPError("", 503, "Service Unavailable", {}, None)
+    monkeypatch.setattr(scrape, "fetch_latest_papers", lambda **kwargs: (_ for _ in ()).throw(err503))
+    monkeypatch.setattr(
+        scrape,
+        "fetch_latest_papers_from_listing",
+        lambda n, include_listing_date=False, source="new": [{"id": "2606.01235", "_listing_date": "2026-06-05"}],
+    )
+
+    papers = scrape.fetch_latest_papers_with_fallback(n=200, include_listing_date=True)
+
+    assert papers == [{"id": "2606.01235", "_listing_date": "2026-06-05"}]
+
+
+def test_fetch_latest_papers_with_fallback_uses_listing_on_timeout(monkeypatch):
+    """API timeout falls back to HTML listing scrape."""
+    monkeypatch.setattr(scrape, "fetch_latest_papers", lambda **kwargs: (_ for _ in ()).throw(TimeoutError("slow")))
+    monkeypatch.setattr(
+        scrape,
+        "fetch_latest_papers_from_listing",
+        lambda n, include_listing_date=False, source="new": [{"id": "2606.01236", "_listing_date": "2026-06-05"}],
+    )
+
+    papers = scrape.fetch_latest_papers_with_fallback(n=200, include_listing_date=True)
+
+    assert papers == [{"id": "2606.01236", "_listing_date": "2026-06-05"}]
+
+
 def test_bootstrap_history_writes_six_listing_files(tmp_path, monkeypatch):
     """bootstrap_history seeds today.json through today-5.json from grouped papers."""
     (tmp_path / "config").mkdir()
@@ -778,7 +1005,7 @@ def test_bootstrap_history_writes_six_listing_files(tmp_path, monkeypatch):
         assert max_per_request == scrape.BOOTSTRAP_FETCH_SIZE
         return fetched
 
-    monkeypatch.setattr(scrape, "fetch_latest_papers", fake_fetch)
+    monkeypatch.setattr(scrape, "fetch_latest_papers_with_fallback", fake_fetch)
 
     scrape.bootstrap_history(tmp_path, tmp_path)
 
