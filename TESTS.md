@@ -10,7 +10,7 @@ No network access is required — all HTTP calls are mocked.
 
 ---
 
-## `tests/test_scrape.py` — arXiv scraper (100 tests)
+## `tests/test_scrape.py` — arXiv scraper (101 tests)
 
 Tests for `scripts/scrape.py`. Uses a minimal Atom XML fixture that mirrors the
 structure returned by the arXiv API.
@@ -25,6 +25,7 @@ structure returned by the arXiv API.
 | `test_build_query_url_pagination` | A non-zero `start` offset appears in the URL |
 | `test_build_query_url_max_results` | The `max_results` parameter is reflected in the URL |
 | `test_build_query_url_no_date_window` | The URL does not contain a `submittedDate:[` range filter (date filtering is done post-fetch) |
+| `test_build_id_list_url_requests_all_ids` | Explicit API metadata lookups set `max_results` to the number of requested IDs |
 
 ### `get_target_date`
 
