@@ -14,6 +14,7 @@ from .history import (
     update_history_for_date,
     update_index,
 )
+from .metadata import enrich_html_papers, papers_missing_abstract
 from .paper import utc_now_iso
 
 
@@ -52,7 +53,7 @@ def reannotate(data_dir, repo_root):
         print(f"  Saved {path.name}.")
 
 
-def bootstrap_history(data_dir, repo_root):
+def bootstrap_history(data_dir, repo_root, api_enrich=False):
     """Seed today.json through today-5.json from arXiv's recent HTML listing."""
     print(f"Fetching latest {BOOTSTRAP_FETCH_SIZE} arXiv astro-ph papers from recent listing ...")
     fetched = fetch_latest_papers_from_listing(
@@ -63,6 +64,8 @@ def bootstrap_history(data_dir, repo_root):
     if not fetched:
         print("  No papers fetched. Skipping.")
         return
+    if papers_missing_abstract(fetched):
+        enrich_html_papers(fetched, data_dir=data_dir, use_api=api_enrich)
 
     fav_authors, discussed_papers = load_annotation_context(repo_root, data_dir)
     print(f"  Annotating local author matches ({len(fav_authors)} favorites) ...")
@@ -75,7 +78,7 @@ def bootstrap_history(data_dir, repo_root):
 
     for offset, listing_date in enumerate(listing_dates[:HISTORY_DAYS + 1]):
         papers = groups[listing_date]
-        save_listing(history_path(data_dir, offset), listing_date, papers)
+        save_listing(history_path(data_dir, offset), listing_date, papers, skip_unchanged=True)
 
     for offset in range(len(listing_dates[:HISTORY_DAYS + 1]), HISTORY_DAYS + 1):
         path = history_path(data_dir, offset)
@@ -86,13 +89,15 @@ def bootstrap_history(data_dir, repo_root):
     print("Done.")
 
 
-def run_scrape(data_dir, repo_root, arxiv_date, explicit_date=False, bootstrap_n=None):
+def run_scrape(data_dir, repo_root, arxiv_date, explicit_date=False, bootstrap_n=None, api_enrich=False):
     """Run the normal scrape workflow for one target listing date."""
     print(f"Fetching latest {FETCH_SIZE} arXiv astro-ph papers ...")
     fetched = fetch_latest_papers_with_fallback(n=FETCH_SIZE, include_listing_date=True)
     if not fetched:
         print("  No papers fetched. Skipping.")
         return
+    if papers_missing_abstract(fetched):
+        enrich_html_papers(fetched, data_dir=data_dir, use_api=api_enrich)
 
     print(f"  Fetched {len(fetched)} papers.")
 

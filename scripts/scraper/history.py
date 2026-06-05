@@ -39,18 +39,48 @@ def strip_internal_fields(papers):
         paper.pop("_listing_date", None)
 
 
-def save_listing(path, date, papers):
-    """Write one listing file with the standard data shape."""
-    strip_internal_fields(papers)
+def listing_payload(date, papers, fetched_at=None):
+    """Build the listing JSON payload, excluding fetched_at when omitted."""
+    clean_papers = []
+    for paper in papers:
+        clean_paper = dict(paper)
+        clean_paper.pop("_listing_date", None)
+        clean_papers.append(clean_paper)
+
     output = {
-        "fetched_at": utc_now_iso(),
         "date": date,
-        "total": len(papers),
-        "papers": papers,
+        "total": len(clean_papers),
+        "papers": clean_papers,
     }
+    if fetched_at is not None:
+        output = {"fetched_at": fetched_at, **output}
+    return output
+
+
+def listing_content_matches(path, date, papers):
+    """Return True when an existing listing already has the same date and papers."""
+    existing = load_listing(path)
+    if existing is None:
+        return False
+    expected = listing_payload(date, papers)
+    return {
+        "date": existing.get("date"),
+        "total": existing.get("total"),
+        "papers": existing.get("papers", []),
+    } == expected
+
+
+def save_listing(path, date, papers, skip_unchanged=False):
+    """Write one listing file with the standard data shape."""
+    if skip_unchanged and listing_content_matches(path, date, papers):
+        print(f"  {path.name} unchanged; skipping.")
+        return False
+
+    output = listing_payload(date, papers, fetched_at=utc_now_iso())
     with open(path, "w") as f:
         json.dump(output, f, indent=2)
-    print(f"  Saved {path.name} with {len(papers)} papers.")
+    print(f"  Saved {path.name} with {len(output['papers'])} papers.")
+    return True
 
 
 def load_history(data_dir):

@@ -446,6 +446,15 @@ date is absent from the fetched groups.
 HTML listing instead of the API, so repair/bootstrap runs use arXiv listing
 headings as the source of truth for `today.json` through `today-5.json`.
 
+HTML-scraped papers are enriched before writing: missing fields such as
+`abstract` are filled from retained JSON/archive metadata when available. Passing
+`--api-enrich` enables an explicit arXiv API metadata pass for remaining missing
+abstracts while preserving HTML-derived listing dates.
+
+Bootstrap-history listing writes are skipped when the existing date and paper
+payload already match, so failed/no-op enrichment attempts do not refresh
+`fetched_at` timestamps.
+
 ---
 
 ## Planned / open issues

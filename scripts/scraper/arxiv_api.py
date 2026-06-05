@@ -2,6 +2,7 @@
 
 import time
 import urllib.error
+import urllib.parse
 import xml.etree.ElementTree as ET
 
 from .config import BASE_URL, FETCH_SIZE, MAX_PER_REQUEST, NS, RATE_LIMIT_SECONDS
@@ -17,6 +18,12 @@ def build_query_url(start=0, max_results=MAX_PER_REQUEST):
         f"&sortBy=submittedDate&sortOrder=descending"
         f"&start={start}&max_results={max_results}"
     )
+    return f"{BASE_URL}?{params}"
+
+
+def build_id_list_url(ids):
+    """Build an arXiv API URL for an explicit list of arXiv IDs."""
+    params = urllib.parse.urlencode({"id_list": ",".join(ids)})
     return f"{BASE_URL}?{params}"
 
 
@@ -115,3 +122,15 @@ def fetch_latest_papers(
         time.sleep(RATE_LIMIT_SECONDS)
 
     return papers
+
+
+def fetch_papers_by_ids(ids, include_listing_date=False, fetch_max_retries=0, fetch_timeout=10):
+    """Fetch paper metadata for explicit arXiv IDs from the arXiv API."""
+    if not ids:
+        return []
+
+    url = build_id_list_url(ids)
+    raw = fetch_xml(url, max_retries=fetch_max_retries, timeout=fetch_timeout)
+    root = ET.fromstring(raw)
+    entries = root.findall("atom:entry", NS)
+    return [parse_entry(entry, include_listing_date=include_listing_date) for entry in entries]
