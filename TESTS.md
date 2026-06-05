@@ -10,7 +10,7 @@ No network access is required — all HTTP calls are mocked.
 
 ---
 
-## `tests/test_scrape.py` — arXiv scraper (69 tests)
+## `tests/test_scrape.py` — arXiv scraper (99 tests)
 
 Tests for `scripts/scrape.py`. Uses a minimal Atom XML fixture that mirrors the
 structure returned by the arXiv API.
@@ -190,7 +190,9 @@ tests run instantly.
 | `test_fetch_xml_raises_immediately_on_404` | Raises `HTTPError` without retrying for non-transient errors (404) |
 | `test_fetch_xml_ignores_retry_after_header_on_429` | Ignores `Retry-After` on 429 because 429 responses are not retried |
 | `test_fetch_latest_papers_default_uses_200_results` | Normal arXiv fetches request 200 results |
-| `test_bootstrap_history_writes_six_listing_files` | `--bootstrap-history` seeds `today.json` through `today-5.json` from grouped papers using a 1000-paper request |
+| `test_bootstrap_history_writes_six_listing_files` | `--bootstrap-history` seeds `today.json` through `today-5.json` from grouped HTML recent-listing papers |
+| `test_enrich_html_papers_uses_retained_metadata` | HTML papers with empty abstracts are filled from retained JSON metadata |
+| `test_enrich_html_papers_uses_api_when_requested` | Optional API metadata enrichment fills missing abstracts when explicitly requested |
 
 ---
 

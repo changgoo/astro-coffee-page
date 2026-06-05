@@ -106,8 +106,11 @@ Names are matched by last name (exact) then first name. **Strong** match (bold a
 pip install -r requirements.txt
 
 # First-time setup: seed today.json through today-5.json
-# Fetches up to 1000 papers in one arXiv API request
+# Uses arXiv's recent HTML listing for authoritative listing dates
 python scripts/scrape.py --bootstrap-history
+
+# Optional: also call the arXiv API to fill missing abstracts after HTML bootstrap
+python scripts/scrape.py --bootstrap-history --api-enrich
 
 # Subsequent runs (automated by GitHub Action): fetch latest 200 and update rolling history
 # If the arXiv API is throttled or unavailable, the scraper falls back to arXiv's /new HTML listing.

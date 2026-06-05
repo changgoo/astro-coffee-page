@@ -8,6 +8,7 @@ Usage:
   python scripts/scrape.py [YYYY-MM-DD]
   python scripts/scrape.py --bootstrap N [YYYY-MM-DD]   # first-run seed for today.json
   python scripts/scrape.py --bootstrap-history          # seed today.json through today-5.json
+  python scripts/scrape.py --bootstrap-history --api-enrich
   python scripts/scrape.py --reannotate                 # re-tag today*.json in-place
 """
 
@@ -25,11 +26,15 @@ def main():
     data_dir.mkdir(exist_ok=True)
 
     args = sys.argv[1:]
+    api_enrich = "--api-enrich" in args
+    if api_enrich:
+        args.remove("--api-enrich")
+
     if "--reannotate" in args:
         reannotate(data_dir, repo_root)
         return
     if "--bootstrap-history" in args:
-        bootstrap_history(data_dir, repo_root)
+        bootstrap_history(data_dir, repo_root, api_enrich=api_enrich)
         return
 
     bootstrap_n = None
@@ -48,6 +53,7 @@ def main():
         arxiv_date=arxiv_date,
         explicit_date=explicit_date,
         bootstrap_n=bootstrap_n,
+        api_enrich=api_enrich,
     )
 
 

@@ -15,7 +15,7 @@ import pytest
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
-from scraper import archive, arxiv_api, arxiv_html, config, dates
+from scraper import archive, arxiv_api, arxiv_html, config, dates, metadata
 import scraper.authors as authors_mod
 import scraper.discussed as discussed_mod
 import scraper.fetch as scrape_fetch
@@ -653,6 +653,38 @@ def test_archive_papers_upserts_duplicate_ids(tmp_path):
         rows = conn.execute("SELECT id, title FROM papers").fetchall()
 
     assert rows == [("2503.00001", "Updated title")]
+
+
+def test_enrich_html_papers_uses_retained_metadata(tmp_path):
+    """HTML papers with empty abstracts are filled from retained JSON metadata."""
+    known = make_paper("2606.00001", "2026-06-05")
+    known["abstract"] = "Known retained abstract."
+    history_mod.save_listing(tmp_path / "today.json", "2026-06-05", [known])
+    html_paper = make_paper("2606.00001", "2026-06-05")
+    html_paper["abstract"] = ""
+
+    metadata.enrich_html_papers([html_paper], data_dir=tmp_path)
+
+    assert html_paper["abstract"] == "Known retained abstract."
+
+
+def test_enrich_html_papers_uses_api_when_requested(monkeypatch):
+    """API enrichment fills abstracts only when explicitly requested."""
+    html_paper = make_paper("2606.00001", "2026-06-05")
+    html_paper["abstract"] = ""
+
+    def fake_fetch(ids, include_listing_date=False):
+        assert ids == ["2606.00001"]
+        assert include_listing_date is False
+        source = make_paper("2606.00001", "2026-06-05")
+        source["abstract"] = "API abstract."
+        return [source]
+
+    monkeypatch.setattr(metadata, "fetch_papers_by_ids", fake_fetch)
+
+    metadata.enrich_html_papers([html_paper], use_api=True)
+
+    assert html_paper["abstract"] == "API abstract."
 
 
 def test_select_new_papers_dedupes_in_order():
