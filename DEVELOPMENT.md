@@ -418,6 +418,19 @@ history because they need multiple days.
 
 ---
 
+## 31. Split scraper implementation into modules
+
+Refactored the monolithic `scripts/scrape.py` into a `scripts/scraper/` package
+organized by responsibility: configuration, date helpers, paper normalization,
+HTTP helpers, arXiv API parsing, arXiv HTML parsing, fallback fetch orchestration,
+author/discussed annotation, archive storage, rolling history, workflows, and
+CLI handling.
+
+`scripts/scrape.py` remains the stable command entrypoint and compatibility
+facade for existing tests and ad hoc imports.
+
+---
+
 ## Planned / open issues
 
 | # | Title |

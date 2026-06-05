@@ -16,6 +16,8 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 import scrape
+import scraper.fetch as scrape_fetch
+import scraper.workflows as scrape_workflows
 
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────
@@ -915,13 +917,13 @@ def test_fetch_latest_papers_with_fallback_uses_listing_on_429(monkeypatch):
     """API HTTP 429 falls back to HTML listing scrape."""
     err429 = urllib.error.HTTPError("", 429, "Too Many Requests", {}, None)
     seen = {}
-    monkeypatch.setattr(scrape, "fetch_latest_papers", lambda **kwargs: (_ for _ in ()).throw(err429))
+    monkeypatch.setattr(scrape_fetch, "fetch_latest_papers", lambda **kwargs: (_ for _ in ()).throw(err429))
 
     def fake_fetch_listing(n, include_listing_date=False, source="new"):
         seen["source"] = source
         return [{"id": "2606.01234", "_listing_date": "2026-06-05"}]
 
-    monkeypatch.setattr(scrape, "fetch_latest_papers_from_listing", fake_fetch_listing)
+    monkeypatch.setattr(scrape_fetch, "fetch_latest_papers_from_listing", fake_fetch_listing)
 
     papers = scrape.fetch_latest_papers_with_fallback(n=200, include_listing_date=True)
 
@@ -933,13 +935,13 @@ def test_fetch_latest_papers_with_fallback_uses_recent_for_bootstrap(monkeypatch
     """Bootstrap-sized fallback still uses recent listing history."""
     err429 = urllib.error.HTTPError("", 429, "Too Many Requests", {}, None)
     seen = {}
-    monkeypatch.setattr(scrape, "fetch_latest_papers", lambda **kwargs: (_ for _ in ()).throw(err429))
+    monkeypatch.setattr(scrape_fetch, "fetch_latest_papers", lambda **kwargs: (_ for _ in ()).throw(err429))
 
     def fake_fetch_listing(n, include_listing_date=False, source="new"):
         seen["source"] = source
         return [{"id": "2606.01234", "_listing_date": "2026-06-05"}]
 
-    monkeypatch.setattr(scrape, "fetch_latest_papers_from_listing", fake_fetch_listing)
+    monkeypatch.setattr(scrape_fetch, "fetch_latest_papers_from_listing", fake_fetch_listing)
 
     scrape.fetch_latest_papers_with_fallback(n=scrape.BOOTSTRAP_FETCH_SIZE, include_listing_date=True)
 
@@ -954,7 +956,7 @@ def test_fetch_latest_papers_with_fallback_uses_quick_api_attempt(monkeypatch):
         seen.update(kwargs)
         return [{"id": "2606.01234"}]
 
-    monkeypatch.setattr(scrape, "fetch_latest_papers", fake_fetch_latest_papers)
+    monkeypatch.setattr(scrape_fetch, "fetch_latest_papers", fake_fetch_latest_papers)
 
     papers = scrape.fetch_latest_papers_with_fallback(n=200, include_listing_date=True)
 
@@ -966,9 +968,9 @@ def test_fetch_latest_papers_with_fallback_uses_quick_api_attempt(monkeypatch):
 def test_fetch_latest_papers_with_fallback_uses_listing_on_503(monkeypatch):
     """API HTTP 503 falls back to HTML listing scrape without retry sleep."""
     err503 = urllib.error.HTTPError("", 503, "Service Unavailable", {}, None)
-    monkeypatch.setattr(scrape, "fetch_latest_papers", lambda **kwargs: (_ for _ in ()).throw(err503))
+    monkeypatch.setattr(scrape_fetch, "fetch_latest_papers", lambda **kwargs: (_ for _ in ()).throw(err503))
     monkeypatch.setattr(
-        scrape,
+        scrape_fetch,
         "fetch_latest_papers_from_listing",
         lambda n, include_listing_date=False, source="new": [{"id": "2606.01235", "_listing_date": "2026-06-05"}],
     )
@@ -980,9 +982,9 @@ def test_fetch_latest_papers_with_fallback_uses_listing_on_503(monkeypatch):
 
 def test_fetch_latest_papers_with_fallback_uses_listing_on_timeout(monkeypatch):
     """API timeout falls back to HTML listing scrape."""
-    monkeypatch.setattr(scrape, "fetch_latest_papers", lambda **kwargs: (_ for _ in ()).throw(TimeoutError("slow")))
+    monkeypatch.setattr(scrape_fetch, "fetch_latest_papers", lambda **kwargs: (_ for _ in ()).throw(TimeoutError("slow")))
     monkeypatch.setattr(
-        scrape,
+        scrape_fetch,
         "fetch_latest_papers_from_listing",
         lambda n, include_listing_date=False, source="new": [{"id": "2606.01236", "_listing_date": "2026-06-05"}],
     )
@@ -1005,7 +1007,7 @@ def test_bootstrap_history_writes_six_listing_files(tmp_path, monkeypatch):
         assert max_per_request == scrape.BOOTSTRAP_FETCH_SIZE
         return fetched
 
-    monkeypatch.setattr(scrape, "fetch_latest_papers_with_fallback", fake_fetch)
+    monkeypatch.setattr(scrape_workflows, "fetch_latest_papers_with_fallback", fake_fetch)
 
     scrape.bootstrap_history(tmp_path, tmp_path)
 
