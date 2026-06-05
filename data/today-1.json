@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-05T16:51:34Z",
+  "fetched_at": "2026-06-05T17:50:29Z",
   "date": "2026-06-04",
   "total": 88,
   "papers": [
@@ -1770,7 +1770,8 @@
       "local_match": "strong",
       "local_authors": {
         "Rajsekhar Mohapatra": "strong"
-      }
+      },
+      "discussed_at": "2026-06-05"
     },
     {
       "id": "2606.04090",
@@ -1860,7 +1861,8 @@
       "local_match": "strong",
       "local_authors": {
         "Rajsekhar Mohapatra": "strong"
-      }
+      },
+      "discussed_at": "2026-06-05"
     },
     {
       "id": "2606.04084",
