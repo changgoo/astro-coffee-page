@@ -1,6 +1,32 @@
 {
-  "generated_at": "2026-06-04T19:23:39Z",
+  "generated_at": "2026-06-05T17:50:18Z",
   "papers": [
+    {
+      "paper_id": "2606.04093",
+      "title": "The Origin of Da Scaling: Suppressed Cooling in Fast-Cooling Mixing Layers",
+      "arxiv_url": "https://arxiv.org/abs/2606.04093",
+      "authors": [
+        "Lachlan Lancaster",
+        "Drummond B. Fielding",
+        "Rajsekhar Mohapatra",
+        "Greg L. Bryan"
+      ],
+      "discussed_at": "2026-06-05",
+      "issue_number": 60
+    },
+    {
+      "paper_id": "2606.04087",
+      "title": "Ceci n'est pas une Couche de M\u00e9lange: The Meaning of Resolved Turbulent Radiative Mixing",
+      "arxiv_url": "https://arxiv.org/abs/2606.04087",
+      "authors": [
+        "Lachlan Lancaster",
+        "Rajsekhar Mohapatra",
+        "Drummond B. Fielding",
+        "Greg L. Bryan"
+      ],
+      "discussed_at": "2026-06-05",
+      "issue_number": 59
+    },
     {
       "paper_id": "2606.04379",
       "title": "A High-Likelihood Polar Interstellar Meteor Candidate",
