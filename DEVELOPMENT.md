@@ -380,6 +380,32 @@ Added long-term archive storage for rolling listings that age out of
 
 ---
 
+## 27. Stop retrying arXiv 429 responses
+
+`fetch_xml` now raises immediately on `HTTP 429 Too Many Requests` instead of
+retrying with exponential backoff. The scheduled scraper still retries `HTTP 503`
+and network timeouts, but 429 is treated as an explicit rate-limit response where
+additional same-run attempts may make throttling worse.
+
+---
+
+## 28. Timezone-aware workflow schedules
+
+Updated GitHub Actions schedules to use native `timezone: "America/New_York"`:
+
+- daily arXiv scrape: 9:17 PM Sun–Thu and 1:17 AM, 5:17 AM, 9:17 AM Mon–Fri
+- discussed-paper sync: 12:00 PM and 6:00 PM daily
+
+---
+
+## 29. Search across retained listings
+
+The search box now searches all loaded `today*.json` listing files when a query is
+present. Empty search keeps the selected listing view; non-empty search renders
+matches grouped by arXiv listing date.
+
+---
+
 ## Planned / open issues
 
 | # | Title |

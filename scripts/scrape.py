@@ -101,7 +101,7 @@ def build_query_url(start=0, max_results=MAX_PER_REQUEST):
 def fetch_xml(url, max_retries=5, base_delay=10):
     """Fetch a URL and return raw bytes, retrying on transient errors with exponential backoff.
 
-    Retries on HTTP 429/503 and network timeouts; raises immediately on other errors.
+    Retries on HTTP 503 and network timeouts; raises immediately on 429 and other HTTP errors.
     """
     req = urllib.request.Request(url, headers={"User-Agent": "coffee-page/1.0 (arxiv paper browser)"})
     for attempt in range(max_retries + 1):
@@ -109,9 +109,11 @@ def fetch_xml(url, max_retries=5, base_delay=10):
             with urllib.request.urlopen(req, timeout=60) as resp:
                 return resp.read()
         except urllib.error.HTTPError as e:
-            if e.code in (429, 503) and attempt < max_retries:
-                retry_after = e.headers.get("Retry-After", "")
-                delay = int(retry_after) if retry_after.isdigit() else base_delay * (2 ** attempt)
+            if e.code == 429:
+                print("  HTTP 429 Too Many Requests from arXiv; not retrying.", flush=True)
+                raise
+            if e.code == 503 and attempt < max_retries:
+                delay = base_delay * (2 ** attempt)
                 print(f"  HTTP {e.code}, retrying in {delay}s (attempt {attempt + 1}/{max_retries}) ...", flush=True)
                 time.sleep(delay)
             else:
