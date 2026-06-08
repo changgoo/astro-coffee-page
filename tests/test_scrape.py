@@ -582,12 +582,14 @@ def test_history_filename():
 
 def test_save_listing_writes_file_and_strips_internal_fields(tmp_path):
     papers = [make_paper("2503.00001")]
+    papers[0]["_listing_source"] = "html"
     history_mod.save_listing(tmp_path / "today.json", "2026-03-09", papers)
     data = json.loads((tmp_path / "today.json").read_text())
     assert data["total"] == 1
     assert data["date"] == "2026-03-09"
     assert data["papers"][0]["id"] == "2503.00001"
     assert "_listing_date" not in data["papers"][0]
+    assert "_listing_source" not in data["papers"][0]
     assert "fetched_at" in data
 
 
@@ -1023,6 +1025,21 @@ def test_fetch_latest_papers_with_fallback_uses_listing_on_503(monkeypatch):
     assert papers == [{"id": "2606.01235", "_listing_date": "2026-06-05"}]
 
 
+def test_fetch_latest_papers_with_fallback_uses_listing_on_406(monkeypatch):
+    """API HTTP 406 falls back to HTML listing scrape."""
+    err406 = urllib.error.HTTPError("", 406, "Not Acceptable", {}, None)
+    monkeypatch.setattr(scrape_fetch, "fetch_latest_papers", lambda **kwargs: (_ for _ in ()).throw(err406))
+    monkeypatch.setattr(
+        scrape_fetch,
+        "fetch_latest_papers_from_listing",
+        lambda n, include_listing_date=False, source="new": [{"id": "2606.01235", "_listing_date": "2026-06-05"}],
+    )
+
+    papers = scrape_fetch.fetch_latest_papers_with_fallback(n=200, include_listing_date=True)
+
+    assert papers == [{"id": "2606.01235", "_listing_date": "2026-06-05"}]
+
+
 def test_fetch_latest_papers_with_fallback_uses_listing_on_timeout(monkeypatch):
     """API timeout falls back to HTML listing scrape."""
     monkeypatch.setattr(scrape_fetch, "fetch_latest_papers", lambda **kwargs: (_ for _ in ()).throw(TimeoutError("slow")))
@@ -1095,6 +1112,8 @@ def test_run_scrape_keeps_clock_date_when_newer_late_listing_exists(tmp_path, mo
         make_paper("J4A", "2026-06-04"),
         make_paper("J4B", "2026-06-04"),
     ]
+    for paper in fetched:
+        paper["_listing_source"] = "html"
 
     monkeypatch.setattr(scrape_workflows, "fetch_latest_papers_with_fallback", lambda **kwargs: fetched)
 
@@ -1104,3 +1123,27 @@ def test_run_scrape_keeps_clock_date_when_newer_late_listing_exists(tmp_path, mo
     assert today["date"] == "2026-06-04"
     assert [paper["id"] for paper in today["papers"]] == ["J4A", "J4B"]
     assert not (tmp_path / "today-1.json").exists()
+
+
+def test_run_scrape_verifies_api_dates_before_same_date_append(tmp_path, monkeypatch):
+    """API-derived same-date papers are not appended when HTML maps them newer."""
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config" / "authors.json").write_text(json.dumps({"authors": []}))
+    history_mod.save_listing(tmp_path / "today.json", "2026-06-05", [make_paper("OLD", "2026-06-05")])
+    api_papers = [
+        make_paper("OLD", "2026-06-05"),
+        make_paper("NEW", "2026-06-05"),
+    ]
+    html_papers = [
+        make_paper("NEW", "2026-06-08"),
+        make_paper("OLD", "2026-06-05"),
+    ]
+
+    monkeypatch.setattr(scrape_workflows, "fetch_latest_papers_with_fallback", lambda **kwargs: api_papers)
+    monkeypatch.setattr(scrape_workflows, "fetch_latest_papers_from_listing", lambda **kwargs: html_papers)
+
+    scrape_workflows.run_scrape(tmp_path, tmp_path, "2026-06-05")
+
+    today = json.loads((tmp_path / "today.json").read_text())
+    assert today["date"] == "2026-06-05"
+    assert [paper["id"] for paper in today["papers"]] == ["OLD"]
