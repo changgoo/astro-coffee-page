@@ -467,6 +467,10 @@ listing into the retained Friday listing.
 The API fallback wrapper also treats `HTTP 406 Not Acceptable` like other
 recoverable arXiv API-side failures and falls back to the HTML listing scraper.
 
+Target-date selection now treats Sunday evening and Monday morning runs as the
+Monday arXiv listing, matching the Sunday announcement batch and preventing
+Monday papers from being skipped while the retained Friday listing is present.
+
 ---
 
 ## Planned / open issues

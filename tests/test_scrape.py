@@ -171,8 +171,8 @@ def test_get_target_date_weekday_evening():
 
 
 def test_get_target_date_sunday_evening():
-    """Sun 21:00 ET → Friday (Thu–Fri batch announced Sunday)."""
-    assert dates.get_target_date(_et_now=et(2026, 3, 8, 21)) == "2026-03-06"
+    """Sun 21:00 ET → Monday (Monday listing is available)."""
+    assert dates.get_target_date(_et_now=et(2026, 3, 8, 21)) == "2026-03-09"
 
 
 def test_get_target_date_monday_evening():
@@ -181,8 +181,8 @@ def test_get_target_date_monday_evening():
 
 
 def test_get_target_date_monday_morning():
-    """Mon 06:00 ET → Friday (catch-up for Fri–Mon batch)."""
-    assert dates.get_target_date(_et_now=et(2026, 3, 9, 6)) == "2026-03-06"
+    """Mon 06:00 ET → Monday (catch-up for Sunday announcement)."""
+    assert dates.get_target_date(_et_now=et(2026, 3, 9, 6)) == "2026-03-09"
 
 
 def test_get_target_date_tuesday_morning():
