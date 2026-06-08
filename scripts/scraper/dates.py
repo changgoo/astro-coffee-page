@@ -27,7 +27,12 @@ def get_target_date(date_str=None, _et_now=None):
     if _et_now is None:
         _et_now = datetime.now(NY_TZ)
 
-    if _et_now.hour >= 14:
+    if _et_now.weekday() == 6 and _et_now.hour >= 14:
+        target = _et_now.date() + timedelta(days=1)
+        return target.strftime("%Y-%m-%d")
+    elif _et_now.weekday() == 0 and _et_now.hour < 14:
+        target = _et_now.date()
+    elif _et_now.hour >= 14:
         target = _et_now.date()
     else:
         target = _et_now.date() - timedelta(days=1)
