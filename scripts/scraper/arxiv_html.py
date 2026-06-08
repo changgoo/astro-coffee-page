@@ -184,7 +184,7 @@ class ArxivListingParser(HTMLParser):
         pdf_href = pdf_link["href"] if pdf_link else f"/pdf/{arxiv_id}"
         pdf_url = f"https://arxiv.org{pdf_href}" if pdf_href.startswith("/") else pdf_href
 
-        return make_paper(
+        paper_data = make_paper(
             arxiv_id=arxiv_id,
             title=paper["title"],
             authors=paper["authors"],
@@ -195,6 +195,8 @@ class ArxivListingParser(HTMLParser):
             listing_date=paper["listing_date"],
             pdf_url=pdf_url,
         )
+        paper_data["_listing_source"] = "html"
+        return paper_data
 
 
 def parse_listing_html(html, include_listing_date=False):

@@ -23,7 +23,7 @@ def fetch_latest_papers_with_fallback(n=FETCH_SIZE, include_listing_date=False, 
             fetch_timeout=10,
         )
     except urllib.error.HTTPError as e:
-        if e.code not in {429, 503}:
+        if e.code not in {406, 429, 503}:
             raise
         print(f"  Falling back to arXiv HTML listing scrape after API HTTP {e.code}.", flush=True)
         return fetch_latest_papers_from_listing(

@@ -89,6 +89,33 @@ def bootstrap_history(data_dir, repo_root, api_enrich=False):
     print("Done.")
 
 
+def listing_dates_are_authoritative(papers):
+    """Return True when papers came from arXiv HTML listing headings."""
+    return bool(papers) and all(paper.get("_listing_source") == "html" for paper in papers)
+
+
+def align_listing_dates_from_recent_html(papers):
+    """Overwrite API-derived listing dates with arXiv HTML recent-listing dates."""
+    recent = fetch_latest_papers_from_listing(
+        n=FETCH_SIZE,
+        include_listing_date=True,
+        source="recent",
+    )
+    listing_by_id = {
+        paper["id"]: paper.get("_listing_date")
+        for paper in recent
+        if paper.get("id") and paper.get("_listing_date")
+    }
+    aligned = 0
+    for paper in papers:
+        listing_date = listing_by_id.get(paper.get("id"))
+        if listing_date:
+            paper["_listing_date"] = listing_date
+            aligned += 1
+    print(f"  Verified arXiv listing dates from HTML for {aligned}/{len(papers)} papers.")
+    return aligned == len(papers)
+
+
 def run_scrape(data_dir, repo_root, arxiv_date, explicit_date=False, bootstrap_n=None, api_enrich=False):
     """Run the normal scrape workflow for one target listing date."""
     print(f"Fetching latest {FETCH_SIZE} arXiv astro-ph papers ...")
@@ -96,6 +123,12 @@ def run_scrape(data_dir, repo_root, arxiv_date, explicit_date=False, bootstrap_n
     if not fetched:
         print("  No papers fetched. Skipping.")
         return
+    authoritative_dates = listing_dates_are_authoritative(fetched)
+    if not authoritative_dates:
+        try:
+            authoritative_dates = align_listing_dates_from_recent_html(fetched)
+        except Exception as e:
+            print(f"  Could not verify API listing dates from HTML: {type(e).__name__}.")
     if papers_missing_abstract(fetched):
         enrich_html_papers(fetched, data_dir=data_dir, use_api=api_enrich)
 
@@ -108,9 +141,13 @@ def run_scrape(data_dir, repo_root, arxiv_date, explicit_date=False, bootstrap_n
     grouped = group_papers_by_listing_date(fetched)
     if not explicit_date and grouped:
         if arxiv_date not in grouped:
-            fetched_date = max(grouped.keys())
-            print(f"  Using fetched arXiv listing date {fetched_date} instead of clock estimate {arxiv_date}.")
-            arxiv_date = fetched_date
+            if authoritative_dates:
+                fetched_date = max(grouped.keys())
+                print(f"  Using fetched arXiv listing date {fetched_date} instead of clock estimate {arxiv_date}.")
+                arxiv_date = fetched_date
+            else:
+                print(f"  No verified papers matched arXiv date {arxiv_date}. Skipping.")
+                return
     target_papers = grouped.get(arxiv_date, [])
     if not target_papers:
         print(f"  No fetched papers matched arXiv date {arxiv_date}. Skipping.")
@@ -122,6 +159,7 @@ def run_scrape(data_dir, repo_root, arxiv_date, explicit_date=False, bootstrap_n
         target_papers,
         bootstrap_n=bootstrap_n,
         discussed_papers=discussed_papers,
+        allow_same_date_append=authoritative_dates,
     )
     if new_count == 0:
         return

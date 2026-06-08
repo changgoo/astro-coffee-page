@@ -459,6 +459,14 @@ Explicit API metadata enrichment includes `max_results` matching the `id_list`
 size so each chunk can return all requested papers rather than the API default
 page size.
 
+Normal API scrape results now verify `_listing_date` against arXiv's recent HTML
+listing before grouping. Same-date appends are skipped if those API-derived dates
+cannot be verified, preventing Monday catch-up runs from appending a newer
+listing into the retained Friday listing.
+
+The API fallback wrapper also treats `HTTP 406 Not Acceptable` like other
+recoverable arXiv API-side failures and falls back to the HTML listing scraper.
+
 ---
 
 ## Planned / open issues

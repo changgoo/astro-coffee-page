@@ -37,6 +37,7 @@ def strip_internal_fields(papers):
     """Remove scraper-only fields before writing paper JSON."""
     for paper in papers:
         paper.pop("_listing_date", None)
+        paper.pop("_listing_source", None)
 
 
 def listing_payload(date, papers, fetched_at=None):
@@ -45,6 +46,7 @@ def listing_payload(date, papers, fetched_at=None):
     for paper in papers:
         clean_paper = dict(paper)
         clean_paper.pop("_listing_date", None)
+        clean_paper.pop("_listing_source", None)
         clean_papers.append(clean_paper)
 
     output = {
@@ -148,7 +150,14 @@ def update_index(data_dir):
     print(f"  Updated index.json: current={today_utc}")
 
 
-def update_history_for_date(data_dir, arxiv_date, target_papers, bootstrap_n=None, discussed_papers=None):
+def update_history_for_date(
+    data_dir,
+    arxiv_date,
+    target_papers,
+    bootstrap_n=None,
+    discussed_papers=None,
+    allow_same_date_append=True,
+):
     """Update rolling history for one arXiv listing date; return count of new papers."""
     discussed_papers = discussed_papers or {}
 
@@ -168,6 +177,9 @@ def update_history_for_date(data_dir, arxiv_date, target_papers, bootstrap_n=Non
         existing_papers = today.get("papers", [])
         seen_ids = collect_history_ids(history)
         new_papers = select_new_papers(target_papers, seen_ids)
+        if new_papers and not allow_same_date_append:
+            print("  Same-date append skipped because listing dates were not verified.")
+            return 0
         all_papers = existing_papers + new_papers
         print(f"  Appending {len(new_papers)} papers to existing {len(existing_papers)}.")
     else:
