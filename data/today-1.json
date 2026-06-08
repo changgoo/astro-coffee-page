@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-05T17:50:29Z",
+  "fetched_at": "2026-06-08T18:23:05Z",
   "date": "2026-06-05",
   "total": 88,
   "papers": [
@@ -2103,7 +2103,8 @@
       "arxiv_url": "https://arxiv.org/abs/2606.05277",
       "pdf_url": "https://arxiv.org/pdf/2606.05277",
       "local_match": null,
-      "local_authors": {}
+      "local_authors": {},
+      "discussed_at": "2026-06-08"
     },
     {
       "id": "2606.05244",
