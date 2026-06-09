@@ -1,6 +1,27 @@
 {
-  "generated_at": "2026-06-08T18:22:54Z",
+  "generated_at": "2026-06-09T23:15:40Z",
   "papers": [
+    {
+      "paper_id": "2606.08023",
+      "title": "Isolated neutron star candidates from the fourth generation XMM-Newton catalogues",
+      "arxiv_url": "https://arxiv.org/abs/2606.08023",
+      "authors": [
+        "Adriana M. Pires",
+        "Christian Motch",
+        "Jan Kurpas",
+        "Axel D. Schwope",
+        "Baoda Li",
+        "Dejiang Yin",
+        "Li Ji",
+        "Jianzhong Liu",
+        "Lei Qian",
+        "Iris Traulsen",
+        "Liyun Zhang",
+        "Zhongli Zhang"
+      ],
+      "discussed_at": "2026-06-09",
+      "issue_number": 68
+    },
     {
       "paper_id": "2606.05277",
       "title": "The free-streaming length of dark matter from JWST observations of 28 strong gravitational lenses",
