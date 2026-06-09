@@ -166,8 +166,8 @@ def et(y, m, d, hour):
 
 
 def test_get_target_date_weekday_evening():
-    """Tue 21:00 ET → Tuesday (Tue announcement batch)."""
-    assert dates.get_target_date(_et_now=et(2026, 3, 3, 21)) == "2026-03-03"
+    """Tue 21:00 ET → Wednesday (Wednesday listing is available)."""
+    assert dates.get_target_date(_et_now=et(2026, 3, 3, 21)) == "2026-03-04"
 
 
 def test_get_target_date_sunday_evening():
@@ -176,8 +176,8 @@ def test_get_target_date_sunday_evening():
 
 
 def test_get_target_date_monday_evening():
-    """Mon 21:00 ET → Monday (Fri–Mon batch announced Monday)."""
-    assert dates.get_target_date(_et_now=et(2026, 3, 9, 21)) == "2026-03-09"
+    """Mon 21:00 ET → Tuesday (Tuesday listing is available)."""
+    assert dates.get_target_date(_et_now=et(2026, 3, 9, 21)) == "2026-03-10"
 
 
 def test_get_target_date_monday_morning():
@@ -186,8 +186,13 @@ def test_get_target_date_monday_morning():
 
 
 def test_get_target_date_tuesday_morning():
-    """Tue 06:00 ET → Monday (catch-up for Tue announcement)."""
-    assert dates.get_target_date(_et_now=et(2026, 3, 10, 6)) == "2026-03-09"
+    """Tue 06:00 ET → Tuesday (catch-up for Monday announcement)."""
+    assert dates.get_target_date(_et_now=et(2026, 3, 10, 6)) == "2026-03-10"
+
+
+def test_get_target_date_friday_evening():
+    """Fri 21:00 ET → Monday (next business-day listing)."""
+    assert dates.get_target_date(_et_now=et(2026, 3, 6, 21)) == "2026-03-09"
 
 
 def test_get_target_date_saturday_morning():
