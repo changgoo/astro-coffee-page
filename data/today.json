@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-10T05:48:51Z",
+  "fetched_at": "2026-06-10T08:20:40Z",
   "date": "2026-06-10",
   "total": 111,
   "papers": [
@@ -1172,9 +1172,9 @@
       "submitted": "2026-06-09",
       "arxiv_url": "https://arxiv.org/abs/2606.10538",
       "pdf_url": "https://arxiv.org/pdf/2606.10538",
-      "local_match": "weak",
+      "local_match": "strong",
       "local_authors": {
-        "N. Loudas": "weak"
+        "N. Loudas": "strong"
       }
     },
     {
