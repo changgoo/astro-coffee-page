@@ -1,6 +1,40 @@
 {
-  "generated_at": "2026-06-09T23:15:40Z",
+  "generated_at": "2026-06-10T18:28:38Z",
   "papers": [
+    {
+      "paper_id": "2606.07787",
+      "title": "Extending asteroseismic magnetometry across the diverse landscape of magnetic structures",
+      "arxiv_url": "https://arxiv.org/abs/2606.07787",
+      "authors": [
+        "Nicholas Z. Rui",
+        "J. M. Joel Ong",
+        "Armand Leclerc",
+        "Daniel Lecoanet",
+        "Lisa Bugnet",
+        "Janosz W. Dewberry",
+        "Bastien Liagre",
+        "St\u00e9phane Mathis"
+      ],
+      "discussed_at": "2026-06-10",
+      "issue_number": 70
+    },
+    {
+      "paper_id": "2606.10538",
+      "title": "Updating the PATH framework with FRB host galaxy models",
+      "arxiv_url": "https://arxiv.org/abs/2606.10538",
+      "authors": [
+        "C. W. James",
+        "N. Loudas",
+        "M. Woodland",
+        "B. C. Andersen",
+        "J. X. Prochaska",
+        "J. L. Hoffmann",
+        "L. Marnoch",
+        "S. D. Ryder"
+      ],
+      "discussed_at": "2026-06-10",
+      "issue_number": 69
+    },
     {
       "paper_id": "2606.08023",
       "title": "Isolated neutron star candidates from the fourth generation XMM-Newton catalogues",
