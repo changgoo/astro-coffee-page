@@ -1,7 +1,7 @@
 {
-  "fetched_at": "2026-06-11T06:06:05Z",
+  "fetched_at": "2026-06-11T17:03:08Z",
   "date": "2026-06-11",
-  "total": 95,
+  "total": 98,
   "papers": [
     {
       "id": "2606.12408",
@@ -2429,6 +2429,64 @@
       "submitted": "2026-06-09",
       "arxiv_url": "https://arxiv.org/abs/2606.11291",
       "pdf_url": "https://arxiv.org/pdf/2606.11291",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.11230",
+      "title": "TAMBO: A Novel Neutrino Telescope for High-Energy Astrophysical Neutrino Detection",
+      "authors": [
+        "P. Zhelnin",
+        "J. Dacpano",
+        "C. Arg\u00fcelles (on behalf of the TAMBO collaboration)"
+      ],
+      "abstract": "The detection of astrophysical neutrino point sources remains challenging due to atmospheric backgrounds obscuring signal and statistical penalties from the look-elsewhere effect. The Tau Air-shower Mountain-Based Observatory (TAMBO) is a neutrino telescope that achieves unprecedented signal-to-background discrimination in the 1-1000 PeV energy range. Leveraging its unique deep valley geometry, TAMBO will generate an exceptionally pure neutrino sample, enabling precise investigations of neutrino sources. Preliminary sensitivity studies demonstrate TAMBO's potential to map diffuse and point-source neutrino emissions, representing a significant advancement in high-energy neutrino astronomy.",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE",
+        "astro-ph.IM",
+        "hep-ex"
+      ],
+      "submitted": "2026-06-11",
+      "arxiv_url": "https://arxiv.org/abs/2606.11230",
+      "pdf_url": "https://arxiv.org/pdf/2606.11230",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.11234",
+      "title": "A synchro-curvature treatment of gamma-ray luminosity trends in pulsars",
+      "authors": [
+        "A. Pathania",
+        "K. K. Singh",
+        "K. K. Yadav"
+      ],
+      "abstract": "In recent years, the Large Area Telescope (LAT) onboard the \\emph{Fermi} satellite has detected more than 300 pulsars in the high energy range. The population studies of high energy pulsars show that the gamma ray luminosity of a pulsar ($L_\\gamma$) can be expressed in terms of the spin down luminosity ($\\dot{E}$) as $L_\\gamma \\propto \\dot {E}^s$ having exponent $s\\sim 0.68$. This high energy emission, assumed to originate far from the stellar surface and near the light cylinder, is usually studied in either purely curvature or purely synchrotron regime. In this work, we adopt a synchro-curvature radiation framework to understand the origin of gamma ray emission from the pulsar and its implications at the population-level. By comparing the observed cutoff energies of the differential gamma-ray spectra with the theoretical synchro-curvature predictions and enforcing radiation reaction approximation, we determine the equilibrium Lorentz factor and pitch angle of the emitting charged particles. This approach allows to quantify the relative roles of curvature and synchrotron radiation to the radiative losses, thereby providing a physically grounded interpretation of the luminosity trend across the pulsar population.",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-06-11",
+      "arxiv_url": "https://arxiv.org/abs/2606.11234",
+      "pdf_url": "https://arxiv.org/pdf/2606.11234",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2606.11253",
+      "title": "The Era of Extremely Large Optical Telescopes II: The GMT and TMT",
+      "authors": [
+        "Priya Hasan"
+      ],
+      "abstract": "The advent of Extremely Large Telescopes (ELTs) ground-based optical and infrared observatories with primary mirrors exceeding 20m marks a transformative era in observational astronomy. This article explores the dawn of this new age, focusing on two of the next generation of optical/ infrared facilities: the Giant Magellan Telescope (GMT) and the Thirty Meter Telescope (TMT)\\footnote{An accompanying paper by the author is on the European Extremely Large Telescope (ELT).} We describe the key technological innovations enabling the construction of these ambitious observatories, notably, segmented mirror design, advanced adaptive optics (AO), and laser guide star systems. Collectively, these breakthroughs yield more than an order of magnitude increase in both light-gathering area and spatial resolution, delivering image sharpness that, for widefield observations, surpassing space-based telescopes. We shall also discuss the comparison of space and ground-based telescopes and highlight their individual strengths and why space telescopes are not the solution to the satellite interference to ground-based telescopes. Ground based telescopes will continue to always be leaders in astronomical observations.",
+      "primary_category": "physics.pop-ph",
+      "categories": [
+        "physics.pop-ph",
+        "astro-ph.IM"
+      ],
+      "submitted": "2026-06-11",
+      "arxiv_url": "https://arxiv.org/abs/2606.11253",
+      "pdf_url": "https://arxiv.org/pdf/2606.11253",
       "local_match": null,
       "local_authors": {}
     }
