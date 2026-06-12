@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-12T05:34:51Z",
+  "fetched_at": "2026-06-12T21:06:18Z",
   "date": "2026-06-12",
   "total": 84,
   "papers": [
@@ -2015,6 +2015,7 @@
       "local_match": "strong",
       "local_authors": {
         "Andrew Chael": "strong",
+        "Zachary Gelles": "strong",
         "Eliot Quataert": "strong"
       }
     },
