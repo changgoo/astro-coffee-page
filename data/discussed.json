@@ -1,6 +1,41 @@
 {
-  "generated_at": "2026-06-10T18:28:38Z",
+  "generated_at": "2026-06-12T23:13:51Z",
   "papers": [
+    {
+      "paper_id": "2606.12653",
+      "title": "What I Wish I had Known When I Began Building Astronomical Instruments",
+      "arxiv_url": "https://arxiv.org/abs/2606.12653",
+      "authors": [
+        "Daniel Fabricant"
+      ],
+      "discussed_at": "2026-06-12",
+      "issue_number": 73
+    },
+    {
+      "paper_id": "2606.13574",
+      "title": "AESTRA II: Generative Spectral Modeling of the Sun as a Star for Precise Radial Velocities",
+      "arxiv_url": "https://arxiv.org/abs/2606.13574",
+      "authors": [
+        "Yan Liang",
+        "Joshua N. Winn",
+        "Peter Melchior",
+        "Sicong Lu",
+        "Quang H. Tran"
+      ],
+      "discussed_at": "2026-06-12",
+      "issue_number": 72
+    },
+    {
+      "paper_id": "2606.13567",
+      "title": "The effect of near-core mixing on rejuvenation and the asteroseismic properties of massive accretors",
+      "arxiv_url": "https://arxiv.org/abs/2606.13567",
+      "authors": [
+        "Jan Henneco",
+        "Dominic M. Bowman"
+      ],
+      "discussed_at": "2026-06-12",
+      "issue_number": 71
+    },
     {
       "paper_id": "2606.07787",
       "title": "Extending asteroseismic magnetometry across the diverse landscape of magnetic structures",
