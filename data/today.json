@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-12T21:06:18Z",
+  "fetched_at": "2026-06-12T23:14:10Z",
   "date": "2026-06-12",
   "total": 84,
   "papers": [
@@ -114,7 +114,8 @@
       "local_authors": {
         "Joshua N. Winn": "strong",
         "Peter Melchior": "strong"
-      }
+      },
+      "discussed_at": "2026-06-12"
     },
     {
       "id": "2606.13567",
@@ -132,7 +133,8 @@
       "arxiv_url": "https://arxiv.org/abs/2606.13567",
       "pdf_url": "https://arxiv.org/pdf/2606.13567",
       "local_match": null,
-      "local_authors": {}
+      "local_authors": {},
+      "discussed_at": "2026-06-12"
     },
     {
       "id": "2606.13538",
@@ -1537,7 +1539,8 @@
       "arxiv_url": "https://arxiv.org/abs/2606.12653",
       "pdf_url": "https://arxiv.org/pdf/2606.12653",
       "local_match": null,
-      "local_authors": {}
+      "local_authors": {},
+      "discussed_at": "2026-06-12"
     },
     {
       "id": "2606.12642",
