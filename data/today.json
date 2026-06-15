@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-15T06:38:07Z",
+  "fetched_at": "2026-06-15T17:53:17Z",
   "date": "2026-06-15",
   "total": 75,
   "papers": [
@@ -1177,6 +1177,7 @@
       "pdf_url": "https://arxiv.org/pdf/2606.14026",
       "local_match": "strong",
       "local_authors": {
+        "Yi-Xian Chen": "strong",
         "Roberto Tejada Arevalo": "strong",
         "Adam Burrows": "strong"
       }
