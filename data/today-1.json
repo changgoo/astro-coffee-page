@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-15T17:53:17Z",
+  "fetched_at": "2026-06-15T18:00:07Z",
   "date": "2026-06-12",
   "total": 84,
   "papers": [
@@ -2017,7 +2017,6 @@
       "pdf_url": "https://arxiv.org/pdf/2606.12518",
       "local_match": "strong",
       "local_authors": {
-        "Andrew Chael": "strong",
         "Zachary Gelles": "strong",
         "Eliot Quataert": "strong"
       }
