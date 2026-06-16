@@ -1,6 +1,31 @@
 {
-  "generated_at": "2026-06-12T23:13:51Z",
+  "generated_at": "2026-06-16T19:31:23Z",
   "papers": [
+    {
+      "paper_id": "2606.12518",
+      "title": "Black Hole Polarimetry III: Universal Polarization of Synchrotron Radiation at the Horizon",
+      "arxiv_url": "https://arxiv.org/abs/2606.12518",
+      "authors": [
+        "Andrew Chael",
+        "Alexandru Lupsasca",
+        "George N. Wong",
+        "Zachary Gelles",
+        "Eliot Quataert"
+      ],
+      "discussed_at": "2026-06-16",
+      "issue_number": 75
+    },
+    {
+      "paper_id": "2606.13793",
+      "title": "A Scalable Fast Multipole Method Poisson Solver for the RAMSES code: I. Unigrid Algorithm",
+      "arxiv_url": "https://arxiv.org/abs/2606.13793",
+      "authors": [
+        "Jun-Young Lee",
+        "Romain Teyssier"
+      ],
+      "discussed_at": "2026-06-16",
+      "issue_number": 74
+    },
     {
       "paper_id": "2606.12653",
       "title": "What I Wish I had Known When I Began Building Astronomical Instruments",
