@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-19T06:31:10Z",
+  "fetched_at": "2026-06-22T02:09:05Z",
   "date": "2026-06-19",
   "total": 94,
   "papers": [
@@ -1590,12 +1590,17 @@
       "pdf_url": "https://arxiv.org/pdf/2606.19539",
       "local_match": "strong",
       "local_authors": {
+        "Spiridon Kasapis": "strong",
+        "Tate T. Hutchins": "strong",
+        "Hameedullah A. Farooki": "strong",
         "Manuel E. Cuesta": "strong",
+        "Leng Y. Khoo": "strong",
         "Sungmin Pak": "strong",
+        "Robert Czarnota": "strong",
         "Jamie S. Rankin": "strong",
         "Jamey Szalay": "strong",
         "Mitchell M. Shen": "strong",
-        "Georgios Livadiotis": "weak",
+        "Georgios Livadiotis": "strong",
         "David J. McComas": "strong",
         "Nathan Schwadron": "strong"
       }
