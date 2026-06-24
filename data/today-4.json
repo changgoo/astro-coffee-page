@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-22T02:09:05Z",
+  "fetched_at": "2026-06-24T17:51:15Z",
   "date": "2026-06-17",
   "total": 98,
   "papers": [
@@ -1694,7 +1694,8 @@
         "Jenny E. Greene": "strong",
         "Christian Kragh Jespersen": "strong",
         "David J. Setton": "strong"
-      }
+      },
+      "discussed_at": "2026-06-24"
     },
     {
       "id": "2606.17270",

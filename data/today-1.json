@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-23T05:14:41Z",
+  "fetched_at": "2026-06-24T17:51:15Z",
   "date": "2026-06-23",
   "total": 185,
   "papers": [
@@ -1334,7 +1334,8 @@
       "arxiv_url": "https://arxiv.org/abs/2606.22919",
       "pdf_url": "https://arxiv.org/pdf/2606.22919",
       "local_match": null,
-      "local_authors": {}
+      "local_authors": {},
+      "discussed_at": "2026-06-24"
     },
     {
       "id": "2606.22898",
@@ -1920,7 +1921,8 @@
       "arxiv_url": "https://arxiv.org/abs/2606.22455",
       "pdf_url": "https://arxiv.org/pdf/2606.22455",
       "local_match": null,
-      "local_authors": {}
+      "local_authors": {},
+      "discussed_at": "2026-06-24"
     },
     {
       "id": "2606.22446",
@@ -3269,7 +3271,8 @@
       "arxiv_url": "https://arxiv.org/abs/2606.21656",
       "pdf_url": "https://arxiv.org/pdf/2606.21656",
       "local_match": null,
-      "local_authors": {}
+      "local_authors": {},
+      "discussed_at": "2026-06-24"
     },
     {
       "id": "2606.21653",
