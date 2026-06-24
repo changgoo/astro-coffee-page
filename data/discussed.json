@@ -1,6 +1,99 @@
 {
-  "generated_at": "2026-06-16T19:31:23Z",
+  "generated_at": "2026-06-24T17:51:03Z",
   "papers": [
+    {
+      "paper_id": "2606.22455",
+      "title": "Magnetic field strengths of hot giant exoplanets consistent with Solar System values",
+      "arxiv_url": "https://arxiv.org/abs/2606.22455",
+      "authors": [
+        "Julia V. Seidel",
+        "Vivien Parmentier",
+        "Bibiana Prinoth",
+        "Thea Hood",
+        "Nishil Mehta",
+        "Valentin De Lia",
+        "Konstantin Batygin",
+        "Tristan Guillot",
+        "Ragnar Van den Broeck",
+        "Hayley Beltz",
+        "Brian Thorsbro",
+        "Florian Debras",
+        "Daniel D. B. Koll",
+        "Thaddeus D. Komacek",
+        "Emily Rauscher",
+        "Lorenzo Pino",
+        "Matteo Brogi",
+        "Joost P. Wardenier",
+        "Jacob L. Bean",
+        "Bj\u00f6rn Benneke",
+        "Jean-Michel L. B. D\u00e9sert",
+        "Pablo Drake",
+        "Siddharth Gandhi",
+        "Mark Hammond",
+        "David Kasper",
+        "Michael R. Line",
+        "Elspeth K. H. Lee",
+        "Stefan Pelletier",
+        "Andreas Seifahrt",
+        "Adrien Simonnin",
+        "Peter C. B. Smith",
+        "Kevin B. Stevenson"
+      ],
+      "discussed_at": "2026-06-24",
+      "issue_number": 79
+    },
+    {
+      "paper_id": "2606.22919",
+      "title": "Are most detected tidal disruption events partial?",
+      "arxiv_url": "https://arxiv.org/abs/2606.22919",
+      "authors": [
+        "Megha Sharma",
+        "Daniel J. Price",
+        "Alexander Heger",
+        "Katie Auchettle"
+      ],
+      "discussed_at": "2026-06-24",
+      "issue_number": 78
+    },
+    {
+      "paper_id": "2606.21656",
+      "title": "The $M$-$\u03c3$ Relation Has to Break",
+      "arxiv_url": "https://arxiv.org/abs/2606.21656",
+      "authors": [
+        "Omri Nitzan",
+        "Re'em Sari"
+      ],
+      "discussed_at": "2026-06-24",
+      "issue_number": 77
+    },
+    {
+      "paper_id": "2606.17271",
+      "title": "Black Hole Stars Across the Universe: Identifying Central Engine Dominated Little Red Dots at $z\\sim1.5-9.5$",
+      "arxiv_url": "https://arxiv.org/abs/2606.17271",
+      "authors": [
+        "Andrea Weibel",
+        "Rohan P. Naidu",
+        "Pascal A. Oesch",
+        "Anna de Graaff",
+        "Raphael E. Hviding",
+        "Zhaoran Liu",
+        "Jorryt Matthee",
+        "Christina C. Williams",
+        "Gabriel Brammer",
+        "Alba Covelo Paz",
+        "Jenny E. Greene",
+        "Christian Kragh Jespersen",
+        "Zhiyuan Ji",
+        "Michael V. Maseda",
+        "David J. Setton",
+        "Wendy Q. Sun",
+        "Alberto Torralba",
+        "Callum Witten",
+        "Mengyuan Xiao"
+      ],
+      "discussed_at": "2026-06-24",
+      "issue_number": 76
+    },
     {
       "paper_id": "2606.12518",
       "title": "Black Hole Polarimetry III: Universal Polarization of Synchrotron Radiation at the Horizon",
