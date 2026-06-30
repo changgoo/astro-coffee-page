@@ -1,6 +1,17 @@
 {
-  "generated_at": "2026-06-24T17:51:03Z",
+  "generated_at": "2026-06-30T17:49:20Z",
   "papers": [
+    {
+      "paper_id": "2606.27903",
+      "title": "A hidden reionization prior biases cosmological inference",
+      "arxiv_url": "https://arxiv.org/abs/2606.27903",
+      "authors": [
+        "Zihan Wang",
+        "Huanyuan Shan"
+      ],
+      "discussed_at": "2026-06-30",
+      "issue_number": 80
+    },
     {
       "paper_id": "2606.22455",
       "title": "Magnetic field strengths of hot giant exoplanets consistent with Solar System values",
