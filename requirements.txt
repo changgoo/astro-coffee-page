@@ -2,3 +2,4 @@
 # scripts/scrape.py uses Python stdlib exclusively.
 cloudscraper
 beautifulsoup4
+ruff==0.15.4
