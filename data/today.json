@@ -1,7 +1,7 @@
 {
-  "fetched_at": "2026-07-29T04:32:14Z",
+  "fetched_at": "2026-07-29T15:21:31Z",
   "date": "2026-07-29",
-  "total": 111,
+  "total": 113,
   "papers": [
     {
       "id": "2607.26058",
@@ -3256,6 +3256,44 @@
       "submitted": "2026-07-27",
       "arxiv_url": "https://arxiv.org/abs/2607.24894",
       "pdf_url": "https://arxiv.org/pdf/2607.24894",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2607.24816",
+      "title": "Contribution of cosmic alphas to generation of albedo neutrons and gammas in lunar regolith: A computational study based on GEANT4 simulations",
+      "authors": [
+        "Harshala Gaonkar",
+        "A. Ilker Topuz"
+      ],
+      "abstract": "The lunar surface is constantly and directly exposed to Galactic Cosmic Rays (GCRs) due to the lack of the atmosphere and the magnetic field around it. The high-energetic alpha particles subsequently contribute to the generation of the secondary neutrons through either the spallation reaction or the low-energetic $(\\alpha, n)$ process along with the cosmic protons. In this study, the contribution of the alpha particles to the production of the albedo neutrons as well as the albedo gamma rays in the lunar regolith is studied by using the Monte Carlo simulations based on the GEANT4 toolkit. The incident alpha particles are referenced from the PAMELA spectrometer over the interval between 0.14 and 52 GeV and executed as a probability-based primary particle source. The present simulations demonstrate the production of the albedo neutrons and gamma rays upon the process of cosmic alpha irradiation in the lunar regolith. The albedo neutron production is predominantly situated within the near-surface region of the lunar regolith and progressively diminishes with the increasing depth. The population of the secondary neutrons is primarily distributed over the low-energy region and reduces towards the high energies. These results imply that the cosmic alpha particles have also quantifiable contribution in the generation of the secondary radiation at the lunar surface together with the cosmic protons, and this study demonstrates a computational framework in the evaluation of the lunar albedo, the radiation transport, the surface composition, and the radiation environment for the further lunar exploration missions.",
+      "primary_category": "physics.ins-det",
+      "categories": [
+        "physics.ins-det",
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-07-29",
+      "arxiv_url": "https://arxiv.org/abs/2607.24816",
+      "pdf_url": "https://arxiv.org/pdf/2607.24816",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2607.24823",
+      "title": "Unveiling neutron and gamma spectrum at Martian surface in presence and absence of hydrogen: A computational study based on GEANT4 simulations",
+      "authors": [
+        "A. Ilker Topuz"
+      ],
+      "abstract": "Motivated by the interactions of the GCR protons with the Martian atmosphere and regolith in the absence and presence of hydrogen, a series of GEANT4 simulations are employed in this study to reveal the influence of hydrogen on the energy spectra of secondary and albedo neutrons together with the associated gamma rays at the Martian surface. Following irradiation of the Martian atmosphere with a planar vertical PAMELA proton beam, the attenuation of the primary proton spectrum through the atmosphere and the range and energy deposition of protons within the regolith are first obtained. The depth profile of the generated neutrons and gamma rays, along with the kinetic energy spectra of the atmospherically produced neutrons and gammas reaching the surface, is then acquired in the absence and presence of 0.11 wt.% hydrogen by voxelizing the regolith into 100 cells of 2-cm thickness. Finally, a surface detector is placed atop the regolith, and the atmospherically produced neutron and gamma spectra are compared with the total neutron and gamma spectra recorded at the surface detector to assess the relative contribution of the atmosphere and the regolith to the overall radiation field reaching the Martian surface. The energy spectra of the albedo neutrons are also obtained in terms of thermal, epithermal, and fast neutrons. The GEANT4 simulations show that the Martian regolith, rather than the atmosphere alone, constitutes the dominant source of the neutron and gamma population arriving at the surface, and that the presence of 0.11 wt.% hydrogen is observable in each energy regime of the albedo neutrons at the Martian surface, while proton transport and the overall neutron and gamma production depth profile remain comparatively insensitive to hydrogen, thereby indicating the elemental variation of the Martian regolith.",
+      "primary_category": "physics.ins-det",
+      "categories": [
+        "physics.ins-det",
+        "astro-ph.EP",
+        "physics.space-ph"
+      ],
+      "submitted": "2026-07-29",
+      "arxiv_url": "https://arxiv.org/abs/2607.24823",
+      "pdf_url": "https://arxiv.org/pdf/2607.24823",
       "local_match": null,
       "local_authors": {}
     }
