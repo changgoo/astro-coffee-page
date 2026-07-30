@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-07-29T15:21:31Z",
+  "fetched_at": "2026-07-30T23:01:30Z",
   "date": "2026-07-29",
   "total": 113,
   "papers": [
@@ -714,7 +714,8 @@
       "local_authors": {
         "T. Kim": "weak",
         "F. Yu": "weak"
-      }
+      },
+      "discussed_at": "2026-07-30"
     },
     {
       "id": "2607.25964",
@@ -3193,7 +3194,8 @@
       "arxiv_url": "https://arxiv.org/abs/2607.24911",
       "pdf_url": "https://arxiv.org/pdf/2607.24911",
       "local_match": null,
-      "local_authors": {}
+      "local_authors": {},
+      "discussed_at": "2026-07-30"
     },
     {
       "id": "2607.24908",
