@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-07-30T23:01:30Z",
+  "fetched_at": "2026-08-01T12:44:54Z",
   "date": "2026-07-29",
   "total": 113,
   "papers": [
@@ -873,8 +873,7 @@
       "pdf_url": "https://arxiv.org/pdf/2607.25881",
       "local_match": "strong",
       "local_authors": {
-        "Veena Krishnaraj": "strong",
-        "Adrian E. Bayer": "strong"
+        "Veena Krishnaraj": "strong"
       }
     },
     {
@@ -1588,8 +1587,7 @@
       "pdf_url": "https://arxiv.org/pdf/2607.25672",
       "local_match": "strong",
       "local_authors": {
-        "Veena Krishnaraj": "strong",
-        "Adrian E. Bayer": "strong"
+        "Veena Krishnaraj": "strong"
       }
     },
     {
@@ -2592,11 +2590,8 @@
       "submitted": "2026-07-27",
       "arxiv_url": "https://arxiv.org/abs/2607.25044",
       "pdf_url": "https://arxiv.org/pdf/2607.25044",
-      "local_match": "strong",
-      "local_authors": {
-        "Lauren A. MacArthur": "strong",
-        "Dan S. Taranu": "strong"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2607.25035",

@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-07-30T23:01:30Z",
+  "fetched_at": "2026-08-01T12:44:54Z",
   "date": "2026-07-30",
   "total": 86,
   "papers": [
@@ -724,7 +724,6 @@
       "local_match": "strong",
       "local_authors": {
         "Leng Ying Khoo": "strong",
-        "David J. Mccomas": "strong",
         "Nathan A. Schwadron": "strong"
       }
     },
@@ -2054,10 +2053,8 @@
       "submitted": "2026-07-28",
       "arxiv_url": "https://arxiv.org/abs/2607.26149",
       "pdf_url": "https://arxiv.org/pdf/2607.26149",
-      "local_match": "strong",
-      "local_authors": {
-        "Andrew K. Saydjari": "strong"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2607.26147",

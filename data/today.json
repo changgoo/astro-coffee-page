@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-07-31T04:43:23Z",
+  "fetched_at": "2026-08-01T12:44:54Z",
   "date": "2026-07-31",
   "total": 131,
   "papers": [
@@ -1740,10 +1740,8 @@
       "submitted": "2026-07-30",
       "arxiv_url": "https://arxiv.org/abs/2607.27804",
       "pdf_url": "https://arxiv.org/pdf/2607.27804",
-      "local_match": "weak",
-      "local_authors": {
-        "E. Quataert": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2607.27772",
@@ -1872,10 +1870,8 @@
       "submitted": "2026-07-30",
       "arxiv_url": "https://arxiv.org/abs/2607.27772",
       "pdf_url": "https://arxiv.org/pdf/2607.27772",
-      "local_match": "weak",
-      "local_authors": {
-        "Y. Zhang": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2607.27765",
@@ -2400,10 +2396,8 @@
       "submitted": "2026-07-29",
       "arxiv_url": "https://arxiv.org/abs/2607.27468",
       "pdf_url": "https://arxiv.org/pdf/2607.27468",
-      "local_match": "strong",
-      "local_authors": {
-        "Tea Temim": "strong"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2607.27467",
@@ -3105,10 +3099,8 @@
       "submitted": "2026-07-29",
       "arxiv_url": "https://arxiv.org/abs/2607.27410",
       "pdf_url": "https://arxiv.org/pdf/2607.27410",
-      "local_match": "weak",
-      "local_authors": {
-        "Y. Zhang": "weak"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2607.27391",
