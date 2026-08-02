@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-08-01T12:44:54Z",
+  "fetched_at": "2026-08-02T18:31:39Z",
   "date": "2026-07-27",
   "total": 71,
   "papers": [
@@ -105,8 +105,10 @@
       "submitted": "2026-07-24",
       "arxiv_url": "https://arxiv.org/abs/2607.22499",
       "pdf_url": "https://arxiv.org/pdf/2607.22499",
-      "local_match": null,
-      "local_authors": {}
+      "local_match": "strong",
+      "local_authors": {
+        "Andrew K. Saydjari": "strong"
+      }
     },
     {
       "id": "2607.22461",
@@ -1616,6 +1618,7 @@
       "pdf_url": "https://arxiv.org/pdf/2607.21841",
       "local_match": "strong",
       "local_authors": {
+        "Chang-Goo Kim": "strong",
         "Eve C. Ostriker": "strong"
       }
     },

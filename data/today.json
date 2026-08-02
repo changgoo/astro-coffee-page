@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-08-01T12:44:54Z",
+  "fetched_at": "2026-08-02T18:31:39Z",
   "date": "2026-07-31",
   "total": 131,
   "papers": [
@@ -1740,8 +1740,10 @@
       "submitted": "2026-07-30",
       "arxiv_url": "https://arxiv.org/abs/2607.27804",
       "pdf_url": "https://arxiv.org/pdf/2607.27804",
-      "local_match": null,
-      "local_authors": {}
+      "local_match": "weak",
+      "local_authors": {
+        "E. Quataert": "weak"
+      }
     },
     {
       "id": "2607.27772",
@@ -1870,8 +1872,10 @@
       "submitted": "2026-07-30",
       "arxiv_url": "https://arxiv.org/abs/2607.27772",
       "pdf_url": "https://arxiv.org/pdf/2607.27772",
-      "local_match": null,
-      "local_authors": {}
+      "local_match": "weak",
+      "local_authors": {
+        "Y. Zhang": "weak"
+      }
     },
     {
       "id": "2607.27765",
@@ -3099,8 +3103,10 @@
       "submitted": "2026-07-29",
       "arxiv_url": "https://arxiv.org/abs/2607.27410",
       "pdf_url": "https://arxiv.org/pdf/2607.27410",
-      "local_match": null,
-      "local_authors": {}
+      "local_match": "weak",
+      "local_authors": {
+        "Y. Zhang": "weak"
+      }
     },
     {
       "id": "2607.27391",

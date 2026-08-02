@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-08-01T12:44:54Z",
+  "fetched_at": "2026-08-02T18:31:39Z",
   "date": "2026-07-24",
   "total": 91,
   "papers": [
@@ -1710,7 +1710,8 @@
       "pdf_url": "https://arxiv.org/pdf/2607.20774",
       "local_match": "weak",
       "local_authors": {
-        "Y. Chen": "weak"
+        "Y. Chen": "weak",
+        "R. Mbarek": "weak"
       }
     },
     {
@@ -1840,6 +1841,7 @@
       "pdf_url": "https://arxiv.org/pdf/2607.20704",
       "local_match": "strong",
       "local_authors": {
+        "Romain Teyssier": "strong",
         "James Sunseri": "strong",
         "Jun-Young Lee": "strong",
         "Yue Pan": "strong",
@@ -2476,8 +2478,10 @@
       "submitted": "2026-07-22",
       "arxiv_url": "https://arxiv.org/abs/2607.20606",
       "pdf_url": "https://arxiv.org/pdf/2607.20606",
-      "local_match": null,
-      "local_authors": {}
+      "local_match": "strong",
+      "local_authors": {
+        "Bingjie Wang": "strong"
+      }
     },
     {
       "id": "2607.20599",
