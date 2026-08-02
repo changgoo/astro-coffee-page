@@ -476,6 +476,14 @@ zero papers to an already-current `today.json`.
 
 ---
 
+## 33. Preserve authors when a people page fails
+
+The monthly author scraper now aborts without writing `config/authors.json` if
+any configured Princeton people page fails or returns no names. This prevents a
+partial scrape, such as a Cloudflare 403 response, from deleting valid authors.
+
+---
+
 ## Planned / open issues
 
 | # | Title |

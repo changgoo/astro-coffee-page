@@ -1,10 +1,12 @@
 """Unit tests for scripts/scrape_authors.py."""
 
 import json
+import sys
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import sys
+import pytest
+
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 import scrape_authors
@@ -115,6 +117,15 @@ def test_main_writes_authors_json(tmp_path):
     assert out_path.exists()
     data = json.loads(out_path.read_text())
     assert data["authors"] == ["Alice Smith", "Bob Jones"]
+
+
+def test_main_aborts_if_any_page_is_empty():
+    """A partial scrape must not replace the existing author list."""
+    with patch("scrape_authors.scrape_page", side_effect=[["Alice Smith"], []]), \
+         patch("scrape_authors.PAGES", [("Group A", "a"), ("Group B", "b")]), \
+         patch("sys.argv", ["scrape_authors.py"]), \
+         pytest.raises(SystemExit, match="Group B"):
+        scrape_authors.main()
 
 
 def test_main_deduplicates_names(tmp_path):
