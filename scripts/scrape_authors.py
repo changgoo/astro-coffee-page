@@ -83,7 +83,10 @@ def main():
 
     all_names = []
     for label, url in PAGES:
-        all_names.extend(scrape_page(label, url))
+        names = scrape_page(label, url)
+        if not names:
+            raise SystemExit(f"Refusing to overwrite author list: no names from {label}")
+        all_names.extend(names)
 
     # Deduplicate while preserving order
     seen = set()
