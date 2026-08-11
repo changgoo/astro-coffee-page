@@ -1,7 +1,7 @@
 {
-  "fetched_at": "2026-08-11T03:11:42Z",
+  "fetched_at": "2026-08-11T06:07:04Z",
   "date": "2026-08-11",
-  "total": 126,
+  "total": 128,
   "papers": [
     {
       "id": "2608.09929",
@@ -3615,6 +3615,51 @@
       "submitted": "2026-08-07",
       "arxiv_url": "https://arxiv.org/abs/2608.07633",
       "pdf_url": "https://arxiv.org/pdf/2608.07633",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2608.05269",
+      "title": "Baryogenesis via the CKM Matrix with Minimal Flavor Violation",
+      "authors": [
+        "Innes Bigaran",
+        "Gordan Krnjaic",
+        "Kevin Langhoff",
+        "Huangyu Xiao"
+      ],
+      "abstract": "It is often claimed Standard Model CP violation is insufficient for baryogenesis. We present a counterexample using minimal flavor violation (MFV) in which all CP-violating effects arise from the Cabibbo-Kobayashi-Maskawa (CKM) matrix. Our scenario involves a leptoquark field with MFV-preserving interactions whose decays to Standard Model particles yield the observed baryon asymmetry in the early universe. Unlike previous efforts to realize baryogenesis through the CP violation of the CKM matrix, our scenario does not require any time-variation of model parameters.",
+      "primary_category": "hep-ph",
+      "categories": [
+        "hep-ph",
+        "astro-ph.CO"
+      ],
+      "submitted": "2026-08-11",
+      "arxiv_url": "https://arxiv.org/abs/2608.05269",
+      "pdf_url": "https://arxiv.org/pdf/2608.05269",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2608.07580",
+      "title": "Real-time physics inversion for retrieval of sub-pixel wildfire temperatures from VSWIR imaging spectroscopy",
+      "authors": [
+        "William R. Keely",
+        "Philip G. Brodrick",
+        "Katherine Mistick",
+        "Adam Chlus",
+        "Robert O. Green",
+        "Philip E. Dennison"
+      ],
+      "abstract": "In this work, we present a wildfire temperature retrieval framework for VSWIR imaging spectroscopy data, employed on data from NASA's Airborne Visible Infrared Imaging Spectrometer (AVIRIS-3). The retrieval framework utilizes a full-physics approach in which a forward model is employed to resolve both solar and emitted radiance derived from a temperature distribution and utilizes the full spectral range in the residual fit. To optimize the forward model retrieval, we use state-of-the-art nonlinear least squares methods implemented for fast convergence on the on-board GPU, allowing for estimation of effective fire temperature within flight cadence. We verify the forward model assumptions on simulated spectra with an injected thermal signature and find good agreement with an RMSE of $41.8$ Kelvin (K). We apply the retrieval over the full 2025 FireSense AVIRIS-3 campaign, totaling 168 overflights with probable active fire spectra, and demonstrate a residual radiance fit of $\\leq 10\\%$ across bands in the short-wave infrared (SWIR). Lastly, we verify the applicability of the retrieved posterior fire temperature parameters to generalize to space-borne imaging spectrometers such as EMIT, by retrieving at coarsened spatial resolution. We find that the posterior distribution exhibits good coverage of the underlying sub-pixel temperature range with an absolute error of $30$ K across quantiles and a mean absolute error of $27.16$ K between spatial resolutions.",
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "astro-ph.IM",
+        "cs.LG"
+      ],
+      "submitted": "2026-08-11",
+      "arxiv_url": "https://arxiv.org/abs/2608.07580",
+      "pdf_url": "https://arxiv.org/pdf/2608.07580",
       "local_match": null,
       "local_authors": {}
     }
