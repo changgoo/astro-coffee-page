@@ -1,7 +1,7 @@
 {
-  "fetched_at": "2026-08-24T02:37:40Z",
+  "fetched_at": "2026-08-24T10:06:21Z",
   "date": "2026-08-24",
-  "total": 65,
+  "total": 67,
   "papers": [
     {
       "id": "2608.21353",
@@ -1674,6 +1674,47 @@
       "submitted": "2026-08-19",
       "arxiv_url": "https://arxiv.org/abs/2608.19367",
       "pdf_url": "https://arxiv.org/pdf/2608.19367",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2608.20415",
+      "title": "A comparative study of emergent dark energy models",
+      "authors": [
+        "Andr\u00e9s Garc\u00eda-Rivera",
+        "A. Hern\u00e1ndez-Almada",
+        "Miguel A. Garc\u00eda-Aspeitia",
+        "V. Motta"
+      ],
+      "abstract": "Late (emergent) dark energy models that involve a hyperbolic tangent in their dynamic equations have achieved success due to their simplicity, the possibility of resolving the Hubble tension, and, in some cases their consistency with the Dark Energy Spectroscopic Instrument (DESI) results. Among the most studied are the Phenomenological and General Emergent Dark Energy Models (PEDE and GEDE, respectively), the variable curvature model, and the graduated dark energy model. Our goal is to include the curvature term in the models and perform a robust comparative study using diverse data samples, in particular, Cosmic Chronometers, Type Ia supernovae, Baryon Acoustic Oscillations from DESI-DR1, and Cosmic Microwave Background Radiation. This study presents the Universe age, the deceleration, the $w_{eff}$ parameter reconstruction, the redshift transition, and the best fit for the free parameters of each model. Our collected evidence from Akaike Information Criterion and Bayesian Information Criterion indicates that the best candidate is the PEDE model. Nevertheless, the variable-curvature model is the only model that exhibits a decelerated phase near $z=0$, consistent with the results from DESI.",
+      "primary_category": "astro-ph.CO",
+      "categories": [
+        "astro-ph.CO",
+        "gr-qc"
+      ],
+      "submitted": "2026-08-24",
+      "arxiv_url": "https://arxiv.org/abs/2608.20415",
+      "pdf_url": "https://arxiv.org/pdf/2608.20415",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2602.07430",
+      "title": "Circularly polarized gravitational waves from parity-violating scalar-tensor theory",
+      "authors": [
+        "Jia-Xi Feng",
+        "Jia-Yuan Fang",
+        "Xian Gao"
+      ],
+      "abstract": "We study both primordial gravitational waves (GWs) and scalar-induced gravitational waves (SIGWs) in a class of the parity-violating scalar-tensor (PVST) theory, of which the Lagrangian is the linear combination of seven ghost-free parity-violating scalar-tensor monomials dubbed the \"Qi-Xiu\" Lagrangians. At linear order, we obtain the quadratic action for tensor perturbations and show that parity-violating terms associated with L_1, L_2, L_5, L_6, and L_7 render the tensor propagation polarization dependent, leading to chiral primordial spectra and a nonvanishing degree of circular polarization. At second order, we derive the equation of motion for SIGWs and identify the explicit parity-violating source terms. In particular, L_3 and L_4 enter exclusively through the source term for SIGWs, allowing parity violation to arise even when the linear GWs' propagation remains effectively general-relativity-like. During the radiation-dominated era, we compute the fractional energy density of SIGWs for both monochromatic and log-normal curvature power spectra. We find that, around the peak frequency, SIGWs in PVST gravity exhibit characteristic deviations from those in general relativity, resulting in a nonzero degree of circular polarization.",
+      "primary_category": "gr-qc",
+      "categories": [
+        "gr-qc",
+        "astro-ph.CO"
+      ],
+      "submitted": "2026-08-24",
+      "arxiv_url": "https://arxiv.org/abs/2602.07430",
+      "pdf_url": "https://arxiv.org/pdf/2602.07430",
       "local_match": null,
       "local_authors": {}
     }
