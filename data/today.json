@@ -1,7 +1,7 @@
 {
-  "fetched_at": "2026-09-01T16:36:56Z",
+  "fetched_at": "2026-09-01T17:20:25Z",
   "date": "2026-09-01",
-  "total": 133,
+  "total": 140,
   "papers": [
     {
       "id": "2608.31163",
@@ -3395,6 +3395,145 @@
       "submitted": "2026-08-28",
       "arxiv_url": "https://arxiv.org/abs/2608.28737",
       "pdf_url": "https://arxiv.org/pdf/2608.28737",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2608.28688",
+      "title": "G(2) Glueball Boson Stars as Restricted Kerr Mimickers in the Thomas--Fermi Limit",
+      "authors": [
+        "Nicol\u00f2 Masi"
+      ],
+      "abstract": "We investigate whether horizonless compact stars made of dark glueball matter from a broken exceptional $G(2)$ gauge sector can reproduce selected Kerr observables within a Thomas--Fermi effective-fluid description. We introduce GC9, a scale-separated $G(2)$-inspired positive nonic-density closure whose high-density stiffness, bag-free surface and Q-ball safety make it a useful compact-star benchmark. After Thomas--Fermi rescaling, reduced stellar observables are independent of the microscopic glueball mass $m_G$, while the collective stiffness $\\Lambda_T$ fixes the dimensional mass and radius. Solving the TOV, Hinderer and Hartle--Thorne systems, we obtain a stable maximum-mass compactness $C=0.3247$, tidal deformability $\\Lambda=4.37$, $\\bar I C^{3/2}=0.947$, and slow-rotation quadrupole $\\bar Q=1.522$. At $j=0.328$, the same-order ISCO shift is $1.24\\%$. The stable endpoint has no light ring, but its exterior Regge--Wheeler barrier supports a genuine static axial mode, $M\\omega=0.463846-0.098881i$, with a damping time about ten percent shorter than Schwarzschild and a real frequency $24.1\\%$ higher. A polarization-balanced vector realization has the same isotropic bulk EOS; moderate residual anisotropy changes static and first-order observables only at the few-percent level, while the full coupled vector spectrum remains open. Cowling calculations identify matter-supported quadrupolar modes. The scalar-burst, seeded-collapse and cosmological sections are phenomenological: a fixed $\\Lambda_T$ gives a compact Kerr-comparison branch only near its own maximum mass, so the multi-sector scenario assumes distinct constant-$\\Lambda_T$ branches from the keV supermassive sector to the PeV asteroid-mass sector. GC9 therefore defines a falsifiable restricted Kerr-mimicry framework for gravitational-wave, horizon-scale and compact-dark-matter tests.",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-09-01",
+      "arxiv_url": "https://arxiv.org/abs/2608.28688",
+      "pdf_url": "https://arxiv.org/pdf/2608.28688",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2405.04474",
+      "title": "Geometrothermodynamics and critical behavior of regular black holes",
+      "authors": [
+        "H. Quevedo",
+        "M.N. Quevedo",
+        "A. Sanchez"
+      ],
+      "abstract": "We apply the formalism of quasi-homogeneous geometrothermodynamics to study the stability, phase transition, and criticality properties of the Bardeen regular black hole. We show that the singularities of thermodynamic curvature determine the regions where the stability conditions break down and indicate the location of the Davies phase transition and the zero-temperature limiting case. Moreover, we compute the critical exponents of the curvature and prove the existence of a scaling relation with the heat capacity.",
+      "primary_category": "gr-qc",
+      "categories": [
+        "gr-qc",
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-09-01",
+      "arxiv_url": "https://arxiv.org/abs/2405.04474",
+      "pdf_url": "https://arxiv.org/pdf/2405.04474",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2505.02389",
+      "title": "Phase Transitions, Shadows, and Microstructure of Kerr-anti-de Sitter Black Holes from Geometrothermodynamics",
+      "authors": [
+        "Jose Miguel Ladino",
+        "Carlos E. Romero-Figueroa",
+        "Hernando Quevedo"
+      ],
+      "abstract": "Using the formalism of geometrothermodynamics, we investigate the phase-transition structure and microstructure of the Kerr-anti-de Sitter black hole and show the relationship with its shadow structure. By treating the curvature radius as a thermodynamic variable, we ensure scaling consistency and model the system as quasi-homogeneous. In the canonical ensemble, we identify critical points and characterize both first- and second-order phase transitions independently of pressure. In the grand-canonical ensemble, we reveal a distinct phase structure, including the Hawking-Page transition. We derive analytical expressions for the Kerr-anti-de Sitter black hole shadow and its critical parameters, using shadow thermodynamics to construct asymmetric shadow profiles that capture the phase-transition structure. Finally, we show that the singularities of the geometrothermodynamic curvature in the shadow align with divergences in thermodynamic response functions, confirming the correspondence between shadows, phase transitions, and microstructure.",
+      "primary_category": "gr-qc",
+      "categories": [
+        "gr-qc",
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-09-01",
+      "arxiv_url": "https://arxiv.org/abs/2505.02389",
+      "pdf_url": "https://arxiv.org/pdf/2505.02389",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2603.02352",
+      "title": "Shadow and Thermodynamics of deformed Schwarzschild-AdS black hole with a Cloud of Strings embedded in Perfect Fluid Dark Matter",
+      "authors": [
+        "Faizuddin Ahmed",
+        "Carlos E. Romero-Figueroa",
+        "Hernando Quevedo"
+      ],
+      "abstract": "We investigate the optical and thermodynamic properties of a deformed Schwarzschild Anti-de Sitter (AdS) black hole coupled to a cloud of strings and embedded in perfect fluid dark matter. We analyze the photon sphere and the corresponding black hole shadow, determining how these observables are affected by the string cloud, dark matter distribution, and geometric deformation. The thermodynamic behavior is studied through both the quasi-homogeneous fundamental equation within the classical physical approach and the geometric framework of geometrothermodynamics (GTD), showing full consistency between the two descriptions. In the extended phase space, we examine the critical structure and phase behavior of the system. Our analysis reveals that neither the geometric deformation nor the dark matter parameter generates new phase transitions; criticality emerges only in the vicinity of the Reissner--Nordstr\u00f6m--AdS solution (RN--AdS), where the deformation parameter effectively plays the role of an electric charge squared. These results clarify the interplay between matter distributions, geometric deformations, and the phase structure of AdS black holes.",
+      "primary_category": "gr-qc",
+      "categories": [
+        "gr-qc",
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-09-01",
+      "arxiv_url": "https://arxiv.org/abs/2603.02352",
+      "pdf_url": "https://arxiv.org/pdf/2603.02352",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2604.01521",
+      "title": "Probing Black Hole Thermodynamics and Microstructure via the Shadow of Sagittarius A*",
+      "authors": [
+        "Jose Miguel Ladino",
+        "Carlos E. Romero-Figueroa",
+        "Hernando Quevedo"
+      ],
+      "abstract": "We explore the connection between black hole shadows, thermodynamic phase structure, and microstructure of charged and rotating black holes within General Relativity and Geometrothermodynamics. Focusing on Reissner-Nordstr\u00f6m and Kerr solutions, we establish a criterion to select the most suitable Geometrothermodynamic metric for a system, revealing that the first metric from enthalpy and the second from mass correctly reproduce heat capacity singularities. We show that the shadow radius encodes the same phase information as entropy and introduce Shadow-Microstructure diagrams to extract insights into stability and microscopic interaction types directly from observational bounds. Applying this framework to Sagittarius A*, we constrain the macroscopic parameters and the allowed microscopic thermodynamic phases. Our findings indicate that shadow measurements offer a novel probe of thermodynamic and microscopic aspects of black holes, enabling tests of alternative theories of gravity and thermodynamic frameworks.",
+      "primary_category": "gr-qc",
+      "categories": [
+        "gr-qc",
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-09-01",
+      "arxiv_url": "https://arxiv.org/abs/2604.01521",
+      "pdf_url": "https://arxiv.org/pdf/2604.01521",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2608.24676",
+      "title": "Testing $f(Q)$ Gravity with DESI DR2 and Strong-Lensing Time Delays",
+      "authors": [
+        "Darshan Kumar (HNAS)",
+        "Saibal Ray",
+        "Fengge Zhang",
+        "Nisha Rani",
+        "Praveen Kumar Dhankar",
+        "Jie Zheng"
+      ],
+      "abstract": "Symmetric teleparallel gravity provides an alternative description of gravitation in which non-metricity replaces curvature and torsion. Its extension through $f(Q)$ gravity offers a different geometric description of the late-time expansion of the Universe and its accelerated phase. In this work, we investigate two $f(Q)$ models, a normalized power-law model and a square-root exponential model, and test their ability to describe the late-time expansion history. We constrain the model parameters through Markov chain Monte Carlo analyses using Cosmic Chronometer measurements, DESI DR2 baryon acoustic oscillations, strong-lensing time-delay observations, and three Type Ia supernova compilations, Pantheon$^+$, Union 3.0, and DES Y5. We compare both models with the flat $\\Lambda$CDM model using the minimum $\\chi^2$, Akaike information criterion, and Bayesian information criterion. The square-root exponential model provides a better statistical fit than $\\Lambda$CDM for the combinations of Cosmic Chronometer, DESI DR2, and strong-lensing time-delay data with Pantheon$^+$ and Union 3.0, with improvements in both the goodness of fit and information criteria. The normalized power-law model remains statistically competitive with $\\Lambda$CDM for the supernova-inclusive combinations, although the information criteria do not favor its additional parameter. We also determine the transition redshift from cosmic deceleration to acceleration for both models, obtaining consistent values across the different dataset combinations. The transition redshifts agree with observational estimates of the cosmic acceleration epoch. Overall, our results support $f(Q)$ gravity as a viable alternative to $\\Lambda$CDM for explaining the late-time accelerated expansion of the Universe without requiring a cosmological constant.",
+      "primary_category": "gr-qc",
+      "categories": [
+        "gr-qc",
+        "astro-ph.CO"
+      ],
+      "submitted": "2026-09-01",
+      "arxiv_url": "https://arxiv.org/abs/2608.24676",
+      "pdf_url": "https://arxiv.org/pdf/2608.24676",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2608.28679",
+      "title": "Fluxes through a uniform double-diffusive staircase at low Prandtl number",
+      "authors": [
+        "Arstanbek Tulekeyev",
+        "Pascale Garaud"
+      ],
+      "abstract": "Double-diffusive convection in the diffusive regime is often observed to be in a long-lived layered state, well-known in the Arctic ocean and in volcanic lakes, and thought to exist in the interiors of giant planets. The density profile resembles a `staircase', with stacks of convective layers of uniform density separated by strongly stratified interfaces. The governing parameters are the Prandtl number $\\mathrm{Pr}$, diffusivity ratio $\\tau$, density ratio $R_\\rho$, and Rayleigh number $\\mathrm{Ra}$. In this work, we perform direct numerical simulations in triply periodic domains to systematically investigate the properties of statistically stationary double-diffusive staircases with $\\tau \\le \\mathrm{Pr} \\ll 1$. We demonstrate that they can exist for significantly larger density ratios than previously reported, and propose a new criterion for the existence of long-lived layered states. Notably, this criterion depends weakly on $\\mathrm{Ra}$. In all simulations, we measure the total fluxes of density $F^{\\mathrm{tot}}_\\rho$, temperature $F^{\\mathrm{tot}}_T$ and composition $F^{\\mathrm{tot}}_C$, and the flux ratio $\\gamma =F^{\\mathrm{tot}}_C/F^{\\mathrm{tot}}_T$. We confirm that $\\gamma$ is approximately constant for moderate to large $R_\\rho$ but also depends weakly on $\\mathrm{Ra}$. We show that the Nusselt numbers for composition and temperature scale as $\\mathrm{Ra}^{1/3}$ in this limit, which notably differs from the $(\\mathrm{RaPr})^{1/3}$ scaling previously found at lower $R_\\rho$. We propose a new model for these findings that is based on the rise and turbulent mixing of density anomalies that form at the edges of the interfaces. The model explains the existing low $\\mathrm{Pr}$ data with reasonable accuracy.",
+      "primary_category": "physics.flu-dyn",
+      "categories": [
+        "physics.flu-dyn",
+        "astro-ph.EP"
+      ],
+      "submitted": "2026-09-01",
+      "arxiv_url": "https://arxiv.org/abs/2608.28679",
+      "pdf_url": "https://arxiv.org/pdf/2608.28679",
       "local_match": null,
       "local_authors": {}
     }
