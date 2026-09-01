@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-09-01T06:15:31Z",
+  "fetched_at": "2026-09-01T16:36:56Z",
   "date": "2026-09-01",
   "total": 133,
   "papers": [
@@ -3375,7 +3375,6 @@
       "pdf_url": "https://arxiv.org/pdf/2608.28740",
       "local_match": "strong",
       "local_authors": {
-        "Andrew K. Saydjari": "strong",
         "Bruce T. Draine": "strong"
       }
     },

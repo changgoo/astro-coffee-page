@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-08-31T07:02:49Z",
+  "fetched_at": "2026-09-01T16:36:56Z",
   "date": "2026-08-31",
   "total": 91,
   "papers": [
@@ -388,10 +388,8 @@
       "submitted": "2026-08-28",
       "arxiv_url": "https://arxiv.org/abs/2608.28427",
       "pdf_url": "https://arxiv.org/pdf/2608.28427",
-      "local_match": "strong",
-      "local_authors": {
-        "Veena Krishnaraj": "strong"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2608.28416",
@@ -983,7 +981,6 @@
       "pdf_url": "https://arxiv.org/pdf/2608.28395",
       "local_match": "weak",
       "local_authors": {
-        "T. Kim": "weak",
         "F. Yu": "weak"
       }
     },
