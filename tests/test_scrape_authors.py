@@ -54,17 +54,38 @@ def test_scrape_page_returns_empty_on_http_error():
     mock_resp = MagicMock()
     mock_resp.raise_for_status.side_effect = Exception("403 Forbidden")
 
-    with patch.object(scrape_authors._scraper, "get", return_value=mock_resp):
+    with patch.object(scrape_authors._scraper, "get", return_value=mock_resp) as mock_get, \
+         patch.object(scrape_authors.time, "sleep"):
         names = scrape_authors.scrape_page("Test Group", "https://example.com")
 
     assert names == []
+    # Every attempt is exhausted before giving up.
+    assert mock_get.call_count == scrape_authors.MAX_RETRIES
 
 
 def test_scrape_page_returns_empty_on_network_error():
-    with patch.object(scrape_authors._scraper, "get", side_effect=Exception("timeout")):
+    with patch.object(scrape_authors._scraper, "get", side_effect=Exception("timeout")) as mock_get, \
+         patch.object(scrape_authors.time, "sleep"):
         names = scrape_authors.scrape_page("Test Group", "https://example.com")
 
     assert names == []
+    assert mock_get.call_count == scrape_authors.MAX_RETRIES
+
+
+def test_scrape_page_retries_then_succeeds():
+    """A transient failure should be retried, not fatal, if a later attempt works."""
+    good_resp = MagicMock()
+    good_resp.text = make_html(["Alice Smith"])
+    good_resp.raise_for_status = MagicMock()
+
+    with patch.object(
+        scrape_authors._scraper, "get",
+        side_effect=[Exception("403 Forbidden"), good_resp],
+    ) as mock_get, patch.object(scrape_authors.time, "sleep"):
+        names = scrape_authors.scrape_page("Test Group", "https://example.com")
+
+    assert names == ["Alice Smith"]
+    assert mock_get.call_count == 2
 
 
 def test_scrape_page_skips_entries_without_name_span():
