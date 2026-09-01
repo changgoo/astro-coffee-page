@@ -14,6 +14,7 @@ Edit PAGES below to customise which groups are included.
 
 import argparse
 import json
+import time
 from pathlib import Path
 
 try:
@@ -47,15 +48,29 @@ PAGES = [
 PERSON_DIV_CLASS = "content-list-item feature-is-3x4 no-featured-video"
 NAME_SPAN_CLASS = "field field--name-title field--type-string field--label-hidden"
 
+# Retry settings for transient Cloudflare / network failures. From GitHub Actions
+# datacenter IPs, Cloudflare often serves an intermittent 403; retrying with a
+# growing delay gives cloudscraper another chance to clear the challenge.
+MAX_RETRIES = 4
+RETRY_BACKOFF_SECONDS = 5
+
 def scrape_page(label, url):
-    """Return list of names from a single people page."""
+    """Return list of names from a single people page, retrying transient failures."""
     print(f"  Fetching {label} ...", end=" ", flush=True)
-    try:
-        r = _scraper.get(url, timeout=30)
-        r.raise_for_status()
-    except Exception as e:
-        print(f"FAILED ({e})")
-        return []
+    r = None
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            r = _scraper.get(url, timeout=30)
+            r.raise_for_status()
+            break
+        except Exception as e:
+            if attempt == MAX_RETRIES:
+                print(f"FAILED after {attempt} attempts ({e})")
+                return []
+            delay = RETRY_BACKOFF_SECONDS * attempt
+            print(f"attempt {attempt} failed ({e}); retrying in {delay}s ...",
+                  end=" ", flush=True)
+            time.sleep(delay)
 
     soup = BeautifulSoup(r.text, "html.parser")
     people = soup.find_all("div", class_=PERSON_DIV_CLASS)
@@ -109,6 +124,7 @@ def main():
 
     with open(config_path, "w", encoding="utf-8") as f:
         json.dump({"authors": unique_names}, f, indent=2, ensure_ascii=False)
+        f.write("\n")
 
     print(f"Written to {config_path}")
 

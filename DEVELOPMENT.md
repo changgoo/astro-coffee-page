@@ -484,6 +484,21 @@ partial scrape, such as a Cloudflare 403 response, from deleting valid authors.
 
 ---
 
+## 34. Retry people-page fetches to survive intermittent Cloudflare 403s
+
+The monthly author workflow runs from GitHub Actions datacenter IPs, which
+Cloudflare intermittently blocks with a `403 Forbidden` before `cloudscraper`
+can clear the challenge — the same request succeeds from a residential IP. A
+single 403 on the first page tripped the section 33 abort and failed the run.
+
+`scrape_page` now retries each fetch up to `MAX_RETRIES` (4) times with a linear
+backoff (`RETRY_BACKOFF_SECONDS * attempt`), giving cloudscraper repeated chances
+to clear the challenge before returning empty. When every attempt is exhausted
+the section 33 refuse-to-overwrite behavior still applies, so a genuinely blocked
+run fails loudly (exit 1) rather than wiping the author list.
+
+---
+
 ## Planned / open issues
 
 | # | Title |
