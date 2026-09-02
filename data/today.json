@@ -1,7 +1,7 @@
 {
-  "fetched_at": "2026-09-02T05:51:11Z",
+  "fetched_at": "2026-09-02T17:11:42Z",
   "date": "2026-09-02",
-  "total": 122,
+  "total": 126,
   "papers": [
     {
       "id": "2609.01599",
@@ -3411,6 +3411,139 @@
       "submitted": "2026-08-31",
       "arxiv_url": "https://arxiv.org/abs/2609.00095",
       "pdf_url": "https://arxiv.org/pdf/2609.00095",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2609.00013",
+      "title": "Efficient searches of small signals across two-channel noisy data: a challenge in Big Data observations",
+      "authors": [
+        "Maryam Aghaei Abchouyeh",
+        "Maurice H.P.M. van Putten"
+      ],
+      "abstract": "Searching for novel small signals in noisy data is preferably pursued by correlation in two or more independently operating channels. Signals of potential interest exist in tails beyond $\\kappa\\sigma$, where $\\kappa$ denotes a multiple of the standard deviation $\\sigma$ of the data. Since moving data is a major cost factor in Big Data analysis and heterogeneous computing more generally, efficiency may be optimized by restricting the correlations computation to the tails of two-channel data exceeding $\\kappa\\sigma$. Already, a moderate value $\\kappa\\gtrsim2$ realizes a data-reduction by at least an order of magnitude. Here, we study this approach using a novel {\\it Excess Probability Ratio} (EPR), correlating Boolean data resulting from tails beyond a cut-off $\\kappa\\sigma$. We compare and rank EPR performance against conventional direct cross-correlation (DCC) and Pearson coefficient (PC), applicable to the original data with no cut-off. This benchmark is performed over different combinations of background noise Gaussian, Poisson and Uniform and signals Gaussian, Poisson, Uniform, Chirps and Sine waves. Results show performance of EPR to be comparable to that of PC, providing a new approach for significant improvements in efficiency with essentially no loss of sensitivity, relevant to the present era of Big Data observatories.",
+      "primary_category": "astro-ph.IM",
+      "categories": [
+        "astro-ph.IM"
+      ],
+      "submitted": "2026-09-02",
+      "arxiv_url": "https://arxiv.org/abs/2609.00013",
+      "pdf_url": "https://arxiv.org/pdf/2609.00013",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2609.00017",
+      "title": "Viability of Big Bang Nucleosynthesis in $f(R,L_m)$ Gravity",
+      "authors": [
+        "Kajal Phukan",
+        "Rajdeep Mazumdar",
+        "Kalyan Malakar",
+        "Kalyan Bhuyan"
+      ],
+      "abstract": "We examine the viability of Big Bang Nucleosynthesis (BBN) constraints in $f(R,L_m)$ gravity, where the gravitational Lagrangian is an arbitrary function of the the Ricci scalar $R$ and matter Lagrangian density $L_m$. We derive stringent bounds on the underlying model parameters of four different $f(R,L_m)$ gravity models by examining both the primordial abundances of helium-4 ($^4\\text{He}$) and the fractional variations in the neutron--proton freeze out temperature. Our results reveal that $f(R,L_m)$ gravity remains viable under the BBN constraints. With the freeze-out condition offering the most dominat constraint on the parameter space, whereas the bounds from $^4\\text{He}$ abundance act as a separate abundance level consistency checks on the modified expansion rate. In summary, the presence of these feasible parameter regions demonstrates that $f(R,L_m)$ gravity models can successfully accommodate primordial element abundances without disrupting standard early Universe dynamics.",
+      "primary_category": "astro-ph.CO",
+      "categories": [
+        "astro-ph.CO"
+      ],
+      "submitted": "2026-09-02",
+      "arxiv_url": "https://arxiv.org/abs/2609.00017",
+      "pdf_url": "https://arxiv.org/pdf/2609.00017",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2609.00033",
+      "title": "Lynx2030 Science Analysis Group: Final Report",
+      "authors": [
+        "Lynx2030 Science Analysis Group : Simon R. Bandler",
+        "Laura W. Brenneman",
+        "Nico Cappelluti",
+        "Daniel Castro",
+        "Steven R. Ehlert",
+        "W. Peter Maksym",
+        "Fabio Pacucci",
+        "Scott W. Randall",
+        "Grant R. Tremblay",
+        "John ZuHone",
+        "Steven W. Allen",
+        "Antara R. Basu-Zych",
+        "Akos Bogdan",
+        "Joel N. Bregman",
+        "Tamta Burduli",
+        "Thomas Connor",
+        "Sanskriti Das",
+        "Casey DeRoo",
+        "Stephen DiKerby",
+        "Paul A. Draghis",
+        "Martin Elvis",
+        "Giuseppina Fabbiano",
+        "Ralf K. Heilmann",
+        "Jimmy A. Irwin",
+        "Amruta Jaodand",
+        "Margarita Karovska",
+        "Vinay L. Kashyap",
+        "Anthony A. Kerr",
+        "Caroline Kilbourne",
+        "Ralph Kraft",
+        "Jiangtao Li",
+        "Labani Mallick",
+        "Herman L. Marshall",
+        "Michael L. McCollough",
+        "Anna Ogorza\u0142ek",
+        "Frederik Paerels",
+        "Daniel Patnaude",
+        "Paul Plucinsky",
+        "David Pooley",
+        "Frederick S. Porter",
+        "Daniele Rogantini",
+        "Roger Romani",
+        "Helen R. Russell",
+        "Kazuhiro Sakai",
+        "Mark Schattenburg",
+        "Dan A. Schwartz",
+        "Malgorzata Sobolewska",
+        "Paolo Soffitta",
+        "Alexey Vikhlinin",
+        "Daniel R. Wilkins",
+        "Scott Wolk",
+        "Ka-Wah Wong",
+        "Irina Zhuravleva"
+      ],
+      "abstract": "The Lynx2030 Science Analysis Group (SAG) was convened to reassess the scientific goals and technical drivers of the Lynx mission concept amid a rapidly evolving astrophysics landscape. Building on the original Lynx Concept Study, the SAG examined how recent discoveries, emerging facilities, and advances in instrumentation influence the scientific opportunities for a next-generation flagship X-ray observatory. Through focused working groups, the SAG investigated the scientific impact of enhanced capabilities: (i) improved angular resolution, (ii) broader bandpass coverage, (iii) an enhanced microcalorimeter, (iv) new capabilities and observing modes, and (v) larger fields of view. Across a broad range of topics, from the formation of the first black holes and the evolution of galaxies to the baryon cycle, compact objects, stellar explosions, multi-messenger astrophysics, and the dynamic high-energy Universe, the SAG finds that the scientific motivation for a Lynx-class observatory remains compelling and, in many areas, has significantly strengthened over the past decade, prominently through JWST's discovery of the \"Little Red Dots\", likely massive accreting black holes in infant galaxies whose nature is fundamentally an X-ray question. This report shows that modest extensions beyond the original Lynx design reference mission can unlock transformative science while preserving the observatory's core architecture. Powerful current and future facilities such as Roman, Rubin, JWST, SKA, ngVLA, LISA, and NewAthena highlight the unique role a high-angular-resolution, high-throughput X-ray observatory would play in the multi-wavelength and multi-messenger ecosystem of the 2030s and beyond. The findings of the Lynx2030 SAG confirm Lynx's central vision: an unprecedented view of the hot and energetic Universe, enabling discoveries that will define high-energy astrophysics in the coming decades.",
+      "primary_category": "astro-ph.IM",
+      "categories": [
+        "astro-ph.IM",
+        "astro-ph.CO",
+        "astro-ph.GA",
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-09-02",
+      "arxiv_url": "https://arxiv.org/abs/2609.00033",
+      "pdf_url": "https://arxiv.org/pdf/2609.00033",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2609.00308",
+      "title": "Deuteration of Organic Molecules as a Probe of Starless Core and Filament Evolution in Barnard 10",
+      "authors": [
+        "Hanga Andras-Letanovszky",
+        "Yancy L. Shirley",
+        "Lucille J. Steffes",
+        "Brian Svoboda",
+        "Hannah Gruber",
+        "Samantha Scibelli",
+        "Emma Vertachnik"
+      ],
+      "abstract": "The deuterium fractionation of molecules in starless cores is sensitive to their dynamical histories, which recent magnetohydrodynamical simulations have shown to be extremely varied. The deuterated isotopologues of formaldehyde (H$_2$CO) and methanol (CH$_3$OH) probe deuterium fractionation in simple organic molecules. This complete survey targets 11 low-mass starless cores in the small, quiescent Barnard 10 (B10) region of the Taurus Molecular Cloud. The cores were observed using the 12m Arizona Radio Observatory telescope with a 100% detection rate in transitions of o/pH$_2$CO, HDCO, pD$_2$CO, A/E-CH$_3$OH, and CH$_2$DOH and the dense gas tracer N$_2$H$^+$. The HDCO and pD$_2$CO column densities and deuterium fractions are not correlated with those of the grain-surface deuteration tracer CH$_2$DOH, indicating significant gas-phase formation of deuterated formaldehyde. The observed deuterium fractions do not correlate with evolutionary indicators (e.g. core central density) or physical conditions (e.g. core mass). We also find that cores within the northwestern filament have lower deuterium fractions than cores of similar densities in the other two filaments. These could indicate differential core evolution both between and within entire filaments. Comparing the deuterium fractions of the B10 sample to published sources across different evolutionary stages suggests the inheritance of D$_2$CO from starless cores, although more surveys of organic deuteration are needed to conclusively determine inheritance.",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-09-02",
+      "arxiv_url": "https://arxiv.org/abs/2609.00308",
+      "pdf_url": "https://arxiv.org/pdf/2609.00308",
       "local_match": null,
       "local_authors": {}
     }
