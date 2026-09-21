@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-09-17T06:09:53Z",
+  "fetched_at": "2026-09-21T15:46:44Z",
   "date": "2026-09-17",
   "total": 97,
   "papers": [
@@ -735,7 +735,6 @@
       "pdf_url": "https://arxiv.org/pdf/2609.17813",
       "local_match": "strong",
       "local_authors": {
-        "Yi-Xian Chen": "strong",
         "Yan-Fei Jiang": "strong",
         "Jeremy Goodman": "strong"
       }

@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-09-21T06:23:34Z",
+  "fetched_at": "2026-09-21T15:46:44Z",
   "date": "2026-09-21",
   "total": 111,
   "papers": [
@@ -69,6 +69,7 @@
       "pdf_url": "https://arxiv.org/pdf/2609.20920",
       "local_match": "strong",
       "local_authors": {
+        "Nicholas Kaaz": "strong",
         "Eliot Quataert": "strong",
         "Hanpu Liu": "strong"
       }
