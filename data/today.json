@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-09-21T15:48:00Z",
+  "fetched_at": "2026-09-21T15:50:13Z",
   "date": "2026-09-21",
   "total": 111,
   "papers": [
@@ -2132,6 +2132,7 @@
       "pdf_url": "https://arxiv.org/pdf/2609.21861",
       "local_match": "strong",
       "local_authors": {
+        "Kaitlyn Shavelle": "strong",
         "Jared Siegel": "strong",
         "Alexandra Amon": "strong",
         "Romain Teyssier": "strong"
