@@ -12,6 +12,7 @@ permissions:
 jobs:
   update-authors:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -27,7 +28,21 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Scrape author list
-        run: python scripts/scrape_authors.py
+        run: |
+          for attempt in 1 2 3; do
+            if python scripts/scrape_authors.py; then
+              exit 0
+            fi
+
+            if [ "$attempt" -eq 3 ]; then
+              echo "Author scrape failed after $attempt full attempts."
+              exit 1
+            fi
+
+            delay=$((attempt * 60))
+            echo "Full scrape attempt $attempt failed; retrying in ${delay}s ..."
+            sleep "$delay"
+          done
 
       - name: Commit and push
         run: |

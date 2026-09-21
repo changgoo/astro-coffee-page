@@ -73,7 +73,9 @@ Both files are loaded at page load and merged (manual entries take precedence).
 **Automatic updates** — the workflow in `.github/workflows/monthly-authors.yml` re-scrapes
 the Princeton Astronomy people page on the 1st of every month and commits the result to
 `config/authors.json`. It can also be triggered manually via **Actions → Monthly author
-list update → Run workflow**.
+list update → Run workflow**. The workflow retries the complete scrape up to three times
+when Princeton's Cloudflare protection persistently blocks an individual people page;
+incomplete results are never committed.
 
 **Manual additions** — edit `config/authors_manual.json` directly:
 

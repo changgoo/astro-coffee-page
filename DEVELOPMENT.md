@@ -499,6 +499,17 @@ run fails loudly (exit 1) rather than wiping the author list.
 
 ---
 
+## 35. Retry the complete monthly author scrape
+
+The monthly author workflow now retries the complete scraper up to three times, with
+one- and two-minute delays between attempts. Request-level retries sometimes recover
+most Princeton people pages while one page remains blocked by Cloudflare for the
+entire retry window. A fresh full run starts a new request sequence and retains the
+scraper's all-pages-required guarantee, so only a complete author list can reach the
+commit step. The job has a 20-minute timeout to bound persistent failures.
+
+---
+
 ## Planned / open issues
 
 | # | Title |
