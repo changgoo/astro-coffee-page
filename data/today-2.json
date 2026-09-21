@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-09-21T15:46:44Z",
+  "fetched_at": "2026-09-21T15:48:00Z",
   "date": "2026-09-17",
   "total": 97,
   "papers": [
@@ -433,8 +433,10 @@
       "submitted": "2026-09-17",
       "arxiv_url": "https://arxiv.org/abs/2609.17680",
       "pdf_url": "https://arxiv.org/pdf/2609.17680",
-      "local_match": null,
-      "local_authors": {}
+      "local_match": "strong",
+      "local_authors": {
+        "Hollis B. Akins": "strong"
+      }
     },
     {
       "id": "2609.17683",

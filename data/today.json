@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-09-21T15:46:44Z",
+  "fetched_at": "2026-09-21T15:48:00Z",
   "date": "2026-09-21",
   "total": 111,
   "papers": [
@@ -71,6 +71,7 @@
       "local_authors": {
         "Nicholas Kaaz": "strong",
         "Eliot Quataert": "strong",
+        "Taya Govreen-Segal": "strong",
         "Hanpu Liu": "strong"
       }
     },
@@ -209,10 +210,8 @@
       "submitted": "2026-09-21",
       "arxiv_url": "https://arxiv.org/abs/2609.20929",
       "pdf_url": "https://arxiv.org/pdf/2609.20929",
-      "local_match": "strong",
-      "local_authors": {
-        "James R. Beattie": "strong"
-      }
+      "local_match": null,
+      "local_authors": {}
     },
     {
       "id": "2609.20930",
@@ -1106,8 +1105,10 @@
       "submitted": "2026-09-21",
       "arxiv_url": "https://arxiv.org/abs/2609.21337",
       "pdf_url": "https://arxiv.org/pdf/2609.21337",
-      "local_match": null,
-      "local_authors": {}
+      "local_match": "strong",
+      "local_authors": {
+        "Hollis Akins": "strong"
+      }
     },
     {
       "id": "2609.21343",
