@@ -1,7 +1,7 @@
 {
-  "fetched_at": "2026-10-14T06:10:37Z",
+  "fetched_at": "2026-10-14T18:02:42Z",
   "date": "2026-10-14",
-  "total": 194,
+  "total": 208,
   "papers": [
     {
       "id": "2610.18864",
@@ -4938,6 +4938,383 @@
       "submitted": "2026-10-09",
       "arxiv_url": "https://arxiv.org/abs/2610.14172",
       "pdf_url": "https://arxiv.org/pdf/2610.14172",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2610.14058",
+      "title": "An All-Sky Search for Moving Gamma-Ray Sources with Fermi-LAT",
+      "authors": [
+        "Dou Lai",
+        "James Unwin"
+      ],
+      "abstract": "Nearby compact gamma-ray sources can move appreciably during the Fermi-LAT mission and thus evade searches that assume a stationary sky. Compact dark matter halos, dark matter spikes around primordial black holes (PBH), and evaporating PBH provide potential examples. We perform a novel all-sky search for steady point sources moving at 0.25 deg/yr-0.8deg/yr in ten years of 1-100 GeV Fermi-LAT data. For a transverse speed of 200 km/s, this angular range probes distances of roughly $3.0\\times10^3$ AU to $9.7\\times10^3$ AU. We find 577 candidate tracks, consistent with $533\\pm27.0$ tracks in time-scrambled skies. We place a model-independent 90% upper limit of 80.8 recovered signal tracks. At peak calibrated sensitivity, this corresponds to fewer than 123 steady, full-sky sources with an incident $E^{-2}$ photon spectrum. We give the calibrated detection efficiency of the search to steady point sources and use it to derive illustrative constraints on both evaporating PBHs and PBHs surrounded by annihilating dark matter halos.",
+      "primary_category": "astro-ph.HE",
+      "categories": [
+        "astro-ph.HE",
+        "astro-ph.CO",
+        "astro-ph.IM",
+        "hep-ph"
+      ],
+      "submitted": "2026-10-14",
+      "arxiv_url": "https://arxiv.org/abs/2610.14058",
+      "pdf_url": "https://arxiv.org/pdf/2610.14058",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2610.14119",
+      "title": "Ultralight scalars and invisible gravitons",
+      "authors": [
+        "Massimo Giovannini"
+      ],
+      "abstract": "Unless the tensor to scalar ratio is small enough, the non-adiabatic mode associated with the ultralight bosons may be dangerously comparable with the adiabatic spectrum of curvature inhomogeneities. We point out here that this statement depends on the timeline of the post-inflationary expansion rate. Provided the decelerated evolution is slower than radiation for a sufficiently long period, the relative weight of the non-adiabatic and adiabatic components does not conflict with the direct constraints coming from the large-scale observations. Conversely the presence of ultralight bosons excludes the presence of long stages expanding faster than radiation. The synthesis of the light nuclei and the spectrum of the relic gravitons at high frequencies set the relevant constraints on the duration of the decelerated stages, on the delayed dominance of radiation and on the mass range of the ultralight scalars.",
+      "primary_category": "astro-ph.CO",
+      "categories": [
+        "astro-ph.CO",
+        "gr-qc",
+        "hep-ph",
+        "hep-th"
+      ],
+      "submitted": "2026-10-14",
+      "arxiv_url": "https://arxiv.org/abs/2610.14119",
+      "pdf_url": "https://arxiv.org/pdf/2610.14119",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2610.14166",
+      "title": "A Spectroscopic Census of Cluster White Dwarfs from DESI, LAMOST, and SDSS",
+      "authors": [
+        "David R. Miller",
+        "Jeremy Heyl",
+        "Huahui Yan",
+        "Chengyuan Li",
+        "Pier-Emmanuel Tremblay"
+      ],
+      "abstract": "Gaia has substantially expanded the sample of candidate white dwarfs (WDs) in open clusters, but many remain without spectroscopic characterization. We leverage the increasingly extensive archives of large public spectroscopic surveys to identify 62 candidate cluster WDs with available spectra from DESI, LAMOST, and SDSS. After discarding sources with very low S/N and unreliable host clusters, 44 candidates remain, including 37 non-magnetic DA WDs, of which 15 had not previously been characterized in the literature for cluster studies. We find that nine are consistent with single-star origins in their proposed host clusters, increasing the combined cluster DA initial--final mass relation (IFMR) sample to 132 WDs. All lie within $2\\sigma$ of the best-fit IFMR from the most comprehensive recent cluster WD sample, suggesting these additions do not require recalibrating the empirical IFMR. One is a likely Hyades tidal-tail WD, providing further evidence that dynamical dispersal helps explain the long-standing WD deficit in the nearest cluster. We further compare WDs with spectra from multiple surveys. Among seven Praesepe WDs observed by both DESI and SDSS, DESI gives higher WD masses in six cases, with a mean difference of $0.067\\,\\mathrm{M}_\\odot$, while the inferred progenitor masses differ by as much as $0.459\\,\\mathrm{M}_\\odot$. More broadly, nine of ten single-star cluster DAs with DESI spectra lie above the empirical IFMR, with a mean final-mass residual of $0.06\\pm0.04\\,\\mathrm{M}_\\odot$. These results show that survey-dependent differences can strongly affect cluster WD parameters, and should be considered when combining heterogeneous spectroscopy in empirical IFMR studies.",
+      "primary_category": "astro-ph.SR",
+      "categories": [
+        "astro-ph.SR",
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-10-14",
+      "arxiv_url": "https://arxiv.org/abs/2610.14166",
+      "pdf_url": "https://arxiv.org/pdf/2610.14166",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2610.14167",
+      "title": "Where Cluster Galaxies Reside and How Strongly They Lens",
+      "authors": [
+        "Isaque Dutra",
+        "Priyamvada Natarajan",
+        "Cian Roche"
+      ],
+      "abstract": "The efficiency of galaxy-galaxy strong lensing (GGSL) in clusters depends jointly on the inner mass distributions of member galaxies and their locations within the cluster potential. Observed GGSL probabilities exceed $\\Lambda$CDM predictions by nearly an order of magnitude, but the relative roles of internal structure and environment remain unclear. We disentangle these effects by comparing HST strong-lensing clusters with TNG-Cluster analogs at similar lens redshifts, matched by their primary Einstein radius. For each member, we measure its lensing strength in isolation and when embedded in the cluster field. Members in cluster-critical regions are classified as Major or Minor Perturbers depending on whether they strongly lens in isolation; those in subcritical regions are classified as Intrinsic Lenses, Boosted Lenses, or Inert Members according to whether they lens independently, only with environmental assistance, or not at all. Observed clusters contain 33.7% of selected members in cluster-critical regions, compared with 21.6% in TNG-Cluster, while their Major-to-Minor ratios are similar. Outside these regions, observations contain substantially more Intrinsic and Boosted Lenses and fewer Inert Members, with Boosted Lens fractions of 25.8% and 13.5%, respectively. The discrepancy persists at fixed subhalo mass and after including line-of-sight structure. A mass-conserving contraction mimicking core-collapsed self-interacting dark matter largely recovers the conditional lensing fractions but not cluster-critical occupancy. The GGSL discrepancy therefore reflects both insufficient central concentration in simulated members and differences in their locations within the cluster lensing field.",
+      "primary_category": "astro-ph.CO",
+      "categories": [
+        "astro-ph.CO",
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-10-14",
+      "arxiv_url": "https://arxiv.org/abs/2610.14167",
+      "pdf_url": "https://arxiv.org/pdf/2610.14167",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2610.14169",
+      "title": "Cluster Ages to Reconstruct the Milky Way Assembly (CARMA). VI. The age-metallicity relation of in-situ clusters and the age of the Universe",
+      "authors": [
+        "Chiara Zerbinati",
+        "Davide Massari",
+        "Fernando Aguado-Agelet",
+        "Cristiano Fanelli",
+        "Massimiliano Matteuzzi",
+        "Santi Cassisi",
+        "Matteo Monelli",
+        "Cristiana Spingola",
+        "Carme Gallart",
+        "Maurizio Salaris",
+        "Roger E. Cohen",
+        "Edoardo Ceccarelli",
+        "Sara Saracino",
+        "Elena Pancino"
+      ],
+      "abstract": "Within the homogeneous framework for the derivation of GC ages defined by the CARMA collaboration, we focus on the clusters born in-situ in the MW. As they are the oldest among the old GCs, their absolute age provides constraints about the age of the Universe. Moreover, the shape of their AMR is expected to show the imprints of past merger events, in case these were able to trigger GC formation in the Galaxy. We derive new homogeneous ages for 18 GCs dynamically and/or chemically classified as in-situ, and build the MW AMR from a total sample of 34 GCs. We find that all the selected GCs follow a well defined AMR, with the exception of NGC6642 and Pal1. While the former is likely a member of the LKH merger event, thus putting chronological evidence for the existence of this progenitor on even more robust ground, for the latter we propose an alternative scenario according to which it formed in-situ, but in a metal-depleted region of the Galaxy, possibly due to the interaction with an unspecified merger event. To find evidence of merger-driven GC formation, we use a GMM for the observed age distribution. This is statistically best-fit by 4 components, which we associate with significant events of the MW merger history. Cluster ages were finally calibrated to a more accurate absolute age scale based on asteroseismic measurements of the mass of red giant stars in NGC6791, and the resulting AMR was fit to compute the look-back time for the beginning of cluster formation in the MW. The fit yields t_GC,i=13.59+0.33-0.32 Gyr for initial cluster formation, and tU=13.79+/-0.34 Gyr for the age of the Universe. This value translates to H0=68.72+3.95-3.49(stat.)+2.65-2.32(sys.) km s-1 Mpc-1, where the systematic error comes from a realistic estimate of the zero point uncertainty on the GC absolute ages derived from stellar models.",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-10-14",
+      "arxiv_url": "https://arxiv.org/abs/2610.14169",
+      "pdf_url": "https://arxiv.org/pdf/2610.14169",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2610.14174",
+      "title": "Searching for Nearby Supermassive Black Hole Binaries with GRAVITY",
+      "authors": [
+        "GRAVITY Collaboration : K. Abd El Dayem",
+        "N. Aimar",
+        "A. Berdeu",
+        "J.-P. Berger",
+        "G. Bourdarot",
+        "W. Brandner",
+        "Y. Cao",
+        "C. Correia",
+        "Q. D'Amato",
+        "R. Davies",
+        "D. Defr\u00e8re",
+        "A. Drescher",
+        "F. Eisenhauer",
+        "M. Fabricius",
+        "H. Feuchtgruber",
+        "S. Flesch",
+        "N. M. F\u00f6rster Schreiber",
+        "A. Foschi",
+        "Q. Fournier",
+        "P. Garcia",
+        "R. Garcia Lopez",
+        "R. Genzel",
+        "S. Gillessen",
+        "F. Gont\u00e9",
+        "X. Haubois",
+        "S. F. H\u00f6nig",
+        "L. C. Ho",
+        "M. Houll\u00e9",
+        "S. Joharle",
+        "J. Kammerer",
+        "A. Kaufer",
+        "P. Kervella",
+        "J. Kolb",
+        "L. Kreidberg",
+        "L. Labadie",
+        "S. Lacour",
+        "O. Lai",
+        "R. Laugier",
+        "J.B. Le Bouquin",
+        "J. Leftley",
+        "R. Li",
+        "K. Li",
+        "B. Lopez",
+        "D. Lutz",
+        "F. Mannucci",
+        "F. Mang",
+        "A. M\u00e9rand",
+        "F. Millour",
+        "M. Montarg\u00e8s",
+        "N. Moruj\u00e3o",
+        "H. Nowacki",
+        "M. Nowak",
+        "S. Oberti",
+        "J. Osorno",
+        "T. Ott",
+        "C. Paladini",
+        "S. Pappert",
+        "T. Paumard",
+        "K. Perraut",
+        "G. Perrin",
+        "R. Petrov",
+        "P. O. Petrucci",
+        "N. Pourr\u00e9",
+        "S. Rabien",
+        "D. C. Ribeiro",
+        "S. Robbe-Dubois",
+        "M. Sadun Bordoni",
+        "J. Sanchez-Bermudez",
+        "J. Sauter",
+        "M. Scialpi",
+        "J. Scigliuto",
+        "J. Shangguan",
+        "T. Shimizu",
+        "F. Soulez",
+        "C. Straubmeier",
+        "E. Sturm",
+        "M. Subroweit",
+        "C. Sykes",
+        "L. J. Tacconi",
+        "P. Th\u00e9venet",
+        "I. Urso",
+        "F. Vincent",
+        "J. Woillez",
+        "G. Zins"
+      ],
+      "abstract": "We present a systematic interferometric search for close supermassive black hole (SMBH) binaries in 20 nearby type 1 active galactic nuclei (AGN) observed with VLTI/\\grav. We investigate parsec-scale asymmetric emission by modeling the squared visibilities and closure phases with a single circular Gaussian component plus a background point source for the central AGN, and searching for additional compact companions through grid-based binary models. The robustness of the search is validated using injection-recovery simulations and point-spread-function diagnostics. Several features are identified in the initial significance maps, but only one candidate out of 20 shows a persistent compact asymmetry, corresponding to an observed incidence of $5\\%$. If NGC~3783 is interpreted as a binary AGN, we derive a Poissonian one-sided $1\\sigma$ upper limit of $f_{\\rm bin}<16.5\\%$ for GRAVITY-detectable binaries among bright nearby AGN (K<12.5) at separations of $\\sim1$-$100$~pc. Conversely, if the observed asymmetry in NGC~3783 is associated with asymmetric circumnuclear dust emission, the corresponding upper limit on the binary fraction is $f_{\\rm bin}<9.2\\%$. We compare these results with predictions from the Horizon-AGN simulation, finding comparable binary fractions. We also noted that the expected fraction strongly depends on the assumed distribution of individual SMBH accretion rates within binaries, which is currently unresolved in cosmological models. Our results demonstrate the potential of infrared interferometry to identify parsec-scale binary AGN candidates and motivate future GRAVITY+ observations to expand the sample and follow up known candidates, helping to confirm their nature and distinguish genuine binaries from asymmetric nuclear structures.",
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "submitted": "2026-10-14",
+      "arxiv_url": "https://arxiv.org/abs/2610.14174",
+      "pdf_url": "https://arxiv.org/pdf/2610.14174",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2610.06934",
+      "title": "Radii and Scaling Relations of Dark-Matter-Admixed Neutron Stars",
+      "authors": [
+        "Zhi-yao Li",
+        "Wei-zhou Jiang",
+        "Dian Sun"
+      ],
+      "abstract": "The radius of a neutron star is closely related to the equation of state (EOS) of asymmetric nuclear matter, particularly to the nuclear symmetry energy. At fixed stellar mass, the neutron-star radius and the nuclear-matter pressure near saturation density approximately satisfy a pressure--radius (R-P) scaling relation, linking stellar geometry to strong-interaction matter. In the presence of dark matter (DM), changes in the stellar geometry can modify this relation. We investigate how GeV- and sub-GeV-scale DM affects the R-P relation in DM-admixed neutron stars (DANSs) within a gravity-only two-fluid framework. We extend the Buchdahl analytic solution to a two-fluid configuration to demonstrate this scaling and then use 21 nuclear EOSs to fit the relation $R_{\\rm NM}=\\bar C P_{\\rm NM}^{\\eta}$ for $1M_\\odot$ and $1.4M_\\odot$ DANSs. The exponent $\\eta$ and coefficient $\\bar C$ jointly quantify the DM-induced modification and depend on the DM particle mass, stellar DM content, and self-interaction strength. For bosonic DM, changes in $\\eta$ and $\\bar C$ occur mainly in the sub-GeV range, whereas significant fermionic-DM effects persist up to about 1.5 GeV. Increasing the DM content or strengthening a repulsive self-interaction generally increases $\\eta$ and decreases $\\bar C$. The modified R-P relation therefore encodes information about the DM particle mass, abundance, and self-interaction, and affect the extraction of the nuclear EOS from celestial observations. At DM masses of several hundred MeV, both fermionic and bosonic DM can also produce DM-dominated low-mass ($1M_\\odot$) DANSs with large radial extensions, for which the conventional scaling relation ceases to apply.",
+      "primary_category": "nucl-th",
+      "categories": [
+        "nucl-th",
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-10-14",
+      "arxiv_url": "https://arxiv.org/abs/2610.06934",
+      "pdf_url": "https://arxiv.org/pdf/2610.06934",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2610.14129",
+      "title": "IceCube data for astrophysical neutrinos exhibit q-statistical behavior",
+      "authors": [
+        "Constantino Tsallis",
+        "Ugur Tirnakli"
+      ],
+      "abstract": "Relevant IceCube recent data for astrophysical neutrinos are analyzed. Similarly to cosmic rays and proton-proton LHC collisions, the corresponding spectra are satisfactorily described, for the entire interval of measured energies, through q-Gaussians. This fact reinforces the already available evidence that nonadditive entropies (either of the $S_q$ class or of the $S_{delta}$ one, or even alternative ones) appear to play a crucial role in systems such as black holes and related cosmological phenomena (e.g., dark energy). The IceCube data yield sensibly high values for the momenta-distribution nonadditive index (q \\simeq 1.6), in contrast with the cosmic rays values (q \\simeq 1.2) and the LHC values (q \\simeq 1.1). This fact neatly indicates very-long-ranged space-time correlations. The detailed associated physical mechanisms remain, at the present stage, as an instigating open issue.",
+      "primary_category": "cond-mat.stat-mech",
+      "categories": [
+        "cond-mat.stat-mech",
+        "astro-ph.HE",
+        "hep-ph"
+      ],
+      "submitted": "2026-10-14",
+      "arxiv_url": "https://arxiv.org/abs/2610.14129",
+      "pdf_url": "https://arxiv.org/pdf/2610.14129",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2610.14178",
+      "title": "Collider and direct detection as key probes of asymmetric dark matter: Signals from a compressed Inert Higgs doublet",
+      "authors": [
+        "David Cerde\u00f1o",
+        "Miguel Escudero",
+        "Pietro Ghedini",
+        "Guilherme Guedes",
+        "Thomas Hambye",
+        "Abel Mu\u00f1oz-Navarro",
+        "Elena Pressendo"
+      ],
+      "abstract": "The cosmic imbalance of particles over antiparticles may be inherited by the dark matter in a certain class of asymmetric dark matter models. In this article, we thoroughly investigate the signatures of the minimal realization of this idea. In this model a new (stable) inert Higgs, $H'$, plays the role of the mediator that facilitates the asymmetry transfer from the visible to the dark sector. It also constitutes a small dark matter sub-component, while the dominant component stems from a singlet scalar asymmetry. A combination of phenomenological and cosmological constraints requires this new inert Higgs doublet to be quite light $46\\,{\\rm GeV}<m_{H'}< 580\\,{\\rm GeV}$ and its spectrum rather compressed, $\\Delta M = m_{H^\\pm}-m_{H_0} \\lesssim 1\\,{\\rm GeV}$ and $\\delta m = m_{A_0}-m_{H_0}\\lesssim 5\\,{\\rm MeV}$. Therefore its charged component can be relatively long-lived on collider length-scales. By recasting searches for compressed Higgsinos at the LHC, we derive new limits on this particle and show that, while at present most of the parameter space for this state is still unconstrained, large and key regions of parameter space will be tested at the HL-LHC by a combination of searches for disappearing charged tracks and displaced soft tracks. Quite remarkably, the lifetime of the charged component of the doublet can be correlated with the dark matter interaction rate at direct detection experiments and we show that the next generation of direct detection experiments has a unique sensitivity to the parameter space in the model. The fact that a small neutral mass splitting is a prediction of the asymmetric setup makes it an interesting candidate to account for the high energy nuclear recoil event recently reported by the LZ experiment. More generally, our detailed phenomenological study holds for any dark matter model involving an inert Higgs doublet with mass below 580 GeV.",
+      "primary_category": "hep-ph",
+      "categories": [
+        "hep-ph",
+        "astro-ph.CO",
+        "hep-ex"
+      ],
+      "submitted": "2026-10-14",
+      "arxiv_url": "https://arxiv.org/abs/2610.14178",
+      "pdf_url": "https://arxiv.org/pdf/2610.14178",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2610.14188",
+      "title": "A Comprehensive Interpretation of the LZ High-Energy Recoil Event: A Minimal $U(1)_B$ Dark Sector and Its Experimental Tests",
+      "authors": [
+        "Mattia Di Mauro"
+      ],
+      "abstract": "The $248$ keV nuclear-recoil candidate reported by LUX-ZEPLIN (LZ) motivates an inelastic dark matter (DM) interpretation, in which scattering converts the DM particle into a slightly heavier state. We provide a comprehensive study of this interpretation in an anomaly-free model of gauged baryon number, where a new vector boson, $Z_B$, mediates interactions between DM and quarks. Breaking the baryonic gauge symmetry generates the new particle masses and a small splitting between two DM states, while a residual symmetry keeps the lighter state stable. We identify regions compatible with the LZ candidate, the observed DM abundance, and current ATLAS and CMS dijet constraints. Within the scanned domain, these regions span DM masses $m_\\chi\\simeq0.19$-$4.5$ TeV, mediator masses $M_{Z_B}\\simeq0.05$-$5.0$ TeV, and gauge couplings $g_B\\simeq0.004$-$0.74$, with correlated values of these parameters. A representative thermal solution has $m_\\chi=1$ TeV, $M_{Z_B}=1.44$ TeV, $g_B\\simeq0.228$, and a mass splitting of $300$ keV. A small electroweak mixing allows the heavier DM state to decay rapidly, suppressing unwanted signals from its surviving population. This interpretation can be tested through complementary measurements: additional LZ and XENONnT data can establish whether the high-energy recoil signal persists, ATLAS and CMS Run-3 dijet searches can probe the mediator mass and coupling, and a dedicated IceCube analysis of four-quark final states can test DM capture and annihilation in the Sun. Together, these measurements can test complementary parts of the surviving region and assess whether the LZ candidate is consistent with this interpretation.",
+      "primary_category": "hep-ph",
+      "categories": [
+        "hep-ph",
+        "astro-ph.HE",
+        "hep-th"
+      ],
+      "submitted": "2026-10-14",
+      "arxiv_url": "https://arxiv.org/abs/2610.14188",
+      "pdf_url": "https://arxiv.org/pdf/2610.14188",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2610.15209",
+      "title": "Cosmology & Astrophysics of the Dark Dimension with Bulk Majorana Neutrinos",
+      "authors": [
+        "Luis A. Anchordoqui",
+        "Cumrun Vafa"
+      ],
+      "abstract": "Recently, the possibility of having sterile Majorana neutrinos charged under $B-L$ gauge symmetry in the bulk of the dark dimension has been explored. We point out a cosmological restriction on the Majorana mass of bulk neutrinos leading to mass $\\gtrsim 100~{\\rm GeV}$. This avoids the over-production of Kaluza-Klein neutrino towers in the early universe thus resolving the cosmological neutrino catastrophe of extra dimension scenarios. If the mass of the bulk neutrino is at the lower end of this bound, it can potentially also explain the recently observed Fermi halo excess on gamma rays through the evaporation of long-lived 5d (i.e. dark) black holes through Hawking radiation to bulk neutrinos, which promptly decay into standard model particles.",
+      "primary_category": "hep-ph",
+      "categories": [
+        "hep-ph",
+        "astro-ph.CO",
+        "hep-th"
+      ],
+      "submitted": "2026-10-14",
+      "arxiv_url": "https://arxiv.org/abs/2610.15209",
+      "pdf_url": "https://arxiv.org/pdf/2610.15209",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2610.15213",
+      "title": "Validation of Space Weather Forecasting at Leonid Space",
+      "authors": [
+        "Scott Shambaugh"
+      ],
+      "abstract": "We validate Leonid Space's space weather forecasts through comprehensive cross-validation of retroforecasts scored against the entire F10.7 and Ap historical record. We built a unified forecast model that jointly forecasts F10.7 and Ap on all timescales from 3 hours up to multi-decade chains of future solar cycles. This was used to generate an archive of historical 15-year retroforecasts, after performing a leave-one-out fit of the model on held-out data and conditioning only on historical data available at the time. The accuracy of this archive was scored against measured space weather indices at all lookahead horizons from 1 day to 15 years, using the continuous ranked probability score (CRPS) as the primary quality metric. All other publicly available F10.7 and Ap forecast archives were scored using the same approach, including NASA's MSAFE and Schatten forecasts, SWPC's 27-day, 45-day, and Solar Cycle predictions, SWPC/USAF's RSGA, SIDC's Ursigram, CLS, Athens, KSO, BGS, SEPC's 3-day and 27-day forecasts, AFRL/NSO's SIFT, and BoM. Taken together, these 15 flux forecasts and 12 Ap forecasts compared on common lookahead metrics make up the most comprehensive cross-comparison of space weather forecasts we are aware of. Over a common forecast interval since 2000, Leonid had the lowest CRPS prediction error of any F10.7 or Ap prediction model: strictly lowest for Ap at all lookaheads and for F10.7 up to 5 years, and parity with MSAFE after 5 years. Much of this performance comes from our well-calibrated uncertainty bands, and we urge space weather forecasters to include calibrated uncertainties with their predictions and to issue retroforecast archives that can be used to rigorously evaluate their generating models.",
+      "primary_category": "physics.space-ph",
+      "categories": [
+        "physics.space-ph",
+        "astro-ph.SR"
+      ],
+      "submitted": "2026-10-14",
+      "arxiv_url": "https://arxiv.org/abs/2610.15213",
+      "pdf_url": "https://arxiv.org/pdf/2610.15213",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2610.15657",
+      "title": "Broadband 600- and 1200-GHz Subharmonically Pumped Schottky Diode Mixers",
+      "authors": [
+        "Peter Sobis",
+        "Vladimir Drakinskiy",
+        "Karl Jacob",
+        "Axel Murk",
+        "Anders Emrich",
+        "Jan Stake"
+      ],
+      "abstract": "A subharmonic mixer topology is introduced that uses quarter-wave stubs to create virtual RF/LO grounds and provide impedance matching in close proximity to the antiparallel Schottky barrier diode pair, thereby reducing the electrical length and enabling broadband operation. The RF/LO matching topology is demonstrated at 600 GHz and 1200 GHz, with good agreement between measured and simulated performance. The 600-GHz mixer demonstrates approximately 20% RF bandwidth with a DSB receiver noise temperature below 1300 K across most of the measured band, while the 1200-GHz implementation achieves DSB receiver noise temperatures below 3000 K over a broad frequency range. Both mixers are characterized at room temperature with approximately 2 mW of LO power. The 600-GHz mixer is used in the Submillimeter Wave Instrument (SWI) onboard ESA's Jupiter Icy Moons Explorer. Overall, these results demonstrate state-of-the-art room-temperature performance for broadband receiver front ends targeting atmospheric research and remote-sensing applications.",
+      "primary_category": "physics.ins-det",
+      "categories": [
+        "physics.ins-det",
+        "astro-ph.IM"
+      ],
+      "submitted": "2026-10-14",
+      "arxiv_url": "https://arxiv.org/abs/2610.15657",
+      "pdf_url": "https://arxiv.org/pdf/2610.15657",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2610.16054",
+      "title": "Quasinormal modes of rotating black holes with ultralight scalar fields",
+      "authors": [
+        "Leif Lui",
+        "Adrian Ka-Wai Chung"
+      ],
+      "abstract": "We report the first accurate computation of the leading-order shifts in the quasinormal-mode frequencies of rapidly rotating black holes surrounded by massive scalar fields with nonminimal curvature coupling. For fields with reduced Compton wavelengths no shorter than the black-hole mass scale, the numerical errors in the frequency shifts are typically $10^{-8} - 10^{-5}$ for dimensionless spins between 0 and 0.9, and at most $\\mathcal{O}(10^{-3})$ next to the scalar-mass threshold. Our results open up the possibility of searching for ultralight scalar particles, prime dark-matter candidates, using existing gravitational-wave signals.",
+      "primary_category": "gr-qc",
+      "categories": [
+        "gr-qc",
+        "astro-ph.HE"
+      ],
+      "submitted": "2026-10-14",
+      "arxiv_url": "https://arxiv.org/abs/2610.16054",
+      "pdf_url": "https://arxiv.org/pdf/2610.16054",
       "local_match": null,
       "local_authors": {}
     }
