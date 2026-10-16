@@ -1,7 +1,7 @@
 {
-  "fetched_at": "2026-10-16T05:52:56Z",
+  "fetched_at": "2026-10-16T17:29:40Z",
   "date": "2026-10-16",
-  "total": 135,
+  "total": 138,
   "papers": [
     {
       "id": "2610.22354",
@@ -4196,6 +4196,72 @@
       "submitted": "2026-10-14",
       "arxiv_url": "https://arxiv.org/abs/2610.20689",
       "pdf_url": "https://arxiv.org/pdf/2610.20689",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2609.28637",
+      "title": "Breaking de Sitter Symmetry with Cosmic Topology: Cosmological Role of Infrared Vacuum Freedom",
+      "authors": [
+        "Anna Negro",
+        "Kurt Hinterbichler",
+        "Glenn D. Starkman",
+        "Yashar Akrami",
+        "Stefano Anselmi",
+        "Javier Carr\u00f3n Duque",
+        "Mikel Martin Barandiaran",
+        "Andrius Tamosiunas (COMPACT Collaboration)"
+      ],
+      "abstract": "When spatial sections of spacetime are topologically nontrivial, the symmetry arguments usually used to choose the Bunch-Davies vacuum are no longer guaranteed to apply. We study this problem for a scalar field on de Sitter spacetime with toroidal spatial sections. The Hadamard conditions, which ensure the same short-distance structure as in flat space, are local and naturally insensitive to the compactification. By contrast, we find that the infrared sector is affected by the toroidal identifications that break global de Sitter invariance, thereby removing the usual argument for discarding zero-mode contributions. We treat the remaining zero-mode freedom as an effective topology-induced source and analyze its effects on an inflationary de Sitter expansion within a semiclassical setting. We show that, for a massless scalar, the zero-mode sector can contain a contribution to the stress-energy tensor with equation of state $P=-\\rho$, behaving as a cosmological constant. Thus, the source driving an early-Universe de Sitter phase need not be determined solely by local terms in the action, but can also depend on the infrared structure of the quantum state. Nontrivial topology, as a concrete realization of de Sitter symmetry violation, turns the otherwise-unfixed infrared freedom in vacuum selection to a contribution directly relevant to the semiclassical expansion. This contribution could potentially be applicable to the current accelerated expansion of the Universe.",
+      "primary_category": "hep-th",
+      "categories": [
+        "hep-th",
+        "astro-ph.CO",
+        "gr-qc",
+        "hep-ph"
+      ],
+      "submitted": "2026-10-16",
+      "arxiv_url": "https://arxiv.org/abs/2609.28637",
+      "pdf_url": "https://arxiv.org/pdf/2609.28637",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2610.18997",
+      "title": "The Forgetful Black Hole: Memory Burden and Hysteresis in Hawking Evaporation",
+      "authors": [
+        "Yen Chin Ong"
+      ],
+      "abstract": "The memory-burden scenario of black hole evaporation proposes that Hawking emission may become increasingly suppressed as maintaining stored quantum information becomes dynamically costly. In this work, we revisit this scenario and investigate the conditions under which information retention can produce a genuine dynamical burden. We derive general scaling conditions for incremental memory accumulation at a fixed fractional mass loss and establish a conditional no-go result: entropy-suppressed, zero-mean deposits with subextensive integrated correlations cannot produce an order-one luminosity modification through unamplified accumulation and bounded feedback. We identify three essential requirements for dynamical memory: a record of the past must be written, retained, and coupled back to subsequent evaporation. We illustrate these requirements with concrete toy models that exhibit either a prolonged but finite black hole lifetime or an asymptotically approached finite-mass state (an effective remnant). We further distinguish kinetic-memory, thermodynamic-memory, and spectral-memory sub-categories of possible memory-burden mechanisms. In particular, we demonstrate that an independently evolving memory variable can generate evaporation-accretion hysteresis, such that a black hole returning to the same mass may possess a different retained memory and consequently a different luminosity. This history dependence may have implications for primordial black hole phenomenology. Finally, we briefly discuss the possibility of \"merger rejuvenation\", in which black hole mergers reorganize or reset the effective memory state.",
+      "primary_category": "gr-qc",
+      "categories": [
+        "gr-qc",
+        "astro-ph.CO",
+        "hep-th"
+      ],
+      "submitted": "2026-10-16",
+      "arxiv_url": "https://arxiv.org/abs/2610.18997",
+      "pdf_url": "https://arxiv.org/pdf/2610.18997",
+      "local_match": null,
+      "local_authors": {}
+    },
+    {
+      "id": "2610.19078",
+      "title": "Coherent states of neutrinos in rotating matter",
+      "authors": [
+        "Alexander Breev",
+        "Maxim Dvornikov"
+      ],
+      "abstract": "We study coherent states of neutrinos electroweakly interacting with rotating matter. We start with the Dirac equation for a massive neutrino propagating in background matter with a coordinate dependent effective potential. Then, we consider the limit of massless particles and the specific matter velocity profile. It allows us to reduce the neutrino Hamiltonian to the harmonic oscillator form. We find the exact solutions of the Dirac equation and construct the creation and annihilation operators. Using these results, we build the generalized coherent states of neutrinos. We provide the interpretation of these coherent states in terms of the classical physics. In particular, we demonstrate that the coherent states constructed approach plane waves in the limit of slow matter rotation. We also define the effective neutrino mass owing to the interaction of a massless neutrino with rotating matter. Then, we consider a special case of the generalized coherent states which are called the neutrino coherent states. The situation of the degenerate parameters of the system is also studied. Finally, we apply our results for astrophysical neutrinos propagating in dense matter of a rapidly rotating neutron star (NS). We calculate the effective neutrino masses for different neutrino energies for realistic parameters of NS.",
+      "primary_category": "hep-th",
+      "categories": [
+        "hep-th",
+        "astro-ph.HE",
+        "hep-ph"
+      ],
+      "submitted": "2026-10-16",
+      "arxiv_url": "https://arxiv.org/abs/2610.19078",
+      "pdf_url": "https://arxiv.org/pdf/2610.19078",
       "local_match": null,
       "local_authors": {}
     }
